@@ -2,23 +2,14 @@
 
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { ZoomIn, ZoomOut } from "lucide-react";
 
 /* ─── Tunables ────────────────────────────────────────────── */
-const N_POINTS  = 2200;    // dots on the sphere
-const RADIUS    = 1.2;     // sphere radius in world units
-const CAM_Z     = 3.6;     // starting camera distance
-const MIN_ZOOM  = 2.0;     // closest allowed camera distance
-const MAX_ZOOM  = 7.0;     // furthest allowed camera distance
-const AUTO_VEL  = 0.0028;  // auto-rotate speed  (rad / frame at 60 fps)
+const N_POINTS  = 1800;    // dots on the sphere
+const RADIUS    = 1.55;    // sphere radius in world units
+const CAM_Z     = 3.2;     // camera distance
+const AUTO_VEL  = 0.0028;  // auto-rotate speed (rad / frame at 60 fps)
 
 /* ─── Helpers ─────────────────────────────────────────────── */
-
-/**
- * 64×64 radial-gradient canvas texture.
- * alphaTest on the material clips the outer fade, leaving crisp circular dots
- * while the soft corona still catches AdditiveBlending for the halo layer.
- */
 function makeSprite(): THREE.CanvasTexture {
   const sz  = 64;
   const c   = document.createElement("canvas");
@@ -34,15 +25,11 @@ function makeSprite(): THREE.CanvasTexture {
   return new THREE.CanvasTexture(c);
 }
 
-/**
- * Fibonacci / sunflower spiral — the mathematically optimal algorithm for
- * uniform point distribution on a sphere surface (no poles clustering).
- */
 function fibonacciSphere(n: number, r: number): Float32Array {
   const buf     = new Float32Array(n * 3);
-  const golden  = Math.PI * (3 - Math.sqrt(5)); // golden angle ≈ 2.3999 rad
+  const golden  = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < n; i++) {
-    const y   = 1 - (i / (n - 1)) * 2;          // uniform Y from +1 → -1
+    const y   = 1 - (i / (n - 1)) * 2;
     const rho = Math.sqrt(1 - y * y);
     const phi = golden * i;
     buf[i * 3]     = r * rho * Math.cos(phi);
@@ -55,7 +42,6 @@ function fibonacciSphere(n: number, r: number): Float32Array {
 /* ─── Component ───────────────────────────────────────────── */
 export default function GlobeClient() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const camRef   = useRef<THREE.PerspectiveCamera | null>(null);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -68,14 +54,13 @@ export default function GlobeClient() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
-    renderer.setClearColor(0x000000, 0); // fully transparent clear
+    renderer.setClearColor(0x000000, 0);
     el.appendChild(renderer.domElement);
 
     /* ── Scene ────────────────────────────────────────────── */
     const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(48, W / H, 0.01, 100);
+    const camera = new THREE.PerspectiveCamera(52, W / H, 0.01, 100);
     camera.position.z = CAM_Z;
-    camRef.current = camera;
 
     /* ── Geometry ─────────────────────────────────────────── */
     const positions = fibonacciSphere(N_POINTS, RADIUS);
@@ -84,27 +69,26 @@ export default function GlobeClient() {
 
     const sprite = makeSprite();
 
-    // Primary layer — crisp magenta dots
+    // Primary dots — faint magenta
     const matDot = new THREE.PointsMaterial({
       color:           new THREE.Color("#C0287A"),
-      size:            0.030,
+      size:            0.026,
       sizeAttenuation: true,
       map:             sprite,
-      alphaTest:       0.22,   // clips the outer corona → tight circular shape
+      alphaTest:       0.22,
       transparent:     true,
-      opacity:         0.82,
+      opacity:         0.38,
       depthWrite:      false,
     });
 
-    // Halo layer — larger, peach-tinted, purely additive
-    // Sits behind the dots optically; overlapping halos stack into a glow
+    // Halo layer — very subtle additive glow
     const matHalo = new THREE.PointsMaterial({
       color:           new THREE.Color("#F08060"),
-      size:            0.060,
+      size:            0.058,
       sizeAttenuation: true,
       map:             sprite,
       transparent:     true,
-      opacity:         0.13,
+      opacity:         0.07,
       blending:        THREE.AdditiveBlending,
       depthWrite:      false,
     });
@@ -112,52 +96,14 @@ export default function GlobeClient() {
     const dotMesh  = new THREE.Points(geo, matDot);
     const haloMesh = new THREE.Points(geo, matHalo);
 
-    // Both meshes share a Group so rotation + pulse apply together
     const group = new THREE.Group();
-    group.add(haloMesh); // halo first (rendered behind)
+    group.add(haloMesh);
     group.add(dotMesh);
     scene.add(group);
 
-    /* ── Pointer physics ──────────────────────────────────── */
-    let isDragging = false;
-    let lastX = 0,  lastY = 0;
-    let velY  = AUTO_VEL; // pre-seed so sphere rotates on first frame
-    let velX  = 0;
-    let rotY  = 0;
-    let rotX  = 0;
-
-    const onPointerDown = (e: PointerEvent) => {
-      isDragging = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      // Don't zero velY — let inertia from auto-rotate carry through
-      el.setPointerCapture(e.pointerId);
-    };
-
-    const onPointerMove = (e: PointerEvent) => {
-      if (!isDragging) return;
-      // Replace velocity with live drag delta — responsive but not abrupt
-      velY = (e.clientX - lastX) * 0.007;
-      velX = (e.clientY - lastY) * 0.004;
-      lastX = e.clientX;
-      lastY = e.clientY;
-    };
-
-    const onPointerUp = () => { isDragging = false; };
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      camera.position.z = Math.max(
-        MIN_ZOOM,
-        Math.min(MAX_ZOOM, camera.position.z * (1 + e.deltaY * 0.001)),
-      );
-    };
-
-    el.addEventListener("pointerdown", onPointerDown);
-    el.addEventListener("pointermove", onPointerMove);
-    el.addEventListener("pointerup",   onPointerUp);
-    el.addEventListener("pointerleave", onPointerUp);
-    el.addEventListener("wheel",       onWheel, { passive: false });
+    /* ── Rotation state ───────────────────────────────────── */
+    let velY = AUTO_VEL;
+    let rotY = 0;
 
     /* ── Animation loop ───────────────────────────────────── */
     const clock = new THREE.Clock();
@@ -169,19 +115,10 @@ export default function GlobeClient() {
       animId = requestAnimationFrame(tick);
       const t = clock.getElapsedTime();
 
-      // Rotation physics: when the user lets go, velocity gently drifts
-      // back to AUTO_VEL on Y and back to 0 on X (spring-like pull).
-      if (!isDragging) {
-        velY += (AUTO_VEL - velY) * 0.030; // ≈ 3 % closer per frame
-        velX += (0         - velX) * 0.050;
-      }
+      velY += (AUTO_VEL - velY) * 0.030;
       rotY += velY;
-      rotX  = Math.max(-0.52, Math.min(0.52, rotX + velX)); // soft clamp ~30°
-
       group.rotation.y = rotY;
-      group.rotation.x = rotX;
 
-      // Pulse: symmetric breathe at ~0.55 rad/s → ~8.7 s cycle, ±1.8 % scale
       const pulse = 1 + Math.sin(t * 0.55) * 0.018;
       group.scale.setScalar(pulse);
 
@@ -205,11 +142,6 @@ export default function GlobeClient() {
       alive = false;
       cancelAnimationFrame(animId);
       obs.disconnect();
-      el.removeEventListener("pointerdown",  onPointerDown);
-      el.removeEventListener("pointermove",  onPointerMove);
-      el.removeEventListener("pointerup",    onPointerUp);
-      el.removeEventListener("pointerleave", onPointerUp);
-      el.removeEventListener("wheel",        onWheel);
       geo.dispose();
       matDot.dispose();
       matHalo.dispose();
@@ -219,48 +151,10 @@ export default function GlobeClient() {
     };
   }, []);
 
-  /* ── Zoom buttons (imperative camera move) ──────────────── */
-  const zoom = (dir: "in" | "out") => {
-    const cam = camRef.current;
-    if (!cam) return;
-    cam.position.z = Math.max(
-      MIN_ZOOM,
-      Math.min(MAX_ZOOM, cam.position.z * (dir === "in" ? 0.83 : 1.20)),
-    );
-  };
-
   return (
     <div
       ref={mountRef}
-      className="relative w-full h-full cursor-grab active:cursor-grabbing select-none"
-    >
-      {/* Faint radial glow — CSS only, zero GPU cost */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(184,40,122,0.07) 0%, rgba(240,128,96,0.04) 36%, transparent 62%)",
-        }}
-      />
-
-      {/* Zoom controls */}
-      <div className="absolute bottom-5 right-5 z-10 flex flex-col gap-2">
-        <button
-          onClick={() => zoom("in")}
-          aria-label="Zoom in"
-          className="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md border border-plum/10 shadow-sm flex items-center justify-center text-plum/50 hover:text-plum hover:bg-white hover:border-plum/20 transition-all duration-200"
-        >
-          <ZoomIn className="w-4 h-4" />
-        </button>
-        <button
-          onClick={() => zoom("out")}
-          aria-label="Zoom out"
-          className="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md border border-plum/10 shadow-sm flex items-center justify-center text-plum/50 hover:text-plum hover:bg-white hover:border-plum/20 transition-all duration-200"
-        >
-          <ZoomOut className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
+      className="w-full h-full"
+    />
   );
 }

@@ -140,84 +140,86 @@ export default function Home() {
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-magenta-pale/60 to-peach-pale/40 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-plum-pale/60 to-magenta-pale/30 blur-3xl pointer-events-none" />
 
-        {/* Globe — full hero background, behind text */}
+        {/* Globe — right-side background, behind text */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2.0, ease: "easeOut" as const }}
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-y-0 right-0 w-full lg:w-[62%] z-0 pointer-events-none"
         >
           <NationalGlobe />
         </motion.div>
 
-        {/* Content — centered above globe */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={stagger}
-          className="relative z-10 flex flex-col items-center gap-6 text-center max-w-2xl w-full"
-        >
-          <motion.div variants={fadeUp}>
-            <span className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-plum/8 text-plum text-xs font-semibold tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-magenta animate-pulse shrink-0" />
-              ElevateIP is Powered by{" "}
-              <a
-                href="https://ised-isde.canada.ca/site/innovation-canada/en"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-2 hover:text-magenta transition-colors"
-              >
-                Innovation Canada
-              </a>
-            </span>
-          </motion.div>
-
-          <motion.h1
-            variants={fadeUp}
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-plum leading-[1.08] tracking-tight"
-          >
-            Protecting Canadian
-            <br />
-            <span className="bg-gradient-to-r from-magenta to-peach bg-clip-text text-transparent">
-              Innovation.
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            className="text-lg sm:text-2xl font-medium text-plum/50 leading-relaxed"
-          >
-            Supporting Startups Nationwide.
-          </motion.p>
-
-          <motion.p
-            variants={fadeUp}
-            className="text-base text-plum/55 leading-7 max-w-lg"
-          >
-            ElevateIP is a national program empowering Canada&apos;s most promising
-            startups with expert intellectual property guidance delivered
-            through a network of trusted regional accelerators and incubators.
-          </motion.p>
-
+        {/* Content — left-aligned text column */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4">
           <motion.div
-            variants={fadeUp}
-            className="flex flex-col sm:flex-row items-center gap-3 mt-2"
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="flex flex-col items-center lg:items-start gap-6 text-center lg:text-left max-w-xl w-full"
           >
-            <a
-              href="#find-program"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-plum text-white font-semibold text-sm hover:bg-plum-dark shadow-lg hover:shadow-xl transition-all duration-200 group"
+            <motion.div variants={fadeUp}>
+              <span className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 px-4 py-1.5 rounded-full bg-plum/8 text-plum text-xs font-semibold tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-magenta animate-pulse shrink-0" />
+                ElevateIP is Powered by{" "}
+                <a
+                  href="https://ised-isde.canada.ca/site/innovation-canada/en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-magenta transition-colors"
+                >
+                  Innovation Canada
+                </a>
+              </span>
+            </motion.div>
+
+            <motion.h1
+              variants={fadeUp}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-plum leading-[1.08] tracking-tight"
             >
-              Find Your Regional Program
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </a>
-            <a
-              href="#about"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border-2 border-plum/20 text-plum font-semibold text-sm hover:border-plum/40 hover:bg-plum/4 transition-all duration-200"
+              Protecting Canadian
+              <br />
+              <span className="bg-gradient-to-r from-magenta to-peach bg-clip-text text-transparent">
+                Innovation.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              className="text-lg sm:text-2xl font-medium text-plum/50 leading-relaxed"
             >
-              Learn More
-            </a>
+              Supporting Startups Nationwide.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              className="text-base text-plum/55 leading-7 px-2 sm:px-0"
+            >
+              ElevateIP is a national program empowering Canada&apos;s most promising
+              startups with expert intellectual property guidance delivered
+              through a network of trusted regional accelerators and incubators.
+            </motion.p>
+
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto"
+            >
+              <a
+                href="#find-program"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-plum text-white font-semibold text-sm hover:bg-plum-dark shadow-lg hover:shadow-xl transition-all duration-200 group"
+              >
+                Find Your Regional Program
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+              <a
+                href="#about"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border-2 border-plum/20 text-plum font-semibold text-sm hover:border-plum/40 hover:bg-plum/4 transition-all duration-200"
+              >
+                Learn More
+              </a>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div

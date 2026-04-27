@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --yes)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --yes --name=\"elevateip-portal\")",
+      "Bash(mkdir -p \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/tmp-scaffold\")",
+      "Bash(npx create-next-app@latest elevateip-portal --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --yes)",
+      "Bash(cp -r \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/tmp-scaffold/elevateip-portal/.\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/\")",
+      "Bash(rm -rf \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/tmp-scaffold\")",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/ised-logo.png)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(cp \"/c/Users/Niraj/Downloads/Partner Logos/Springboard Atlantic.png\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/public/logos/springboard-atlantic.png\")",
+      "Bash(cp \"/c/Users/Niraj/Downloads/Partner Logos/MAIN.png\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/public/logos/main.png\")",
+      "Bash(cp \"/c/Users/Niraj/Downloads/Partner Logos/Communitech.png\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/public/logos/communitech.png\")",
+      "Bash(cp \"/c/Users/Niraj/Downloads/Partner Logos/Invest Ottawa.png\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/public/logos/invest-ottawa.png\")",
+      "Bash(cp \"/c/Users/Niraj/Downloads/Partner Logos/NorthForge.png\" \"/c/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/public/logos/north-forge.png\")",
+      "Bash(node -e \"const g = require\\('C:/Users/Niraj/OneDrive/Claude Projects - Moving Forward/ElevateIP Partners/node_modules/react-globe.gl'\\); console.log\\(Object.keys\\(g\\)\\);\")",
+      "Bash(node *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(git ls-tree *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

@@ -145,7 +145,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2.0, ease: "easeOut" as const }}
-          className="absolute inset-y-0 right-0 w-full lg:w-[62%] z-0 pointer-events-none"
+          className="absolute inset-y-0 right-0 w-full lg:w-[62%] z-0"
         >
           <NationalGlobe />
         </motion.div>
@@ -275,7 +275,7 @@ export default function Home() {
       {/* ── Regional Router ── */}
       <section
         id="find-program"
-        className="py-16 md:py-28 px-6 bg-gradient-to-b from-peach-50 via-white to-plum-50 relative overflow-hidden"
+        className="py-16 md:py-28 px-6 pb-24 md:pb-40 bg-gradient-to-b from-peach-50 via-white to-plum-50 relative"
       >
         {/* Decorative ring */}
         <svg

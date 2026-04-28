@@ -140,12 +140,19 @@ export default function Home() {
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-magenta-pale/60 to-peach-pale/40 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-plum-pale/60 to-magenta-pale/30 blur-3xl pointer-events-none" />
 
-        {/* Globe — right-side background, behind text */}
+        {/* Globe
+              Mobile/tablet : small square in the top-right corner so the
+                              sphere is recognisable; pointer-events-none so
+                              it never intercepts taps or scroll.
+              Desktop       : full right-panel background as before.        */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2.0, ease: "easeOut" as const }}
-          className="absolute inset-y-0 right-0 w-full lg:w-[62%] z-0"
+          className="absolute z-0 pointer-events-none
+            top-16 right-0 w-60 aspect-square opacity-50
+            sm:w-80 sm:opacity-60
+            lg:pointer-events-auto lg:aspect-auto lg:inset-y-0 lg:top-0 lg:right-0 lg:w-[62%] lg:opacity-100"
         >
           <NationalGlobe />
         </motion.div>

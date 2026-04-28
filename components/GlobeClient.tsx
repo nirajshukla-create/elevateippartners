@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 const N_POINTS = 1800;
 const RADIUS   = 1.55;
-const CAM_Z    = 3.2;
 const AUTO_VEL = 0.0028;
 
 function makeSprite(): THREE.CanvasTexture {
@@ -38,26 +37,8 @@ function fibonacciSphere(n: number, r: number): Float32Array {
 }
 
 export default function GlobeClient() {
-  const mountRef    = useRef<HTMLDivElement>(null);
-  const [isMobile,  setIsMobile]  = useState(false);
-  const [activated, setActivated] = useState(false);
+  const mountRef = useRef<HTMLDivElement>(null);
 
-  // Keep a ref so Three.js event handlers can read the latest value
-  // without being included in the effect deps array.
-  const activatedRef = useRef(false);
-  useEffect(() => { activatedRef.current = activated; }, [activated]);
-
-  // Detect screen type once on mount — no resize listener needed.
-  useEffect(() => {
-    const mobile = window.innerWidth < 768;
-    setIsMobile(mobile);
-    if (!mobile) {
-      setActivated(true);
-      activatedRef.current = true;
-    }
-  }, []);
-
-  // Three.js setup — runs once.
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
@@ -65,9 +46,12 @@ export default function GlobeClient() {
     const W = el.clientWidth  || 400;
     const H = el.clientHeight || 400;
 
+    const mobile = window.innerWidth < 1024; // matches lg breakpoint
     const tiny   = window.innerWidth < 400;
-    const mobile = window.innerWidth < 768;
     const dpr    = Math.min(window.devicePixelRatio, tiny ? 1 : mobile ? 1.5 : 2);
+
+    // Zoom out on mobile so the full sphere is visible inside the small container.
+    const camZ = mobile ? 5.2 : 3.2;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(dpr);
@@ -77,7 +61,7 @@ export default function GlobeClient() {
 
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(52, W / H, 0.01, 100);
-    camera.position.z = CAM_Z;
+    camera.position.z = camZ;
 
     const positions = fibonacciSphere(N_POINTS, RADIUS);
     const geo = new THREE.BufferGeometry();
@@ -100,48 +84,34 @@ export default function GlobeClient() {
     group.add(new THREE.Points(geo, matDot));
     scene.add(group);
 
-    // Rotation state — shared with event handlers via closure.
-    let velY          = AUTO_VEL;
-    let rotY          = 0;
-    let isDragging    = false;
-    let dirLocked     = false;
-    let lastX         = 0;
-    let lastY         = 0;
-    let alive         = true;
-    let animId        = 0;
+    let velY = AUTO_VEL;
+    let rotY = 0;
+    let isDragging = false;
+    let dirLocked  = false;
+    let lastX = 0;
+    let lastY = 0;
+    let alive = true;
+    let animId = 0;
 
+    // Drag rotation — only reachable on desktop (mobile wrapper is pointer-events-none).
     const onPointerDown = (e: PointerEvent) => {
-      if (!activatedRef.current) return;
-      lastX     = e.clientX;
-      lastY     = e.clientY;
-      isDragging = false;
-      dirLocked  = false;
+      lastX = e.clientX; lastY = e.clientY;
+      isDragging = false; dirLocked = false;
     };
-
     const onPointerMove = (e: PointerEvent) => {
-      if (!activatedRef.current) return;
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
-
-      if (!dirLocked) {
-        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-          dirLocked  = true;
-          // Only enter drag mode for predominantly horizontal movement.
-          isDragging = Math.abs(dx) > Math.abs(dy);
-        }
+      if (!dirLocked && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+        dirLocked  = true;
+        isDragging = Math.abs(dx) > Math.abs(dy);
       }
-
       if (isDragging) {
         velY  = dx * 0.01;
         lastX = e.clientX;
         lastY = e.clientY;
       }
     };
-
-    const onPointerUp = () => {
-      isDragging = false;
-      dirLocked  = false;
-    };
+    const onPointerUp = () => { isDragging = false; dirLocked = false; };
 
     el.addEventListener("pointerdown",   onPointerDown);
     el.addEventListener("pointermove",   onPointerMove);
@@ -149,17 +119,14 @@ export default function GlobeClient() {
     el.addEventListener("pointercancel", onPointerUp);
 
     const clock = new THREE.Clock();
-
     const tick = () => {
       if (!alive) return;
       animId = requestAnimationFrame(tick);
       const t = clock.getElapsedTime();
-
       if (!isDragging) velY += (AUTO_VEL - velY) * 0.03;
-      rotY           += velY;
+      rotY += velY;
       group.rotation.y = rotY;
       group.scale.setScalar(1 + Math.sin(t * 0.55) * 0.018);
-
       renderer.render(scene, camera);
     };
     tick();
@@ -178,10 +145,7 @@ export default function GlobeClient() {
       alive = false;
       cancelAnimationFrame(animId);
       obs.disconnect();
-      geo.dispose();
-      matDot.dispose();
-      matHalo.dispose();
-      sprite.dispose();
+      geo.dispose(); matDot.dispose(); matHalo.dispose(); sprite.dispose();
       renderer.dispose();
       el.removeEventListener("pointerdown",   onPointerDown);
       el.removeEventListener("pointermove",   onPointerMove);
@@ -191,32 +155,5 @@ export default function GlobeClient() {
     };
   }, []);
 
-  return (
-    <div className="relative w-full h-full">
-      {/* Canvas — pointer-events off until the user activates on mobile */}
-      <div
-        ref={mountRef}
-        className="w-full h-full"
-        style={{
-          pointerEvents: activated ? "auto" : "none",
-          // pan-y lets the browser scroll vertically; we handle horizontal drag.
-          touchAction: activated && isMobile ? "pan-y" : "auto",
-        }}
-      />
-
-      {/* "Tap to rotate" hint — mobile only, disappears on activation */}
-      {isMobile && !activated && (
-        <button
-          onClick={() => setActivated(true)}
-          aria-label="Tap to interact with globe"
-          className="absolute inset-0 flex items-end justify-center pb-20 cursor-default"
-          style={{ background: "transparent", border: "none" }}
-        >
-          <span className="text-[11px] font-semibold tracking-widest uppercase text-plum/35 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-full select-none">
-            Tap to rotate
-          </span>
-        </button>
-      )}
-    </div>
-  );
+  return <div ref={mountRef} className="w-full h-full" />;
 }

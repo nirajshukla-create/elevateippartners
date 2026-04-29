@@ -93,6 +93,8 @@ const RESOURCES = [
     category: "Upcoming",
     title: "National IP Webinar Series",
     desc: "Monthly live sessions with IP professionals covering commercialization, licensing, and enforcement.",
+    href: "/events",
+    cta: "View upcoming events →",
   },
   {
     icon: Award,
@@ -100,6 +102,7 @@ const RESOURCES = [
     title: "Service Provider Directory",
     desc: "Connect with an IP advisor from our national network tailored to your sector and stage.",
     href: "/experts",
+    cta: "Browse the directory →",
   },
 ];
 
@@ -340,7 +343,7 @@ export default function Home() {
           </InView>
 
           <InView className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {RESOURCES.map(({ icon: Icon, category, title, desc, href }) => (
+            {RESOURCES.map(({ icon: Icon, category, title, desc, href, cta }) => (
               <motion.a
                 key={title}
                 href={href ?? undefined}
@@ -356,9 +359,9 @@ export default function Home() {
                   </span>
                   <h3 className="text-base font-bold text-plum leading-snug">{title}</h3>
                   <p className="text-plum/50 text-sm leading-6">{desc}</p>
-                  {href && (
+                  {cta && (
                     <span className="mt-1 text-xs font-semibold text-magenta group-hover:underline">
-                      Browse the directory →
+                      {cta}
                     </span>
                   )}
                 </div>

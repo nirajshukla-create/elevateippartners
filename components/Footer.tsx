@@ -6,9 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 /* ─── Link data ──────────────────────────────────────────── */
 const NAV_LINKS = [
-  { label: "Home",              href: "#" },
-  { label: "Regional Programs", href: "#find-program" },
-  { label: "Resources",         href: "#resources" },
+  { label: "Home",              href: "/" },
+  { label: "Regional Programs", href: "/#find-program" },
+  { label: "Resources",         href: "/#resources" },
+  { label: "Partners",          href: "/partners" },
+  { label: "Events",            href: "/events" },
 ];
 
 const LEGAL_LINKS = [

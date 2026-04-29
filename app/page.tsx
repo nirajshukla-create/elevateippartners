@@ -120,7 +120,8 @@ export default function Home() {
             <a href="#about" className="hover:text-plum transition-colors">About</a>
             <a href="#find-program" className="hover:text-plum transition-colors">Find Your Program</a>
             <a href="#resources" className="hover:text-plum transition-colors">Resources</a>
-            <a href="#partners" className="hover:text-plum transition-colors">Partners</a>
+            <a href="/partners" className="hover:text-plum transition-colors">Partners</a>
+            <a href="/events" className="hover:text-plum transition-colors">Events</a>
           </nav>
           <a
             href="#find-program"
@@ -150,9 +151,9 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 2.0, ease: "easeOut" as const }}
           className="absolute z-0 pointer-events-none
-            top-16 right-0 w-60 aspect-square opacity-50
-            sm:w-80 sm:opacity-60
-            lg:pointer-events-auto lg:aspect-auto lg:inset-y-0 lg:top-0 lg:right-0 lg:w-[62%] lg:opacity-100"
+            top-16 right-0 w-60 h-60 opacity-50
+            sm:w-80 sm:h-80 sm:opacity-60
+            lg:pointer-events-auto lg:h-auto lg:inset-y-0 lg:top-0 lg:right-0 lg:w-[62%] lg:opacity-100"
         >
           <NationalGlobe />
         </motion.div>
@@ -233,7 +234,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-plum/30"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1 text-plum/30"
         >
           <span className="text-xs tracking-widest uppercase">Scroll</span>
           <motion.div
@@ -256,8 +257,12 @@ export default function Home() {
               Where IP Strategy Meets Startup Growth
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7">
-              ElevateIP works with Business Accelerators and Incubators (BAIs) across Canada to deliver professional,
-              stage-appropriate IP services to the startups they support.
+              ElevateIP, with the support of{" "}
+              <span className="font-semibold text-plum">
+                Innovation, Science and Economic Development (ISED)
+              </span>
+              , works with Business Accelerators and Incubators (BAIs) across Canada to deliver
+              professional, stage-appropriate IP services to the startups they support.
             </motion.p>
           </InView>
 

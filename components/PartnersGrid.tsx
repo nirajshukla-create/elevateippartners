@@ -1,0 +1,141 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { ExternalLink } from "lucide-react";
+
+/* ─── Types ──────────────────────────────────────────────── */
+
+type BadgeType = "Federal" | "Provincial" | "Non-Profit" | "Professional";
+
+interface Partner {
+  name: string;
+  type: BadgeType;
+  description: string;
+  href: string;
+}
+
+/* ─── Data ───────────────────────────────────────────────── */
+
+const PARTNERS: Partner[] = [
+  {
+    name: "CIPO — Canadian Intellectual Property Office",
+    type: "Federal",
+    description:
+      "The official federal body responsible for the administration and processing of the vast majority of IP in Canada, including patents, trademarks, copyrights, and industrial designs.",
+    href: "https://www.ic.gc.ca/eic/site/cipointernet-internetopic.nsf/eng/home",
+  },
+  {
+    name: "Innovation Asset Collective (IAC)",
+    type: "Non-Profit",
+    description:
+      "A membership-based non-profit assisting Canadian SMEs in the data-driven clean technology sector to better understand, develop, and leverage IP as a strategic business asset.",
+    href: "https://iacollective.ca",
+  },
+  {
+    name: "IP Assist — NRC IRAP",
+    type: "Federal",
+    description:
+      "Provides funding to SMEs to help them understand their IP position and develop comprehensive IP strategies aligned with their commercialization goals.",
+    href: "https://nrc.canada.ca/en/support-technology-innovation/nrc-irap-ip-assist",
+  },
+  {
+    name: "CanExport Innovation",
+    type: "Federal",
+    description:
+      "Provides funding to help Canadian SMEs protect their IP in international markets, supporting patent filings, trademark registrations, and related legal costs abroad.",
+    href: "https://www.tradecommissioner.gc.ca/funding-financement/canexport/innovation/index.aspx",
+  },
+  {
+    name: "IPON — Intellectual Property Ontario",
+    type: "Provincial",
+    description:
+      "A provincial agency that provides trusted IP support, resources, and advisory services to help Ontario innovators scale their businesses and compete globally.",
+    href: "https://www.ipon.ca",
+  },
+  {
+    name: "IPIC — Intellectual Property Institute of Canada",
+    type: "Professional",
+    description:
+      "The professional association for patent agents, trademark agents, and lawyers specializing in IP law — the authoritative voice on IP practice standards in Canada.",
+    href: "https://www.ipic.ca",
+  },
+];
+
+/* ─── Badge ──────────────────────────────────────────────── */
+
+const BADGE_STYLES: Record<BadgeType, string> = {
+  Federal:      "bg-plum/8 text-plum",
+  Provincial:   "bg-magenta/8 text-magenta",
+  "Non-Profit": "bg-peach/15 text-peach",
+  Professional: "bg-plum/5 text-plum/60",
+};
+
+function Badge({ type }: { type: BadgeType }) {
+  return (
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${BADGE_STYLES[type]}`}>
+      {type}
+    </span>
+  );
+}
+
+/* ─── Card ───────────────────────────────────────────────── */
+
+const cardVariants = {
+  hidden:  { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" as const },
+  }),
+};
+
+function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
+  return (
+    <motion.div
+      custom={index}
+      variants={cardVariants}
+      className="group flex flex-col gap-5 rounded-3xl border border-plum/8 bg-white p-8 hover:shadow-xl hover:border-plum/16 hover:-translate-y-1 transition-all duration-300"
+    >
+      <div className="flex flex-col gap-3 flex-1">
+        <Badge type={partner.type} />
+        <h2 className="text-base font-bold text-plum leading-snug">
+          {partner.name}
+        </h2>
+        <p className="text-sm text-plum/50 leading-6 flex-1">
+          {partner.description}
+        </p>
+      </div>
+
+      <a
+        href={partner.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-full border-2 border-plum text-plum text-xs font-semibold hover:bg-plum hover:text-white transition-all duration-200"
+      >
+        Visit Website
+        <ExternalLink className="w-3.5 h-3.5" />
+      </a>
+    </motion.div>
+  );
+}
+
+/* ─── Grid ───────────────────────────────────────────────── */
+
+export default function PartnersGrid() {
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
+      {PARTNERS.map((partner, i) => (
+        <PartnerCard key={partner.name} partner={partner} index={i} />
+      ))}
+    </motion.div>
+  );
+}

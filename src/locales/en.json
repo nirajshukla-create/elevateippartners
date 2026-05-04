@@ -1,0 +1,226 @@
+{
+  "nav": {
+    "about": "About",
+    "findProgram": "Find Your Program",
+    "resources": "Resources",
+    "partners": "Partners",
+    "events": "Events",
+    "getStarted": "Get Started",
+    "backToHome": "Back to Home",
+    "backToDirectory": "Back to Directory"
+  },
+  "hero": {
+    "badge": "ElevateIP is Powered by",
+    "badgeLink": "Innovation Canada",
+    "title": "Protecting Canadian",
+    "titleHighlight": "Innovation.",
+    "tagline": "Supporting Startups Nationwide.",
+    "body": "ElevateIP is a national program empowering Canada's most promising startups with expert intellectual property guidance delivered through a network of trusted regional accelerators and incubators.",
+    "ctaProgram": "Find Your Regional Program",
+    "ctaLearnMore": "Learn More",
+    "scroll": "Scroll"
+  },
+  "valueProps": {
+    "eyebrow": "The National Program",
+    "heading": "Where IP Strategy Meets Startup Growth",
+    "body": "ElevateIP, with the support of {ised}, works with Business Accelerators and Incubators (BAIs) across Canada to deliver professional, stage-appropriate IP services to the startups they support.",
+    "isedName": "Innovation, Science and Economic Development (ISED)",
+    "values": [
+      {
+        "title": "IP Strategy First",
+        "body": "We help Canadian startups understand, develop, and protect their most valuable assets: their ideas."
+      },
+      {
+        "title": "Growth-Stage Ready",
+        "body": "From seed to scale, our programs align IP strategy with your funding and commercialization milestones."
+      },
+      {
+        "title": "Nationwide Coverage",
+        "body": "A unified network of regional BAIs spans every province and territory, so every founder has a local expert."
+      }
+    ]
+  },
+  "regionalRouter": {
+    "eyebrow": "Find Your Program",
+    "heading": "Your Regional IP Partner Is Waiting",
+    "body": "Select your province or territory below to be connected with your dedicated regional program and local IP specialists."
+  },
+  "resources": {
+    "eyebrow": "Shared Resources",
+    "heading": "Nationally Available Tools & Events",
+    "body": "No matter where you are in Canada, these resources are available to every founder in the ElevateIP ecosystem.",
+    "items": [
+      {
+        "category": "Guide",
+        "title": "IP Fundamentals for Startups",
+        "desc": "An introduction to patents, trademarks, trade secrets, and copyright for early-stage companies."
+      },
+      {
+        "category": "Toolkit",
+        "title": "IP Audit Checklist",
+        "desc": "A self-assessment tool to identify gaps in your current IP protection strategy."
+      },
+      {
+        "category": "Upcoming",
+        "title": "National IP Webinar Series",
+        "desc": "Monthly live sessions with IP professionals covering commercialization, licensing, and enforcement.",
+        "href": "/events",
+        "cta": "View upcoming events →"
+      },
+      {
+        "category": "Service Provider Directory",
+        "title": "Service Provider Directory",
+        "desc": "Connect with an IP advisor from our national network tailored to your sector and stage.",
+        "href": "/experts",
+        "cta": "Browse the directory →"
+      }
+    ]
+  },
+  "footer": {
+    "ipFacts": {
+      "heading": "IP by the Numbers",
+      "facts": [
+        [
+          { "text": "SMEs owning IP are ", "highlight": false },
+          { "text": "60% more likely", "highlight": true },
+          { "text": " to be high-growth SMEs and ", "highlight": false },
+          { "text": "4 times more likely", "highlight": true },
+          { "text": " to export.", "highlight": false }
+        ],
+        [
+          { "text": "Canadian SMEs holding registered IP rights are ", "highlight": false },
+          { "text": "3 times more likely", "highlight": true },
+          { "text": " to have expanded domestically and ", "highlight": false },
+          { "text": "4.3 times more likely", "highlight": true },
+          { "text": " to have expanded internationally.", "highlight": false }
+        ]
+      ]
+    },
+    "columns": {
+      "site": "Site",
+      "legal": "Legal",
+      "regionalSites": "Regional Sites"
+    },
+    "links": {
+      "home": "Home",
+      "regionalPrograms": "Regional Programs",
+      "resources": "Resources",
+      "partners": "Partners",
+      "events": "Events",
+      "privacyPolicy": "Privacy Policy",
+      "accessibility": "Accessibility",
+      "contactUs": "Contact Us",
+      "atlantic": "Atlantic",
+      "quebec": "Quebec",
+      "ontario": "Ontario & Prairies",
+      "alberta": "Alberta",
+      "bc": "BC & Territories"
+    },
+    "disclaimer": "Elevate IP is a federally funded, national project to help business accelerators and incubators (BAIs) provide the tools Canadian startups need to understand, strategically manage and leverage their intellectual property."
+  },
+  "experts": {
+    "eyebrow": "Service Provider Directory",
+    "heading": "National IP Experts",
+    "subheading": "Vetted intellectual property professionals connected through the ElevateIP national network. Find the right expert for your stage and region.",
+    "searchPlaceholder": "Search by firm name, specialty, or city…",
+    "allProvinces": "All Provinces",
+    "allPartners": "All Partners",
+    "filters": "Filters",
+    "ipStrategy": "IP Strategy",
+    "ipImplementation": "IP Implementation",
+    "firmFound": "firm found",
+    "firmsFound": "firms found",
+    "moreSpecialties": "more",
+    "resetFilters": "Reset filters",
+    "resetAllFilters": "Reset All Filters",
+    "reset": "Reset",
+    "noExpertsFound": "No experts found",
+    "noExpertsBody": "No firms match your current filters. Try adjusting your search or broadening your criteria.",
+    "viewProfile": "View Profile",
+    "intake": {
+      "comingSoon": "Coming Soon",
+      "heading": "National Service Provider Intake",
+      "body": "A centralized intake form for IP professionals and service providers to join the national ElevateIP network is currently in development.",
+      "notify": "Notify Me When Available"
+    }
+  },
+  "expertProfile": {
+    "vettedBy": "Vetted by",
+    "ipStrategy": "IP Strategy",
+    "ipImplementation": "IP Implementation",
+    "about": "About",
+    "ipStrategyServices": "IP Strategy Services",
+    "ipImplementationServices": "IP Implementation Services",
+    "specialties": "Specialties",
+    "industriesServed": "Industries Served",
+    "contactPrompt": "Interested in working with this firm? Reach out directly.",
+    "contactFirm": "Contact Firm",
+    "visitWebsite": "Visit Website",
+    "quickFacts": "Quick Facts",
+    "office": "Office",
+    "provincesServed": "Provinces Served",
+    "elevateipPartner": "ElevateIP Partner"
+  },
+  "partners": {
+    "eyebrow": "The National Network",
+    "heading": "Ecosystem Partners",
+    "body": "Connecting Canadian startups with the national network of intellectual property support organizations."
+  },
+  "provinceNames": {
+    "AB": "Alberta",
+    "BC": "British Columbia",
+    "MB": "Manitoba",
+    "NB": "New Brunswick",
+    "NL": "Newfoundland and Labrador",
+    "NS": "Nova Scotia",
+    "NT": "Northwest Territories",
+    "NU": "Nunavut",
+    "ON": "Ontario",
+    "PE": "Prince Edward Island",
+    "QC": "Quebec",
+    "SK": "Saskatchewan",
+    "YT": "Yukon"
+  },
+  "provinceDropdown": {
+    "placeholder": "Select your province or territory…",
+    "yourRegionalPartner": "Your Regional Partner",
+    "continueToSite": "Continue to Regional Site",
+    "regions": {
+      "atlantic": { "label": "Atlantic Canada",    "tagline": "Supporting innovation across the Atlantic provinces." },
+      "quebec":   { "label": "Quebec",             "tagline": "Guiding Québec startups through their IP journey." },
+      "ontario":  { "label": "Ontario & Prairies", "tagline": "Serving Ontario, Manitoba, Ottawa, and Saskatchewan." },
+      "alberta":  { "label": "Alberta",            "tagline": "Accelerating IP strategy for Alberta's startup ecosystem." },
+      "bc":       { "label": "BC & Territories",   "tagline": "Serving BC, Yukon, Nunavut, and the Northwest Territories." }
+    }
+  },
+  "eventCalendar": {
+    "eyebrow": "National Event Calendar",
+    "heading": "Upcoming IP Events",
+    "body": "Workshops, webinars, and clinics from Canada's ElevateIP partner network — approved and curated for startup founders.",
+    "submitCta": "Are you an ElevateIP Partner? Submit an event here",
+    "noEventsHeading": "No upcoming events",
+    "noEventsBody": "There are no approved events scheduled right now. Check back soon, or submit yours above.",
+    "past": "Past",
+    "register": "Register"
+  },
+  "submitEventModal": {
+    "title": "Submit an Event",
+    "fields": {
+      "title":            { "label": "Event Title",             "placeholder": "e.g. IP Fundamentals Workshop" },
+      "event_date":       { "label": "Event Date",              "placeholder": "" },
+      "partner_name":     { "label": "Organization Name",       "placeholder": "e.g. Communitech" },
+      "registration_url": { "label": "Registration URL",        "placeholder": "https://..." },
+      "partner_logo_url": { "label": "Organization Logo URL",   "placeholder": "https://..." },
+      "description":      { "label": "Description",             "placeholder": "Brief overview of the event (optional)" },
+      "title_fr":         { "label": "Event Title (French)",    "placeholder": "e.g. Atelier sur les fondamentaux de la PI" },
+      "description_fr":   { "label": "Description (French)",    "placeholder": "Bref aperçu de l'événement (facultatif)" }
+    },
+    "frenchSectionLabel": "French Translation (optional — helps francophone participants)",
+    "successHeading": "Event submitted!",
+    "successBody": "Your event has been received and is pending review. We'll approve it shortly.",
+    "done": "Done",
+    "submitting": "Submitting…",
+    "submit": "Submit Event",
+    "disclaimer": "Submitted events are reviewed before appearing on the calendar."
+  }
+}

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ExternalLink, CalendarDays, Send } from "lucide-react";
 import type { CalendarEvent } from "@/lib/events";
 import SubmitEventModal from "@/components/SubmitEventModal";
+import { useLanguage } from "@/components/LanguageProvider";
 
 /* ─── Static data ────────────────────────────────────── */
 
@@ -19,22 +20,16 @@ const PARTNER_LOGOS: Record<string, string> = {
   "New Ventures BC":      "/logos/new-ventures-bc.png",
 };
 
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-const DAY_ABBR = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 /* ─── Helpers ────────────────────────────────────────── */
 
-function parseDateParts(isoDate: string) {
+function parseDateParts(isoDate: string, locale: string) {
   const [y, m, d] = isoDate.split("-").map(Number);
   const jsDate = new Date(y, m - 1, d);
   return {
     day:       String(d).padStart(2, "0"),
-    dayAbbr:   DAY_ABBR[jsDate.getDay()],
-    monthAbbr: MONTH_NAMES[m - 1].slice(0, 3).toUpperCase(),
-    monthYear: `${MONTH_NAMES[m - 1]} ${y}`,
+    dayAbbr:   new Intl.DateTimeFormat(locale, { weekday: "short" }).format(jsDate),
+    monthAbbr: new Intl.DateTimeFormat(locale, { month: "short" }).format(jsDate).toUpperCase(),
+    monthYear: new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(jsDate),
     sortKey:   `${y}-${String(m).padStart(2, "0")}`,
   };
 }
@@ -78,12 +73,20 @@ function EventCard({
   event,
   index,
   isPast,
+  locale,
+  registerLabel,
+  pastLabel,
 }: {
   event: CalendarEvent;
   index: number;
   isPast: boolean;
+  locale: string;
+  registerLabel: string;
+  pastLabel: string;
 }) {
-  const parts = parseDateParts(event.date);
+  const parts = parseDateParts(event.date, locale);
+  const title       = locale === "fr" && event.title_fr       ? event.title_fr       : event.title;
+  const description = locale === "fr" && event.description_fr ? event.description_fr : event.description;
 
   return (
     <motion.div
@@ -110,7 +113,7 @@ function EventCard({
         </span>
         {isPast && (
           <span className="mt-2 text-[9px] font-bold uppercase tracking-widest text-plum/30 bg-plum/6 rounded-full px-1.5 py-0.5">
-            Past
+            {pastLabel}
           </span>
         )}
       </div>
@@ -119,11 +122,11 @@ function EventCard({
       <div className="flex flex-col gap-3 p-5 flex-1 min-w-0">
         <div className="flex flex-col gap-1.5">
           <h3 className="text-base font-bold text-plum leading-snug group-hover:text-magenta transition-colors line-clamp-2">
-            {event.title}
+            {title}
           </h3>
-          {event.description && (
+          {description && (
             <p className="text-sm text-plum/50 leading-6 line-clamp-2">
-              {event.description}
+              {description}
             </p>
           )}
         </div>
@@ -147,7 +150,7 @@ function EventCard({
               onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-plum text-white text-xs font-semibold hover:bg-plum-dark transition-colors shadow-sm shrink-0"
             >
-              Register
+              {registerLabel}
               <ExternalLink className="w-3 h-3" />
             </a>
           )}
@@ -165,22 +168,24 @@ interface Props {
 }
 
 export default function EventCalendar({ events, intakeFormUrl }: Props) {
+  const { locale, dict } = useLanguage();
+  const ec = dict.eventCalendar;
   const today = todayISO();
-  const [activeMonth, setActiveMonth]   = useState<string | null>(null);
-  const [modalOpen, setModalOpen]       = useState(false);
+  const [activeMonth, setActiveMonth] = useState<string | null>(null);
+  const [modalOpen, setModalOpen]     = useState(false);
 
   // Group events by month, preserving sort order.
   const grouped = useMemo(() => {
     const map = new Map<string, { label: string; events: CalendarEvent[] }>();
     for (const e of events) {
-      const parts = parseDateParts(e.date);
+      const parts = parseDateParts(e.date, locale);
       if (!map.has(parts.sortKey)) {
         map.set(parts.sortKey, { label: parts.monthYear, events: [] });
       }
       map.get(parts.sortKey)!.events.push(e);
     }
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
-  }, [events]);
+  }, [events, locale]);
 
   // Default to the first month that contains a future event; fall back to first month.
   const defaultMonth = useMemo(() => {
@@ -200,14 +205,13 @@ export default function EventCalendar({ events, intakeFormUrl }: Props) {
         {/* ── Heading ── */}
         <div className="text-center mb-12">
           <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-            National Event Calendar
+            {ec.eyebrow}
           </p>
           <h1 className="text-3xl md:text-4xl font-bold text-plum leading-tight mb-4">
-            Upcoming IP Events
+            {ec.heading}
           </h1>
           <p className="text-plum/50 text-base max-w-lg mx-auto leading-7 mb-6">
-            Workshops, webinars, and clinics from Canada&apos;s ElevateIP partner
-            network — approved and curated for startup founders.
+            {ec.body}
           </p>
 
           {/* Partner submission */}
@@ -219,7 +223,7 @@ export default function EventCalendar({ events, intakeFormUrl }: Props) {
               className="inline-flex items-center gap-1.5 text-sm text-plum/40 hover:text-magenta transition-colors font-medium"
             >
               <Send className="w-3.5 h-3.5" />
-              Are you an ElevateIP Partner? Submit an event here
+              {ec.submitCta}
             </a>
           ) : (
             <button
@@ -227,7 +231,7 @@ export default function EventCalendar({ events, intakeFormUrl }: Props) {
               className="inline-flex items-center gap-1.5 text-sm text-plum/40 hover:text-magenta transition-colors font-medium"
             >
               <Send className="w-3.5 h-3.5" />
-              Are you an ElevateIP Partner? Submit an event here
+              {ec.submitCta}
             </button>
           )}
 
@@ -240,10 +244,9 @@ export default function EventCalendar({ events, intakeFormUrl }: Props) {
             <div className="w-16 h-16 rounded-2xl bg-plum-50 flex items-center justify-center mb-5">
               <CalendarDays className="w-7 h-7 text-plum/30" />
             </div>
-            <h3 className="text-xl font-bold text-plum mb-2">No upcoming events</h3>
+            <h3 className="text-xl font-bold text-plum mb-2">{ec.noEventsHeading}</h3>
             <p className="text-plum/45 text-sm max-w-xs leading-6">
-              There are no approved events scheduled right now. Check back soon,
-              or submit yours above.
+              {ec.noEventsBody}
             </p>
           </div>
         ) : (
@@ -286,6 +289,9 @@ export default function EventCalendar({ events, intakeFormUrl }: Props) {
                         event={event}
                         index={i}
                         isPast={event.date < today}
+                        locale={locale}
+                        registerLabel={ec.register}
+                        pastLabel={ec.past}
                       />
                     ))}
                   </div>

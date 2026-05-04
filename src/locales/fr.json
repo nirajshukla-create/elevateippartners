@@ -1,0 +1,226 @@
+{
+  "nav": {
+    "about": "À propos",
+    "findProgram": "Trouver mon programme",
+    "resources": "Ressources",
+    "partners": "Partenaires",
+    "events": "Événements",
+    "getStarted": "Commencer",
+    "backToHome": "Retour à l'accueil",
+    "backToDirectory": "Retour au répertoire"
+  },
+  "hero": {
+    "badge": "ElevateIP est soutenu par",
+    "badgeLink": "Innovation Canada",
+    "title": "Protéger l'innovation",
+    "titleHighlight": "canadienne.",
+    "tagline": "Soutenir les entreprises en démarrage à l'échelle nationale.",
+    "body": "ElevateIP est un programme national qui aide les entreprises en démarrage les plus prometteuses du Canada à obtenir des conseils d'experts en propriété intellectuelle, par l'intermédiaire d'un réseau d'accélérateurs et d'incubateurs régionaux de confiance.",
+    "ctaProgram": "Trouver mon programme régional",
+    "ctaLearnMore": "En savoir plus",
+    "scroll": "Défiler"
+  },
+  "valueProps": {
+    "eyebrow": "Le programme national",
+    "heading": "Où la stratégie PI rencontre la croissance des entreprises",
+    "body": "ElevateIP, avec le soutien de l'{ised}, collabore avec des accélérateurs et des incubateurs d'entreprises (AIE) partout au Canada pour offrir des services de PI professionnels et adaptés à l'étape des entreprises en démarrage qu'ils soutiennent.",
+    "isedName": "Innovation, Sciences et Développement économique Canada (ISDE)",
+    "values": [
+      {
+        "title": "La stratégie PI en premier",
+        "body": "Nous aidons les entreprises en démarrage canadiennes à comprendre, développer et protéger leurs actifs les plus précieux : leurs idées."
+      },
+      {
+        "title": "Prêt pour la croissance",
+        "body": "Du démarrage à la mise à l'échelle, nos programmes alignent la stratégie de PI sur vos jalons de financement et de commercialisation."
+      },
+      {
+        "title": "Couverture nationale",
+        "body": "Un réseau unifié d'AIE régionaux couvre chaque province et territoire, de sorte que chaque fondateur ait un expert local."
+      }
+    ]
+  },
+  "regionalRouter": {
+    "eyebrow": "Trouver votre programme",
+    "heading": "Votre partenaire régional PI vous attend",
+    "body": "Sélectionnez votre province ou territoire ci-dessous pour être mis en contact avec votre programme régional dédié et vos spécialistes locaux en PI."
+  },
+  "resources": {
+    "eyebrow": "Ressources partagées",
+    "heading": "Outils et événements disponibles à l'échelle nationale",
+    "body": "Peu importe où vous êtes au Canada, ces ressources sont disponibles pour chaque fondateur dans l'écosystème ElevateIP.",
+    "items": [
+      {
+        "category": "Guide",
+        "title": "Les fondamentaux de la PI pour les entreprises en démarrage",
+        "desc": "Une introduction aux brevets, marques de commerce, secrets commerciaux et droits d'auteur pour les entreprises en phase initiale."
+      },
+      {
+        "category": "Boîte à outils",
+        "title": "Liste de contrôle pour l'audit de PI",
+        "desc": "Un outil d'autoévaluation pour identifier les lacunes dans votre stratégie actuelle de protection de la PI."
+      },
+      {
+        "category": "À venir",
+        "title": "Série de webinaires nationaux sur la PI",
+        "desc": "Sessions en direct mensuelles avec des professionnels de la PI couvrant la commercialisation, l'octroi de licences et l'application des droits.",
+        "href": "/events",
+        "cta": "Voir les prochains événements →"
+      },
+      {
+        "category": "Répertoire des fournisseurs",
+        "title": "Répertoire des fournisseurs de services",
+        "desc": "Connectez-vous avec un conseiller en PI de notre réseau national adapté à votre secteur et à votre stade.",
+        "href": "/experts",
+        "cta": "Parcourir le répertoire →"
+      }
+    ]
+  },
+  "footer": {
+    "ipFacts": {
+      "heading": "La PI en chiffres",
+      "facts": [
+        [
+          { "text": "Les PME détenant une PI sont ", "highlight": false },
+          { "text": "60 % plus susceptibles", "highlight": true },
+          { "text": " d'être des PME à forte croissance et ", "highlight": false },
+          { "text": "4 fois plus susceptibles", "highlight": true },
+          { "text": " d'exporter.", "highlight": false }
+        ],
+        [
+          { "text": "Les PME canadiennes titulaires de droits de PI enregistrés sont ", "highlight": false },
+          { "text": "3 fois plus susceptibles", "highlight": true },
+          { "text": " de s'être développées au niveau national et ", "highlight": false },
+          { "text": "4,3 fois plus susceptibles", "highlight": true },
+          { "text": " de s'être développées au niveau international.", "highlight": false }
+        ]
+      ]
+    },
+    "columns": {
+      "site": "Site",
+      "legal": "Légal",
+      "regionalSites": "Sites régionaux"
+    },
+    "links": {
+      "home": "Accueil",
+      "regionalPrograms": "Programmes régionaux",
+      "resources": "Ressources",
+      "partners": "Partenaires",
+      "events": "Événements",
+      "privacyPolicy": "Politique de confidentialité",
+      "accessibility": "Accessibilité",
+      "contactUs": "Nous contacter",
+      "atlantic": "Atlantique",
+      "quebec": "Québec",
+      "ontario": "Ontario et Prairies",
+      "alberta": "Alberta",
+      "bc": "C.-B. et territoires"
+    },
+    "disclaimer": "ElevateIP est un projet national financé par le gouvernement fédéral visant à aider les accélérateurs et incubateurs d'entreprises (AIE) à fournir aux entreprises en démarrage canadiennes les outils dont elles ont besoin pour comprendre, gérer stratégiquement et valoriser leur propriété intellectuelle."
+  },
+  "experts": {
+    "eyebrow": "Répertoire des fournisseurs de services",
+    "heading": "Experts nationaux en PI",
+    "subheading": "Professionnels de la propriété intellectuelle vérifiés, connectés par le biais du réseau national ElevateIP. Trouvez l'expert adapté à votre stade et à votre région.",
+    "searchPlaceholder": "Rechercher par nom de cabinet, spécialité ou ville…",
+    "allProvinces": "Toutes les provinces",
+    "allPartners": "Tous les partenaires",
+    "filters": "Filtres",
+    "ipStrategy": "Stratégie PI",
+    "ipImplementation": "Mise en œuvre de la PI",
+    "firmFound": "cabinet trouvé",
+    "firmsFound": "cabinets trouvés",
+    "moreSpecialties": "de plus",
+    "resetFilters": "Réinitialiser les filtres",
+    "resetAllFilters": "Réinitialiser tous les filtres",
+    "reset": "Réinitialiser",
+    "noExpertsFound": "Aucun expert trouvé",
+    "noExpertsBody": "Aucun cabinet ne correspond à vos filtres actuels. Essayez d'ajuster votre recherche ou d'élargir vos critères.",
+    "viewProfile": "Voir le profil",
+    "intake": {
+      "comingSoon": "Bientôt disponible",
+      "heading": "Formulaire d'inscription national pour les fournisseurs",
+      "body": "Un formulaire d'inscription centralisé pour les professionnels et fournisseurs de services en PI souhaitant rejoindre le réseau national ElevateIP est en cours de développement.",
+      "notify": "M'avertir quand disponible"
+    }
+  },
+  "expertProfile": {
+    "vettedBy": "Vérifié par",
+    "ipStrategy": "Stratégie PI",
+    "ipImplementation": "Mise en œuvre de la PI",
+    "about": "À propos",
+    "ipStrategyServices": "Services de stratégie PI",
+    "ipImplementationServices": "Services de mise en œuvre de la PI",
+    "specialties": "Spécialités",
+    "industriesServed": "Industries desservies",
+    "contactPrompt": "Intéressé à travailler avec ce cabinet? Contactez directement.",
+    "contactFirm": "Contacter le cabinet",
+    "visitWebsite": "Visiter le site Web",
+    "quickFacts": "Faits rapides",
+    "office": "Bureau",
+    "provincesServed": "Provinces desservies",
+    "elevateipPartner": "Partenaire ElevateIP"
+  },
+  "partners": {
+    "eyebrow": "Le réseau national",
+    "heading": "Partenaires de l'écosystème",
+    "body": "Connecter les entreprises en démarrage canadiennes avec le réseau national d'organisations de soutien à la propriété intellectuelle."
+  },
+  "provinceNames": {
+    "AB": "Alberta",
+    "BC": "Colombie-Britannique",
+    "MB": "Manitoba",
+    "NB": "Nouveau-Brunswick",
+    "NL": "Terre-Neuve-et-Labrador",
+    "NS": "Nouvelle-Écosse",
+    "NT": "Territoires du Nord-Ouest",
+    "NU": "Nunavut",
+    "ON": "Ontario",
+    "PE": "Île-du-Prince-Édouard",
+    "QC": "Québec",
+    "SK": "Saskatchewan",
+    "YT": "Yukon"
+  },
+  "provinceDropdown": {
+    "placeholder": "Sélectionnez votre province ou territoire…",
+    "yourRegionalPartner": "Votre partenaire régional",
+    "continueToSite": "Accéder au site régional",
+    "regions": {
+      "atlantic": { "label": "Canada atlantique",    "tagline": "Soutenir l'innovation dans les provinces atlantiques." },
+      "quebec":   { "label": "Québec",               "tagline": "Accompagner les entreprises en démarrage du Québec dans leur parcours PI." },
+      "ontario":  { "label": "Ontario et Prairies",  "tagline": "Au service de l'Ontario, du Manitoba, d'Ottawa et de la Saskatchewan." },
+      "alberta":  { "label": "Alberta",              "tagline": "Accélérer la stratégie PI pour l'écosystème de démarrage albertain." },
+      "bc":       { "label": "C.-B. et territoires", "tagline": "Au service de la C.-B., du Yukon, du Nunavut et des Territoires du Nord-Ouest." }
+    }
+  },
+  "eventCalendar": {
+    "eyebrow": "Calendrier national des événements",
+    "heading": "Prochains événements en PI",
+    "body": "Ateliers, webinaires et cliniques du réseau de partenaires ElevateIP du Canada — approuvés et sélectionnés pour les fondateurs d'entreprises.",
+    "submitCta": "Êtes-vous un partenaire ElevateIP? Soumettez un événement ici",
+    "noEventsHeading": "Aucun événement à venir",
+    "noEventsBody": "Aucun événement approuvé n'est prévu pour le moment. Revenez bientôt, ou soumettez le vôtre ci-dessus.",
+    "past": "Passé",
+    "register": "S'inscrire"
+  },
+  "submitEventModal": {
+    "title": "Soumettre un événement",
+    "fields": {
+      "title":            { "label": "Titre de l'événement",          "placeholder": "ex. Atelier sur les fondamentaux de la PI" },
+      "event_date":       { "label": "Date de l'événement",           "placeholder": "" },
+      "partner_name":     { "label": "Nom de l'organisation",         "placeholder": "ex. Communitech" },
+      "registration_url": { "label": "URL d'inscription",             "placeholder": "https://..." },
+      "partner_logo_url": { "label": "URL du logo de l'organisation", "placeholder": "https://..." },
+      "description":      { "label": "Description",                   "placeholder": "Bref aperçu de l'événement (facultatif)" },
+      "title_fr":         { "label": "Titre de l'événement (français)", "placeholder": "ex. Atelier sur les fondamentaux de la PI" },
+      "description_fr":   { "label": "Description (français)",          "placeholder": "Bref aperçu de l'événement (facultatif)" }
+    },
+    "frenchSectionLabel": "Traduction française (facultatif — aide les participants francophones)",
+    "successHeading": "Événement soumis!",
+    "successBody": "Votre événement a été reçu et est en attente d'examen. Nous l'approuverons bientôt.",
+    "done": "Terminé",
+    "submitting": "Envoi en cours…",
+    "submit": "Soumettre l'événement",
+    "disclaimer": "Les événements soumis sont examinés avant d'apparaître dans le calendrier."
+  }
+}

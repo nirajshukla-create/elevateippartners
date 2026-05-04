@@ -14,6 +14,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import expertsData from "@/data/experts.json";
+import { useLanguage } from "@/components/LanguageProvider";
 
 /* ─── Types ──────────────────────────────────────────── */
 interface Expert {
@@ -23,6 +24,7 @@ interface Expert {
   logo_url: string;
   website_url: string;
   bio_summary: string;
+  bio_summary_fr?: string;
   national_partner: string;
   provinces_covered: string[];
   office_city: string;
@@ -33,28 +35,14 @@ interface Expert {
   industries: string[];
   contact_email: string;
   services_strategy: string;
+  services_strategy_fr?: string;
   services_implementation: string;
+  services_implementation_fr?: string;
 }
 
 const experts = expertsData as Expert[];
 
 /* ─── Static lookup tables ───────────────────────────── */
-const PROVINCE_NAMES: Record<string, string> = {
-  AB: "Alberta",
-  BC: "British Columbia",
-  MB: "Manitoba",
-  NB: "New Brunswick",
-  NL: "Newfoundland and Labrador",
-  NS: "Nova Scotia",
-  NT: "Northwest Territories",
-  NU: "Nunavut",
-  ON: "Ontario",
-  PE: "Prince Edward Island",
-  QC: "Quebec",
-  SK: "Saskatchewan",
-  YT: "Yukon",
-};
-
 const SPECIALTY_STYLES: Record<string, string> = {
   Patents:               "bg-blue-50    text-blue-700    border-blue-100",
   Trademarks:            "bg-emerald-50  text-emerald-700  border-emerald-100",
@@ -72,7 +60,6 @@ const SPECIALTY_STYLES: Record<string, string> = {
 };
 
 const DEFAULT_SPECIALTY_STYLE = "bg-plum-50 text-plum/70 border-plum/10";
-
 const ALL_PARTNERS = [...new Set(experts.map((e) => e.national_partner))].sort();
 const ALL_PROVINCE_CODES = [...new Set(experts.flatMap((e) => e.provinces_covered))].sort();
 
@@ -110,7 +97,26 @@ function ServiceBadge({ label, active }: { label: string; active: boolean }) {
   );
 }
 
-function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
+function ExpertCard({
+  expert,
+  index,
+  viewProfileLabel,
+  moreLabel,
+  strategyLabel,
+  implementationLabel,
+  profileHref,
+  locale,
+}: {
+  expert: Expert;
+  index: number;
+  viewProfileLabel: string;
+  moreLabel: string;
+  strategyLabel: string;
+  implementationLabel: string;
+  profileHref: string;
+  locale: string;
+}) {
+  const bio = locale === "fr" && expert.bio_summary_fr ? expert.bio_summary_fr : expert.bio_summary;
   const visibleSpecialties = expert.specialties.slice(0, 3);
   const overflow = expert.specialties.length - 3;
 
@@ -123,7 +129,7 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
     >
       <Link
-        href={`/experts/${expert.slug}`}
+        href={profileHref}
         className="group bg-white rounded-3xl border border-plum/8 shadow-sm hover:shadow-xl hover:border-plum/16 transition-all duration-300 flex flex-col overflow-hidden h-full"
       >
         <div className="p-7 flex flex-col gap-4 flex-1">
@@ -149,8 +155,7 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
               </h3>
               <span className="flex items-center gap-1 text-xs text-plum/45 font-medium">
                 <MapPin className="w-3 h-3 shrink-0" />
-                {expert.office_city},{" "}
-                {PROVINCE_NAMES[expert.office_province] ?? expert.office_province}
+                {expert.office_city}, {expert.office_province}
               </span>
               <span className="text-xs text-magenta/70 font-medium mt-0.5">
                 {expert.national_partner}
@@ -158,24 +163,26 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
             </div>
           </div>
 
-          <p className="text-sm text-plum/55 leading-6 line-clamp-3">{expert.bio_summary}</p>
+          <p className="text-sm text-plum/55 leading-6 line-clamp-3">{bio}</p>
 
           <div className="flex flex-wrap gap-2">
-            <ServiceBadge label="IP Strategy"        active={expert.tier_2_strategy} />
-            <ServiceBadge label="IP Implementation"  active={expert.tier_3_implementation} />
+            <ServiceBadge label={strategyLabel}       active={expert.tier_2_strategy} />
+            <ServiceBadge label={implementationLabel} active={expert.tier_3_implementation} />
           </div>
 
           <div className="flex flex-wrap gap-1.5">
             {visibleSpecialties.map((s) => <SpecialtyPill key={s} label={s} />)}
             {overflow > 0 && (
-              <span className="text-xs font-medium text-plum/40 px-2 py-1">+{overflow} more</span>
+              <span className="text-xs font-medium text-plum/40 px-2 py-1">
+                +{overflow} {moreLabel}
+              </span>
             )}
           </div>
         </div>
 
         <div className="px-7 py-4 border-t border-plum/6 bg-plum-50/40 flex items-center justify-between">
           <span className="text-sm font-semibold text-plum group-hover:text-magenta transition-colors">
-            View Profile
+            {viewProfileLabel}
           </span>
           <ArrowRight className="w-4 h-4 text-plum/30 group-hover:text-magenta group-hover:translate-x-0.5 transition-all" />
         </div>
@@ -227,6 +234,10 @@ function StyledSelect({
 
 /* ─── Main component ─────────────────────────────────── */
 export default function ExpertsDirectory() {
+  const { locale, dict } = useLanguage();
+  const t = dict.experts;
+  const provinceNames = dict.provinceNames as Record<string, string>;
+
   const [search,      setSearch]      = useState("");
   const [province,    setProvince]    = useState("");
   const [tier2,       setTier2]       = useState(false);
@@ -244,7 +255,7 @@ export default function ExpertsDirectory() {
   const filtered = useMemo(() => {
     const term = search.toLowerCase();
     return experts.filter((e) => {
-      const matchSearch   = !search  || e.firm_name.toLowerCase().includes(term) || e.bio_summary.toLowerCase().includes(term) || e.office_city.toLowerCase().includes(term) || e.specialties.some((s) => s.toLowerCase().includes(term));
+      const matchSearch   = !search   || e.firm_name.toLowerCase().includes(term) || e.bio_summary.toLowerCase().includes(term) || e.office_city.toLowerCase().includes(term) || e.specialties.some((s) => s.toLowerCase().includes(term));
       const matchProvince = !province || e.provinces_covered.includes(province);
       const matchTier2    = !tier2    || e.tier_2_strategy;
       const matchTier3    = !tier3    || e.tier_3_implementation;
@@ -253,6 +264,8 @@ export default function ExpertsDirectory() {
     });
   }, [search, province, tier2, tier3, partner]);
 
+  const firmCount = `${filtered.length} ${filtered.length === 1 ? t.firmFound : t.firmsFound}`;
+
   return (
     <section id="experts" className="py-16 md:py-28 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
@@ -260,14 +273,13 @@ export default function ExpertsDirectory() {
         {/* Section heading */}
         <div className="text-center mb-10 md:mb-14">
           <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-            Service Provider Directory
+            {t.eyebrow}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-plum leading-tight mb-4">
-            National IP Experts
+            {t.heading}
           </h2>
           <p className="text-plum/50 text-base max-w-lg mx-auto leading-7">
-            Vetted intellectual property professionals connected through the ElevateIP national
-            network. Find the right expert for your stage and region.
+            {t.subheading}
           </p>
         </div>
 
@@ -282,7 +294,7 @@ export default function ExpertsDirectory() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by firm name, specialty, or city…"
+                placeholder={t.searchPlaceholder}
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum placeholder:text-plum/35 focus:outline-none focus:border-plum/40 transition-colors"
               />
               {search && (
@@ -295,13 +307,13 @@ export default function ExpertsDirectory() {
               )}
             </div>
 
-            {/* Mobile filter toggle — hidden on sm+ */}
+            {/* Mobile filter toggle */}
             <button
               onClick={() => setFiltersOpen((v) => !v)}
               className="sm:hidden shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum font-medium hover:border-plum/30 transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4 text-plum/50" />
-              <span>Filters</span>
+              <span>{t.filters}</span>
               {activeFilterCount > 0 && (
                 <span className="w-5 h-5 rounded-full bg-plum text-white text-[11px] font-bold flex items-center justify-center">
                   {activeFilterCount}
@@ -310,7 +322,7 @@ export default function ExpertsDirectory() {
             </button>
           </div>
 
-          {/* Mobile filter drawer (Province + Partner) */}
+          {/* Mobile filter drawer */}
           <AnimatePresence initial={false}>
             {filtersOpen && (
               <motion.div
@@ -325,38 +337,37 @@ export default function ExpertsDirectory() {
                   <StyledSelect
                     value={province}
                     onChange={setProvince}
-                    placeholder="All Provinces"
+                    placeholder={t.allProvinces}
                     options={ALL_PROVINCE_CODES.map((code) => ({
                       value: code,
-                      label: PROVINCE_NAMES[code] ?? code,
+                      label: provinceNames[code] ?? code,
                     }))}
                   />
                   <StyledSelect
                     value={partner}
                     onChange={setPartner}
-                    placeholder="All Partners"
+                    placeholder={t.allPartners}
                     options={ALL_PARTNERS.map((p) => ({ value: p, label: p }))}
                   />
-                  {/* Service toggles inside drawer on mobile */}
                   <div className="flex flex-wrap gap-2 pt-1">
-                    <TogglePill label="IP Strategy"       active={tier2} onClick={() => setTier2((v) => !v)} />
-                    <TogglePill label="IP Implementation" active={tier3} onClick={() => setTier3((v) => !v)} />
+                    <TogglePill label={t.ipStrategy}       active={tier2} onClick={() => setTier2((v) => !v)} />
+                    <TogglePill label={t.ipImplementation} active={tier3} onClick={() => setTier3((v) => !v)} />
                   </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Desktop filter row: Province + Partner (hidden on mobile) */}
+          {/* Desktop filter row */}
           <div className="hidden sm:flex gap-3">
             <div className="w-52">
               <StyledSelect
                 value={province}
                 onChange={setProvince}
-                placeholder="All Provinces"
+                placeholder={t.allProvinces}
                 options={ALL_PROVINCE_CODES.map((code) => ({
                   value: code,
-                  label: PROVINCE_NAMES[code] ?? code,
+                  label: provinceNames[code] ?? code,
                 }))}
               />
             </div>
@@ -364,46 +375,42 @@ export default function ExpertsDirectory() {
               <StyledSelect
                 value={partner}
                 onChange={setPartner}
-                placeholder="All Partners"
+                placeholder={t.allPartners}
                 options={ALL_PARTNERS.map((p) => ({ value: p, label: p }))}
               />
             </div>
           </div>
 
-          {/* Desktop service toggles + result count (hidden on mobile) */}
+          {/* Desktop service toggles + result count */}
           <div className="hidden sm:flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              <TogglePill label="IP Strategy"       active={tier2} onClick={() => setTier2((v) => !v)} />
-              <TogglePill label="IP Implementation" active={tier3} onClick={() => setTier3((v) => !v)} />
+              <TogglePill label={t.ipStrategy}       active={tier2} onClick={() => setTier2((v) => !v)} />
+              <TogglePill label={t.ipImplementation} active={tier3} onClick={() => setTier3((v) => !v)} />
             </div>
             <div className="flex items-center gap-4 ml-auto">
-              <span className="text-xs text-plum/40 font-medium">
-                {filtered.length} {filtered.length === 1 ? "firm" : "firms"} found
-              </span>
+              <span className="text-xs text-plum/40 font-medium">{firmCount}</span>
               {hasFilters && (
                 <button
                   onClick={resetFilters}
                   className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  Reset filters
+                  {t.resetFilters}
                 </button>
               )}
             </div>
           </div>
 
-          {/* Mobile result count + reset (hidden on sm+) */}
+          {/* Mobile result count + reset */}
           <div className="sm:hidden flex items-center justify-between gap-4">
-            <span className="text-xs text-plum/40 font-medium">
-              {filtered.length} {filtered.length === 1 ? "firm" : "firms"} found
-            </span>
+            <span className="text-xs text-plum/40 font-medium">{firmCount}</span>
             {hasFilters && (
               <button
                 onClick={resetFilters}
                 className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                Reset
+                {t.reset}
               </button>
             )}
           </div>
@@ -419,7 +426,17 @@ export default function ExpertsDirectory() {
             >
               <AnimatePresence mode="popLayout">
                 {filtered.map((expert, i) => (
-                  <ExpertCard key={expert.id} expert={expert} index={i} />
+                  <ExpertCard
+                    key={expert.id}
+                    expert={expert}
+                    index={i}
+                    viewProfileLabel={t.viewProfile}
+                    moreLabel={t.moreSpecialties}
+                    strategyLabel={t.ipStrategy}
+                    implementationLabel={t.ipImplementation}
+                    profileHref={`/${locale}/experts/${expert.slug}`}
+                    locale={locale}
+                  />
                 ))}
               </AnimatePresence>
             </motion.div>
@@ -434,16 +451,14 @@ export default function ExpertsDirectory() {
               <div className="w-16 h-16 rounded-2xl bg-plum-50 flex items-center justify-center mb-5">
                 <Search className="w-7 h-7 text-plum/30" />
               </div>
-              <h3 className="text-xl font-bold text-plum mb-2">No experts found</h3>
-              <p className="text-plum/45 text-sm max-w-xs leading-6 mb-6">
-                No firms match your current filters. Try adjusting your search or broadening your criteria.
-              </p>
+              <h3 className="text-xl font-bold text-plum mb-2">{t.noExpertsFound}</h3>
+              <p className="text-plum/45 text-sm max-w-xs leading-6 mb-6">{t.noExpertsBody}</p>
               <button
                 onClick={resetFilters}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark transition-colors shadow-sm"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                Reset All Filters
+                {t.resetAllFilters}
               </button>
             </motion.div>
           )}

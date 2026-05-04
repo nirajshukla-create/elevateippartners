@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowLeft, Layers } from "lucide-react";
 import ExpertsDirectory from "@/components/ExpertsDirectory";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import Link from "next/link";
-import { ArrowLeft, Layers } from "lucide-react";
+import LanguageToggle from "@/components/LanguageToggle";
+import { getDictionary, hasLocale, type Locale } from "@/lib/i18n";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "IP Experts Directory | ElevateIP Partners",
@@ -11,22 +14,32 @@ export const metadata: Metadata = {
     "Find vetted intellectual property professionals across Canada connected through the ElevateIP national network.",
 };
 
-export default function ExpertsPage() {
+export default async function ExpertsPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const locale = lang as Locale;
+  const dict = await getDictionary(locale);
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans text-plum">
-      {/* Minimal header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-plum/8 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
           <Link
-            href="/"
+            href={`/${locale}`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-plum/60 hover:text-plum transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            {dict.nav.backToHome}
           </Link>
           <span className="font-bold text-plum text-xl tracking-tight">
             ElevateIP<span className="text-magenta"> Partners</span>
           </span>
+          <LanguageToggle />
         </div>
       </header>
 
@@ -43,20 +56,20 @@ export default function ExpertsPage() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-plum/40 mb-2">
-                    Coming Soon
+                    {dict.experts.intake.comingSoon}
                   </p>
                   <h3 className="text-2xl font-bold text-plum mb-2">
-                    National Service Provider Intake
+                    {dict.experts.intake.heading}
                   </h3>
                   <p className="text-plum/50 text-base leading-7 max-w-md mx-auto">
-                    A centralized intake form for IP professionals and service providers to join the national ElevateIP network is currently in development.
+                    {dict.experts.intake.body}
                   </p>
                 </div>
                 <button
                   disabled
                   className="mt-2 px-6 py-3 rounded-full bg-plum/10 text-plum/40 font-semibold text-sm cursor-not-allowed"
                 >
-                  Notify Me When Available
+                  {dict.experts.intake.notify}
                 </button>
               </div>
             </div>

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import PartnersGrid from "@/components/PartnersGrid";
+import LanguageToggle from "@/components/LanguageToggle";
+import { getDictionary, hasLocale, type Locale } from "@/lib/i18n";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Ecosystem Partners | ElevateIP Partners",
@@ -11,21 +14,32 @@ export const metadata: Metadata = {
     "Canada's national network of IP support organizations — federal bodies, provincial agencies, and professional associations helping startups protect and leverage their intellectual property.",
 };
 
-export default function PartnersPage() {
+export default async function PartnersPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const locale = lang as Locale;
+  const dict = await getDictionary(locale);
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans text-plum">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-plum/8 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
           <Link
-            href="/"
+            href={`/${locale}`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-plum/60 hover:text-plum transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            {dict.nav.backToHome}
           </Link>
           <span className="font-bold text-plum text-xl tracking-tight">
             ElevateIP<span className="text-magenta"> Partners</span>
           </span>
+          <LanguageToggle />
         </div>
       </header>
 
@@ -38,14 +52,13 @@ export default function PartnersPage() {
 
             <div className="relative max-w-3xl mx-auto flex flex-col items-center gap-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-magenta">
-                The National Network
+                {dict.partners.eyebrow}
               </p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-plum leading-[1.08] tracking-tight">
-                Ecosystem Partners
+                {dict.partners.heading}
               </h1>
               <p className="text-base md:text-lg text-plum/55 leading-7 max-w-xl">
-                Connecting Canadian startups with the national network of intellectual property
-                support organizations.
+                {dict.partners.body}
               </p>
             </div>
           </section>

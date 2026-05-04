@@ -3,77 +3,87 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, MapPin } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
+
+type RegionKey = "atlantic" | "quebec" | "ontario" | "alberta" | "bc";
 
 interface Region {
-  label: string;
+  key: RegionKey;
   partner: string;
-  tagline: string;
   url: string;
-  provinces: string[];
+  provinces: string[]; // English province names used as internal keys
 }
 
 const REGIONS: Region[] = [
   {
-    label: "Atlantic Canada",
+    key: "atlantic",
     partner: "Springboard Atlantic – IP Advantage",
-    tagline: "Supporting innovation across the Atlantic provinces.",
     url: "https://springboardatlantic.ca/ipadvantage/",
-    provinces: [
-      "Nova Scotia",
-      "New Brunswick",
-      "Prince Edward Island",
-      "Newfoundland and Labrador",
-    ],
+    provinces: ["Nova Scotia", "New Brunswick", "Prince Edward Island", "Newfoundland and Labrador"],
   },
   {
-    label: "Quebec",
+    key: "quebec",
     partner: "MAIN – Intellectual Property Support",
-    tagline: "Guiding Québec startups through their IP journey.",
     url: "https://mainqc.com/en/intellectual-property-support/",
     provinces: ["Quebec"],
   },
   {
-    label: "Ontario & Prairies",
+    key: "ontario",
     partner: "ElevateIP",
-    tagline: "Serving Ontario, Manitoba, Ottawa, and Saskatchewan.",
     url: "https://elevate-ip.ca/",
     provinces: ["Ontario", "Manitoba", "Ottawa", "Saskatchewan"],
   },
   {
-    label: "Alberta",
+    key: "alberta",
     partner: "ElevateIP Alberta",
-    tagline: "Accelerating IP strategy for Alberta's startup ecosystem.",
     url: "https://elevateip-ab.com/",
     provinces: ["Alberta"],
   },
   {
-    label: "BC & Territories",
+    key: "bc",
     partner: "AccelerateIP",
-    tagline: "Serving BC, Yukon, Nunavut, and the Northwest Territories.",
     url: "https://www.accelerateip.ca/",
-    provinces: [
-      "British Columbia",
-      "Yukon",
-      "Nunavut",
-      "Northwest Territories",
-    ],
+    provinces: ["British Columbia", "Yukon", "Nunavut", "Northwest Territories"],
   },
 ];
+
+// Maps English province names (internal keys in REGIONS) to 2-letter codes for dict.provinceNames lookup.
+const EN_PROVINCE_TO_CODE: Record<string, string> = {
+  "Alberta":                    "AB",
+  "British Columbia":           "BC",
+  "Manitoba":                   "MB",
+  "New Brunswick":              "NB",
+  "Newfoundland and Labrador":  "NL",
+  "Nova Scotia":                "NS",
+  "Northwest Territories":      "NT",
+  "Nunavut":                    "NU",
+  "Ontario":                    "ON",
+  "Ottawa":                     "ON",
+  "Prince Edward Island":       "PE",
+  "Quebec":                     "QC",
+  "Saskatchewan":               "SK",
+  "Yukon":                      "YT",
+};
 
 const ALL_OPTIONS = REGIONS.flatMap((r) =>
   r.provinces.map((p) => ({ province: p, region: r }))
 ).sort((a, b) => a.province.localeCompare(b.province));
 
 export default function ProvinceDropdown() {
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<(typeof ALL_OPTIONS)[0] | null>(
-    null
-  );
+  const { dict } = useLanguage();
+  const pd = dict.provinceDropdown;
+  const provinceNames = dict.provinceNames as Record<string, string>;
+
+  const [open, setOpen]       = useState(false);
+  const [selected, setSelected] = useState<(typeof ALL_OPTIONS)[0] | null>(null);
 
   const handleSelect = (option: (typeof ALL_OPTIONS)[0]) => {
     setSelected(option);
     setOpen(false);
   };
+
+  const displayName = (englishName: string) =>
+    provinceNames[EN_PROVINCE_TO_CODE[englishName]] ?? englishName;
 
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto">
@@ -94,7 +104,7 @@ export default function ProvinceDropdown() {
                   : "text-plum/50 text-base"
               }
             >
-              {selected ? selected.province : "Select your province or territory…"}
+              {selected ? displayName(selected.province) : pd.placeholder}
             </span>
           </span>
           <motion.span
@@ -125,9 +135,9 @@ export default function ProvinceDropdown() {
                   className="flex items-center gap-3 px-5 py-3.5 cursor-pointer text-plum text-sm hover:bg-plum-50 transition-colors border-b border-plum/5 last:border-0"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-magenta/40 shrink-0" />
-                  <span className="font-medium">{opt.province}</span>
+                  <span className="font-medium">{displayName(opt.province)}</span>
                   <span className="ml-auto text-plum/40 text-xs">
-                    {opt.region.label}
+                    {pd.regions[opt.region.key].label}
                   </span>
                 </li>
               ))}
@@ -149,13 +159,13 @@ export default function ProvinceDropdown() {
           >
             <div>
               <p className="text-xs uppercase tracking-widest text-magenta font-semibold mb-1">
-                Your Regional Partner
+                {pd.yourRegionalPartner}
               </p>
               <h3 className="text-xl font-bold text-plum leading-snug">
                 {selected.region.partner}
               </h3>
               <p className="text-plum/60 text-sm mt-1">
-                {selected.region.tagline}
+                {pd.regions[selected.region.key].tagline}
               </p>
             </div>
 
@@ -165,7 +175,7 @@ export default function ProvinceDropdown() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 self-start px-6 py-3 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark shadow-md hover:shadow-lg transition-all duration-200 group"
             >
-              Continue to Regional Site
+              {pd.continueToSite}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </a>
           </motion.div>

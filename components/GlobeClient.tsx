@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 const N_POINTS = 1800;
 const RADIUS   = 1.55;
-const AUTO_VEL = 0.0028;
+const AUTO_VEL = 0.0007;
 
 function makeSprite(): THREE.CanvasTexture {
   const sz  = 64;

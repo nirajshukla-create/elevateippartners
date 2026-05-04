@@ -4,27 +4,30 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Shield,
-  Globe,
-  Users,
   BookOpen,
   Calendar,
   ArrowRight,
   Lightbulb,
   TrendingUp,
+  Globe,
   Award,
-  Layers,
-  ExternalLink,
   ChevronDown,
 } from "lucide-react";
 import ProvinceDropdown from "@/components/ProvinceDropdown";
 import Footer from "@/components/Footer";
 import PartnerLogoWall from "@/components/PartnerLogoWall";
 import NationalGlobe from "@/components/NationalGlobe";
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/components/LanguageProvider";
 
 /* ─── Animation helpers ──────────────────────────────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
 };
 
 const stagger = {
@@ -54,61 +57,16 @@ function InView({
   );
 }
 
-
-/* ─── Value props ────────────────────────────────────── */
-const VALUES = [
-  {
-    icon: Shield,
-    title: "IP Strategy First",
-    body: "We help Canadian startups understand, develop, and protect their most valuable assets: their ideas.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Growth-Stage Ready",
-    body: "From seed to scale, our programs align IP strategy with your funding and commercialization milestones.",
-  },
-  {
-    icon: Globe,
-    title: "Nationwide Coverage",
-    body: "A unified network of regional BAIs spans every province and territory, so every founder has a local expert.",
-  },
-];
-
-/* ─── Resources ──────────────────────────────────────── */
-const RESOURCES = [
-  {
-    icon: BookOpen,
-    category: "Guide",
-    title: "IP Fundamentals for Startups",
-    desc: "An introduction to patents, trademarks, trade secrets, and copyright for early-stage companies.",
-  },
-  {
-    icon: Lightbulb,
-    category: "Toolkit",
-    title: "IP Audit Checklist",
-    desc: "A self-assessment tool to identify gaps in your current IP protection strategy.",
-  },
-  {
-    icon: Calendar,
-    category: "Upcoming",
-    title: "National IP Webinar Series",
-    desc: "Monthly live sessions with IP professionals covering commercialization, licensing, and enforcement.",
-    href: "/events",
-    cta: "View upcoming events →",
-  },
-  {
-    icon: Award,
-    category: "Service Provider Directory",
-    title: "Service Provider Directory",
-    desc: "Connect with an IP advisor from our national network tailored to your sector and stage.",
-    href: "/experts",
-    cta: "Browse the directory →",
-  },
-];
+/* ─── Icon maps (order matches locale JSON arrays) ───── */
+const VALUE_ICONS = [Shield, TrendingUp, Globe];
+const RESOURCE_ICONS = [BookOpen, Lightbulb, Calendar, Award];
 
 /* ─────────────────────────────────────────────────────── */
 
 export default function Home() {
+  const { locale, dict } = useLanguage();
+  const d = dict;
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans text-plum">
       {/* ── Navbar ── */}
@@ -120,18 +78,31 @@ export default function Home() {
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm text-plum/60 font-medium">
-            <a href="#about" className="hover:text-plum transition-colors">About</a>
-            <a href="#find-program" className="hover:text-plum transition-colors">Find Your Program</a>
-            <a href="#resources" className="hover:text-plum transition-colors">Resources</a>
-            <a href="/partners" className="hover:text-plum transition-colors">Partners</a>
-            <a href="/events" className="hover:text-plum transition-colors">Events</a>
+            <a href={`/${locale}#about`} className="hover:text-plum transition-colors">
+              {d.nav.about}
+            </a>
+            <a href={`/${locale}#find-program`} className="hover:text-plum transition-colors">
+              {d.nav.findProgram}
+            </a>
+            <a href={`/${locale}#resources`} className="hover:text-plum transition-colors">
+              {d.nav.resources}
+            </a>
+            <a href={`/${locale}/partners`} className="hover:text-plum transition-colors">
+              {d.nav.partners}
+            </a>
+            <a href={`/${locale}/events`} className="hover:text-plum transition-colors">
+              {d.nav.events}
+            </a>
           </nav>
-          <a
-            href="#find-program"
-            className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark transition-colors shadow-sm"
-          >
-            Get Started <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          <div className="hidden md:flex items-center gap-3">
+            <LanguageToggle />
+            <a
+              href={`/${locale}#find-program`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark transition-colors shadow-sm"
+            >
+              {d.nav.getStarted} <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </header>
 
@@ -144,11 +115,7 @@ export default function Home() {
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-magenta-pale/60 to-peach-pale/40 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-plum-pale/60 to-magenta-pale/30 blur-3xl pointer-events-none" />
 
-        {/* Globe
-              Mobile/tablet : small square in the top-right corner so the
-                              sphere is recognisable; pointer-events-none so
-                              it never intercepts taps or scroll.
-              Desktop       : full right-panel background as before.        */}
+        {/* Globe */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -161,7 +128,7 @@ export default function Home() {
           <NationalGlobe />
         </motion.div>
 
-        {/* Content — left-aligned text column */}
+        {/* Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4">
           <motion.div
             initial="hidden"
@@ -172,14 +139,14 @@ export default function Home() {
             <motion.div variants={fadeUp}>
               <span className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 px-4 py-1.5 rounded-full bg-plum/8 text-plum text-xs font-semibold tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-magenta animate-pulse shrink-0" />
-                ElevateIP is Powered by{" "}
+                {d.hero.badge}{" "}
                 <a
                   href="https://ised-isde.canada.ca/site/innovation-canada/en"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline underline-offset-2 hover:text-magenta transition-colors"
                 >
-                  Innovation Canada
+                  {d.hero.badgeLink}
                 </a>
               </span>
             </motion.div>
@@ -188,10 +155,10 @@ export default function Home() {
               variants={fadeUp}
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-plum leading-[1.08] tracking-tight"
             >
-              Protecting Canadian
+              {d.hero.title}
               <br />
               <span className="bg-gradient-to-r from-magenta to-peach bg-clip-text text-transparent">
-                Innovation.
+                {d.hero.titleHighlight}
               </span>
             </motion.h1>
 
@@ -199,16 +166,14 @@ export default function Home() {
               variants={fadeUp}
               className="text-lg sm:text-2xl font-medium text-plum/50 leading-relaxed"
             >
-              Supporting Startups Nationwide.
+              {d.hero.tagline}
             </motion.p>
 
             <motion.p
               variants={fadeUp}
               className="text-base text-plum/55 leading-7 px-2 sm:px-0"
             >
-              ElevateIP is a national program empowering Canada&apos;s most promising
-              startups with expert intellectual property guidance delivered
-              through a network of trusted regional accelerators and incubators.
+              {d.hero.body}
             </motion.p>
 
             <motion.div
@@ -216,17 +181,17 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto"
             >
               <a
-                href="#find-program"
+                href={`/${locale}#find-program`}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-plum text-white font-semibold text-sm hover:bg-plum-dark shadow-lg hover:shadow-xl transition-all duration-200 group"
               >
-                Find Your Regional Program
+                {d.hero.ctaProgram}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
-                href="#about"
+                href={`/${locale}#about`}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border-2 border-plum/20 text-plum font-semibold text-sm hover:border-plum/40 hover:bg-plum/4 transition-all duration-200"
               >
-                Learn More
+                {d.hero.ctaLearnMore}
               </a>
             </motion.div>
           </motion.div>
@@ -239,7 +204,7 @@ export default function Home() {
           transition={{ delay: 1.4 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1 text-plum/30"
         >
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <span className="text-xs tracking-widest uppercase">{d.hero.scroll}</span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
@@ -253,36 +218,51 @@ export default function Home() {
       <section id="about" className="py-16 md:py-28 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <InView className="text-center mb-12 md:mb-16">
-            <motion.p variants={fadeUp} className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-              The National Program
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3"
+            >
+              {d.valueProps.eyebrow}
             </motion.p>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-plum max-w-2xl mx-auto leading-tight">
-              Where IP Strategy Meets Startup Growth
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-4xl font-bold text-plum max-w-2xl mx-auto leading-tight"
+            >
+              {d.valueProps.heading}
             </motion.h2>
-            <motion.p variants={fadeUp} className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7">
-              ElevateIP, with the support of{" "}
-              <span className="font-semibold text-plum">
-                Innovation, Science and Economic Development (ISED)
-              </span>
-              , works with Business Accelerators and Incubators (BAIs) across Canada to deliver
-              professional, stage-appropriate IP services to the startups they support.
+            <motion.p
+              variants={fadeUp}
+              className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7"
+            >
+              {d.valueProps.body.replace("{ised}", "").trim().split(/\s+/).length > 0 ? (
+                <>
+                  {d.valueProps.body.split("{ised}")[0]}
+                  <span className="font-semibold text-plum">{d.valueProps.isedName}</span>
+                  {d.valueProps.body.split("{ised}")[1]}
+                </>
+              ) : (
+                d.valueProps.body
+              )}
             </motion.p>
           </InView>
 
           <InView className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {VALUES.map(({ icon: Icon, title, body }) => (
-              <motion.div
-                key={title}
-                variants={fadeUp}
-                className="group rounded-3xl bg-gradient-to-br from-plum-50 to-white border border-plum/8 p-8 flex flex-col gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-plum to-magenta flex items-center justify-center shadow-sm">
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-plum">{title}</h3>
-                <p className="text-plum/55 text-sm leading-6">{body}</p>
-              </motion.div>
-            ))}
+            {d.valueProps.values.map(({ title, body }, i) => {
+              const Icon = VALUE_ICONS[i];
+              return (
+                <motion.div
+                  key={title}
+                  variants={fadeUp}
+                  className="group rounded-3xl bg-gradient-to-br from-plum-50 to-white border border-plum/8 p-8 flex flex-col gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-plum to-magenta flex items-center justify-center shadow-sm">
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-plum">{title}</h3>
+                  <p className="text-plum/55 text-sm leading-6">{body}</p>
+                </motion.div>
+              );
+            })}
           </InView>
         </div>
       </section>
@@ -292,7 +272,6 @@ export default function Home() {
         id="find-program"
         className="py-16 md:py-28 px-6 pb-24 md:pb-40 bg-gradient-to-b from-peach-50 via-white to-plum-50 relative"
       >
-        {/* Decorative ring */}
         <svg
           className="absolute right-0 top-1/2 -translate-y-1/2 opacity-6 hidden xl:block"
           width="440"
@@ -306,14 +285,23 @@ export default function Home() {
 
         <div className="max-w-3xl mx-auto text-center">
           <InView>
-            <motion.p variants={fadeUp} className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-              Find Your Program
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3"
+            >
+              {d.regionalRouter.eyebrow}
             </motion.p>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-plum mb-4 leading-tight">
-              Your Regional IP Partner Is Waiting
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-4xl font-bold text-plum mb-4 leading-tight"
+            >
+              {d.regionalRouter.heading}
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-plum/55 text-base leading-7 mb-12 max-w-xl mx-auto">
-              Select your province or territory below to be connected with your dedicated regional program and local IP specialists.
+            <motion.p
+              variants={fadeUp}
+              className="text-plum/55 text-base leading-7 mb-12 max-w-xl mx-auto"
+            >
+              {d.regionalRouter.body}
             </motion.p>
             <motion.div variants={fadeUp}>
               <ProvinceDropdown />
@@ -331,42 +319,55 @@ export default function Home() {
       <section id="resources" className="py-16 md:py-28 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <InView className="text-center mb-12 md:mb-16">
-            <motion.p variants={fadeUp} className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-              Shared Resources
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3"
+            >
+              {d.resources.eyebrow}
             </motion.p>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-plum max-w-2xl mx-auto leading-tight">
-              Nationally Available Tools &amp; Events
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-4xl font-bold text-plum max-w-2xl mx-auto leading-tight"
+            >
+              {d.resources.heading}
             </motion.h2>
-            <motion.p variants={fadeUp} className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7">
-              No matter where you are in Canada, these resources are available to every founder in the ElevateIP ecosystem.
+            <motion.p
+              variants={fadeUp}
+              className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7"
+            >
+              {d.resources.body}
             </motion.p>
           </InView>
 
           <InView className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {RESOURCES.map(({ icon: Icon, category, title, desc, href, cta }) => (
-              <motion.a
-                key={title}
-                href={href ?? undefined}
-                variants={fadeUp}
-                className="group flex gap-5 rounded-3xl border border-plum/8 bg-white p-7 hover:shadow-lg hover:border-plum/16 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
-              >
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-peach-pale to-magenta-pale flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5 text-magenta" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-peach">
-                    {category}
-                  </span>
-                  <h3 className="text-base font-bold text-plum leading-snug">{title}</h3>
-                  <p className="text-plum/50 text-sm leading-6">{desc}</p>
-                  {cta && (
-                    <span className="mt-1 text-xs font-semibold text-magenta group-hover:underline">
-                      {cta}
+            {d.resources.items.map(({ category, title, desc, href, cta }, i) => {
+              const Icon = RESOURCE_ICONS[i];
+              const resolvedHref = href ? `/${locale}${href}` : undefined;
+              return (
+                <motion.a
+                  key={title}
+                  href={resolvedHref}
+                  variants={fadeUp}
+                  className="group flex gap-5 rounded-3xl border border-plum/8 bg-white p-7 hover:shadow-lg hover:border-plum/16 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-peach-pale to-magenta-pale flex items-center justify-center shrink-0">
+                    <Icon className="w-5 h-5 text-magenta" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-peach">
+                      {category}
                     </span>
-                  )}
-                </div>
-              </motion.a>
-            ))}
+                    <h3 className="text-base font-bold text-plum leading-snug">{title}</h3>
+                    <p className="text-plum/50 text-sm leading-6">{desc}</p>
+                    {cta && (
+                      <span className="mt-1 text-xs font-semibold text-magenta group-hover:underline">
+                        {cta}
+                      </span>
+                    )}
+                  </div>
+                </motion.a>
+              );
+            })}
           </InView>
         </div>
       </section>

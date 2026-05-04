@@ -2,7 +2,9 @@ export interface CalendarEvent {
   id: string;
   date: string;             // ISO YYYY-MM-DD
   title: string;
+  title_fr?: string;
   description: string;
+  description_fr?: string;
   partner_name: string;
   partner_logo_url: string;
   registration_url: string;
@@ -119,7 +121,9 @@ export async function fetchApprovedEvents(): Promise<CalendarEvent[]> {
   const approvalCol    = col("approval_status");
   const dateCol        = col("event_date");
   const titleCol       = col("title");
+  const titleFrCol     = col("title_fr");
   const descCol        = col("description");
+  const descFrCol      = col("description_fr");
   const partnerNameCol = col("partner_name");
   const partnerLogoCol = col("partner_logo_url");
   const regUrlCol      = col("registration_url");
@@ -131,7 +135,9 @@ export async function fetchApprovedEvents(): Promise<CalendarEvent[]> {
       id:               `event-${i}`,
       date:             normalizeDate(row[dateCol] ?? ""),
       title:            row[titleCol]?.trim() ?? "",
+      title_fr:         row[titleFrCol]?.trim() || undefined,
       description:      row[descCol]?.trim() ?? "",
+      description_fr:   row[descFrCol]?.trim() || undefined,
       partner_name:     row[partnerNameCol]?.trim() ?? "",
       partner_logo_url: row[partnerLogoCol]?.trim() ?? "",
       registration_url: row[regUrlCol]?.trim() ?? "",

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface Props {
   open: boolean;
@@ -11,17 +12,36 @@ interface Props {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const FIELDS = [
-  { name: "title",            label: "Event Title",         type: "text",     required: true,  placeholder: "e.g. IP Fundamentals Workshop" },
-  { name: "event_date",       label: "Event Date",          type: "date",     required: true,  placeholder: "" },
-  { name: "partner_name",     label: "Organization Name",   type: "text",     required: true,  placeholder: "e.g. Communitech" },
-  { name: "registration_url", label: "Registration URL",    type: "url",      required: false, placeholder: "https://..." },
-  { name: "partner_logo_url", label: "Organization Logo URL", type: "url",   required: false, placeholder: "https://..." },
+const FIELD_NAMES = [
+  "title",
+  "event_date",
+  "partner_name",
+  "registration_url",
+  "partner_logo_url",
 ] as const;
 
-const TEXTAREA_FIELD = { name: "description", label: "Description", required: false, placeholder: "Brief overview of the event (optional)" };
+type FieldName = (typeof FIELD_NAMES)[number];
+
+const FIELD_TYPES: Record<FieldName, string> = {
+  title:            "text",
+  event_date:       "date",
+  partner_name:     "text",
+  registration_url: "url",
+  partner_logo_url: "url",
+};
+
+const FIELD_REQUIRED: Record<FieldName, boolean> = {
+  title:            true,
+  event_date:       true,
+  partner_name:     true,
+  registration_url: false,
+  partner_logo_url: false,
+};
 
 export default function SubmitEventModal({ open, onClose }: Props) {
+  const { dict } = useLanguage();
+  const m = dict.submitEventModal;
+
   const [form, setForm]     = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [errMsg, setErrMsg] = useState("");
@@ -91,7 +111,7 @@ export default function SubmitEventModal({ open, onClose }: Props) {
                 <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-0.5">
                   ElevateIP Partners
                 </p>
-                <h2 className="text-lg font-bold text-plum">Submit an Event</h2>
+                <h2 className="text-lg font-bold text-plum">{m.title}</h2>
               </div>
               <button
                 onClick={onClose}
@@ -109,53 +129,91 @@ export default function SubmitEventModal({ open, onClose }: Props) {
                     <CheckCircle className="w-7 h-7 text-green-500" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-plum mb-1">Event submitted!</h3>
+                    <h3 className="text-lg font-bold text-plum mb-1">{m.successHeading}</h3>
                     <p className="text-sm text-plum/50 leading-6 max-w-xs mx-auto">
-                      Your event has been received and is pending review. We&apos;ll approve it shortly.
+                      {m.successBody}
                     </p>
                   </div>
                   <button
                     onClick={onClose}
                     className="mt-2 px-6 py-2.5 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum/90 transition-colors"
                   >
-                    Done
+                    {m.done}
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  {FIELDS.map((field, i) => (
-                    <div key={field.name} className="flex flex-col gap-1.5">
-                      <label htmlFor={field.name} className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
-                        {field.label}
-                        {field.required && <span className="text-magenta ml-0.5">*</span>}
+                  {FIELD_NAMES.map((name, i) => {
+                    const f = m.fields[name];
+                    return (
+                      <div key={name} className="flex flex-col gap-1.5">
+                        <label htmlFor={name} className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
+                          {f.label}
+                          {FIELD_REQUIRED[name] && <span className="text-magenta ml-0.5">*</span>}
+                        </label>
+                        <input
+                          ref={i === 0 ? firstInputRef : undefined}
+                          id={name}
+                          name={name}
+                          type={FIELD_TYPES[name]}
+                          required={FIELD_REQUIRED[name]}
+                          placeholder={f.placeholder}
+                          value={form[name] ?? ""}
+                          onChange={(e) => setForm((prev) => ({ ...prev, [name]: e.target.value }))}
+                          className="w-full px-4 py-3 rounded-xl border border-plum/15 text-sm text-plum placeholder:text-plum/30 focus:outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/10 transition-all"
+                        />
+                      </div>
+                    );
+                  })}
+
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="description" className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
+                      {m.fields.description.label}
+                    </label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows={3}
+                      placeholder={m.fields.description.placeholder}
+                      value={form["description"] ?? ""}
+                      onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-xl border border-plum/15 text-sm text-plum placeholder:text-plum/30 focus:outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/10 transition-all resize-none"
+                    />
+                  </div>
+
+                  {/* French translation section */}
+                  <div className="border-t border-plum/8 pt-4 flex flex-col gap-4">
+                    <p className="text-xs text-plum/40 font-medium">{m.frenchSectionLabel}</p>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label htmlFor="title_fr" className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
+                        {m.fields.title_fr.label}
                       </label>
                       <input
-                        ref={i === 0 ? firstInputRef : undefined}
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        required={field.required}
-                        placeholder={field.placeholder}
-                        value={form[field.name] ?? ""}
-                        onChange={(e) => setForm((f) => ({ ...f, [field.name]: e.target.value }))}
+                        id="title_fr"
+                        name="title_fr"
+                        type="text"
+                        placeholder={m.fields.title_fr.placeholder}
+                        value={form["title_fr"] ?? ""}
+                        onChange={(e) => setForm((prev) => ({ ...prev, title_fr: e.target.value }))}
                         className="w-full px-4 py-3 rounded-xl border border-plum/15 text-sm text-plum placeholder:text-plum/30 focus:outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/10 transition-all"
                       />
                     </div>
-                  ))}
 
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={TEXTAREA_FIELD.name} className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
-                      {TEXTAREA_FIELD.label}
-                    </label>
-                    <textarea
-                      id={TEXTAREA_FIELD.name}
-                      name={TEXTAREA_FIELD.name}
-                      rows={3}
-                      placeholder={TEXTAREA_FIELD.placeholder}
-                      value={form[TEXTAREA_FIELD.name] ?? ""}
-                      onChange={(e) => setForm((f) => ({ ...f, [TEXTAREA_FIELD.name]: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-plum/15 text-sm text-plum placeholder:text-plum/30 focus:outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/10 transition-all resize-none"
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <label htmlFor="description_fr" className="text-xs font-semibold text-plum/60 uppercase tracking-wider">
+                        {m.fields.description_fr.label}
+                      </label>
+                      <textarea
+                        id="description_fr"
+                        name="description_fr"
+                        rows={3}
+                        placeholder={m.fields.description_fr.placeholder}
+                        value={form["description_fr"] ?? ""}
+                        onChange={(e) => setForm((prev) => ({ ...prev, description_fr: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl border border-plum/15 text-sm text-plum placeholder:text-plum/30 focus:outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/10 transition-all resize-none"
+                      />
+                    </div>
                   </div>
 
                   {status === "error" && (
@@ -173,18 +231,18 @@ export default function SubmitEventModal({ open, onClose }: Props) {
                     {status === "submitting" ? (
                       <>
                         <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Submitting…
+                        {m.submitting}
                       </>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        Submit Event
+                        {m.submit}
                       </>
                     )}
                   </button>
 
                   <p className="text-center text-xs text-plum/30 pb-1">
-                    Submitted events are reviewed before appearing on the calendar.
+                    {m.disclaimer}
                   </p>
                 </form>
               )}

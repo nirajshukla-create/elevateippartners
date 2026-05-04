@@ -3,87 +3,75 @@
 import { useState, useEffect } from "react";
 import { ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-/* ─── Link data ──────────────────────────────────────────── */
-const NAV_LINKS = [
-  { label: "Home",              href: "/" },
-  { label: "Regional Programs", href: "/#find-program" },
-  { label: "Resources",         href: "/#resources" },
-  { label: "Partners",          href: "/partners" },
-  { label: "Events",            href: "/events" },
-];
-
-const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Accessibility",  href: "#" },
-  { label: "Contact Us",     href: "#" },
-];
-
-const REGIONAL_SITES = [
-  { label: "Atlantic",           href: "https://springboardatlantic.ca/ipadvantage/" },
-  { label: "Quebec",             href: "https://mainqc.com/en/intellectual-property-support/" },
-  { label: "Ontario & Prairies", href: "https://elevate-ip.ca/" },
-  { label: "Alberta",            href: "https://elevateip-ab.com/" },
-  { label: "BC & Territories",   href: "https://www.accelerateip.ca/" },
-];
-
-/* ─── IP Facts carousel data ─────────────────────────────── */
-function Stat({ children }: { children: React.ReactNode }) {
-  return <span className="text-peach font-bold">{children}</span>;
-}
-
-const FACTS: { id: number; content: React.ReactNode }[] = [
-  {
-    id: 0,
-    content: (
-      <>
-        SMEs owning IP are <Stat>60% more likely</Stat> to be high-growth
-        SMEs and <Stat>4 times more likely</Stat> to export.
-      </>
-    ),
-  },
-  {
-    id: 1,
-    content: (
-      <>
-        Canadian SMEs holding registered IP rights are{" "}
-        <Stat>3 times more likely</Stat> to have expanded domestically and{" "}
-        <Stat>4.3 times more likely</Stat> to have expanded internationally.
-      </>
-    ),
-  },
-];
+import { useLanguage } from "@/components/LanguageProvider";
 
 const INTERVAL_MS = 6000;
 
 const variants = {
   enter:  { opacity: 0, y: -12 },
-  center: { opacity: 1, y: 0,  transition: { duration: 0.45, ease: "easeOut"  as const } },
-  exit:   { opacity: 0, y: 12, transition: { duration: 0.30, ease: "easeIn"   as const } },
+  center: { opacity: 1, y: 0,  transition: { duration: 0.45, ease: "easeOut" as const } },
+  exit:   { opacity: 0, y: 12, transition: { duration: 0.30, ease: "easeIn"  as const } },
 };
 
-/* ─── Shared class strings ───────────────────────────────── */
 const COL_HEADER = "text-white/30 text-xs uppercase tracking-widest font-semibold mb-1";
-// py-3 = 24px padding + ~20px text = 44px touch target
 const COL_LINK   = "block text-white/60 text-sm hover:text-white transition-colors py-3";
 
-/* ─── Component ──────────────────────────────────────────── */
+function Stat({ children }: { children: React.ReactNode }) {
+  return <span className="text-peach font-bold">{children}</span>;
+}
+
+const REGIONAL_SITE_HREFS = [
+  "https://springboardatlantic.ca/ipadvantage/",
+  "https://mainqc.com/en/intellectual-property-support/",
+  "https://elevate-ip.ca/",
+  "https://elevateip-ab.com/",
+  "https://www.accelerateip.ca/",
+];
+
 export default function Footer() {
+  const { locale, dict } = useLanguage();
+  const f = dict.footer;
+  const l = locale;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [timerKey,    setTimerKey]    = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setActiveIndex((i) => (i + 1) % FACTS.length);
+      setActiveIndex((i) => (i + 1) % f.ipFacts.facts.length);
     }, INTERVAL_MS);
     return () => clearInterval(id);
-  }, [timerKey]);
+  }, [timerKey, f.ipFacts.facts.length]);
 
   const goTo = (index: number) => {
     if (index === activeIndex) return;
     setActiveIndex(index);
     setTimerKey((k) => k + 1);
   };
+
+  const navLinks = [
+    { label: f.links.home,            href: `/${l}` },
+    { label: f.links.regionalPrograms, href: `/${l}#find-program` },
+    { label: f.links.resources,        href: `/${l}#resources` },
+    { label: f.links.partners,         href: `/${l}/partners` },
+    { label: f.links.events,           href: `/${l}/events` },
+  ];
+
+  const legalLinks = [
+    { label: f.links.privacyPolicy, href: "#" },
+    { label: f.links.accessibility,  href: "#" },
+    { label: f.links.contactUs,      href: "#" },
+  ];
+
+  const regionalLabels = [
+    f.links.atlantic,
+    f.links.quebec,
+    f.links.ontario,
+    f.links.alberta,
+    f.links.bc,
+  ];
+
+  const currentFact = f.ipFacts.facts[activeIndex];
 
   return (
     <footer className="relative bg-plum">
@@ -92,16 +80,11 @@ export default function Footer() {
 
       {/* ── Top section ──────────────────────────────────── */}
       <div className="px-6 py-12 border-b border-white/8">
-        {/*
-          Mobile:  3-col grid — IP Facts spans all 3 cols (full width),
-                   then Site / Legal / Regional each take 1 col in the next row.
-          Desktop: 12-col grid — IP Facts = 6, Site = 2, Legal = 2, Regional = 2.
-        */}
         <div className="max-w-6xl mx-auto grid grid-cols-3 md:grid-cols-12 gap-y-10 gap-x-4 md:gap-6 items-start">
 
-          {/* ── IP Facts (full width on mobile, 6-col on desktop) ── */}
+          {/* ── IP Facts ── */}
           <div className="col-span-3 md:col-span-6 flex flex-col gap-4 md:pr-10 md:border-r md:border-white/8">
-            <p className={COL_HEADER}>IP by the Numbers</p>
+            <p className={COL_HEADER}>{f.ipFacts.heading}</p>
 
             <div className="relative pl-4 border-l-2 border-peach/35 min-h-[6rem] md:min-h-[5.5rem] overflow-hidden">
               <AnimatePresence mode="wait" initial={false}>
@@ -113,14 +96,20 @@ export default function Footer() {
                   exit="exit"
                   className="text-sm md:text-base text-white/75 leading-relaxed"
                 >
-                  {FACTS[activeIndex].content}
+                  {currentFact.map((seg, i) =>
+                    seg.highlight ? (
+                      <Stat key={i}>{seg.text}</Stat>
+                    ) : (
+                      <span key={i}>{seg.text}</span>
+                    )
+                  )}
                 </motion.p>
               </AnimatePresence>
             </div>
 
             <div className="pl-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {FACTS.map((_, i) => (
+                {f.ipFacts.facts.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => goTo(i)}
@@ -132,15 +121,15 @@ export default function Footer() {
                 ))}
               </div>
               <span className="text-[10px] font-semibold text-white/20 tabular-nums tracking-widest">
-                0{activeIndex + 1}&nbsp;/&nbsp;0{FACTS.length}
+                0{activeIndex + 1}&nbsp;/&nbsp;0{f.ipFacts.facts.length}
               </span>
             </div>
           </div>
 
           {/* ── Site ── */}
           <div className="md:col-span-2 flex flex-col">
-            <p className={COL_HEADER}>Site</p>
-            {NAV_LINKS.map(({ label, href }) => (
+            <p className={COL_HEADER}>{f.columns.site}</p>
+            {navLinks.map(({ label, href }) => (
               <a key={label} href={href} className={COL_LINK}>
                 {label}
               </a>
@@ -149,8 +138,8 @@ export default function Footer() {
 
           {/* ── Legal ── */}
           <div className="md:col-span-2 flex flex-col">
-            <p className={COL_HEADER}>Legal</p>
-            {LEGAL_LINKS.map(({ label, href }) => (
+            <p className={COL_HEADER}>{f.columns.legal}</p>
+            {legalLinks.map(({ label, href }) => (
               <a key={label} href={href} className={COL_LINK}>
                 {label}
               </a>
@@ -159,11 +148,11 @@ export default function Footer() {
 
           {/* ── Regional Sites ── */}
           <div className="md:col-span-2 flex flex-col">
-            <p className={COL_HEADER}>Regional Sites</p>
-            {REGIONAL_SITES.map(({ label, href }) => (
+            <p className={COL_HEADER}>{f.columns.regionalSites}</p>
+            {regionalLabels.map((label, i) => (
               <a
                 key={label}
-                href={href}
+                href={REGIONAL_SITE_HREFS[i]}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${COL_LINK} flex items-center gap-1.5`}
@@ -181,10 +170,7 @@ export default function Footer() {
       <div className="bg-white/95 px-6 py-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="text-plum/50 text-xs leading-5 max-w-md text-center sm:text-left">
-            Elevate IP is a federally funded, national project to help business
-            accelerators and incubators (BAIs) provide the tools Canadian
-            startups need to understand, strategically manage and leverage
-            their intellectual property.
+            {f.disclaimer}
           </p>
           <div className="shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}

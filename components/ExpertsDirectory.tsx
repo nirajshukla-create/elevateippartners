@@ -2,47 +2,23 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  Search,
-  MapPin,
-  ArrowRight,
-  X,
-  RotateCcw,
-  ChevronDown,
-  SlidersHorizontal,
-} from "lucide-react";
+import { Search, MapPin, ArrowRight, X, RotateCcw } from "lucide-react";
 import expertsData from "@/data/experts.json";
 import { useLanguage } from "@/components/LanguageProvider";
 
 /* ─── Types ──────────────────────────────────────────── */
 interface Expert {
-  id: string;
   slug: string;
   firm_name: string;
-  logo_url: string;
-  website_url: string;
-  bio_summary: string;
-  bio_summary_fr?: string;
-  national_partner: string;
-  provinces_covered: string[];
   office_city: string;
   office_province: string;
-  tier_2_strategy: boolean;
-  tier_3_implementation: boolean;
-  specialties: string[];
-  industries: string[];
+  bio_summary: string;
   contact_email: string;
-  services_strategy: string;
-  services_strategy_fr?: string;
-  services_implementation: string;
-  services_implementation_fr?: string;
+  website_url: string;
+  specialties: string[];
 }
 
-const experts = expertsData as Expert[];
-
-/* ─── Static lookup tables ───────────────────────────── */
 const SPECIALTY_STYLES: Record<string, string> = {
   Patents:               "bg-blue-50    text-blue-700    border-blue-100",
   Trademarks:            "bg-emerald-50  text-emerald-700  border-emerald-100",
@@ -60,23 +36,6 @@ const SPECIALTY_STYLES: Record<string, string> = {
 };
 
 const DEFAULT_SPECIALTY_STYLE = "bg-plum-50 text-plum/70 border-plum/10";
-const ALL_PARTNERS = [...new Set(experts.map((e) => e.national_partner))].sort();
-const ALL_PROVINCE_CODES = [...new Set(experts.flatMap((e) => e.provinces_covered))].sort();
-
-/* ─── Sub-components ─────────────────────────────────── */
-function FirmInitials({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-  return (
-    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-plum to-magenta flex items-center justify-center shrink-0">
-      <span className="text-white font-bold text-lg tracking-tight">{initials}</span>
-    </div>
-  );
-}
 
 function SpecialtyPill({ label }: { label: string }) {
   const style = SPECIALTY_STYLES[label] ?? DEFAULT_SPECIALTY_STYLE;
@@ -87,39 +46,22 @@ function SpecialtyPill({ label }: { label: string }) {
   );
 }
 
-function ServiceBadge({ label, active }: { label: string; active: boolean }) {
-  if (!active) return null;
-  return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-plum/8 text-plum border border-plum/12">
-      <span className="w-1.5 h-1.5 rounded-full bg-magenta" />
-      {label}
-    </span>
-  );
-}
+const experts = expertsData as Expert[];
 
+/* ─── Card ───────────────────────────────────────────── */
 function ExpertCard({
   expert,
   index,
   viewProfileLabel,
   moreLabel,
-  strategyLabel,
-  implementationLabel,
   profileHref,
-  locale,
 }: {
   expert: Expert;
   index: number;
   viewProfileLabel: string;
   moreLabel: string;
-  strategyLabel: string;
-  implementationLabel: string;
   profileHref: string;
-  locale: string;
 }) {
-  const bio = locale === "fr" && expert.bio_summary_fr ? expert.bio_summary_fr : expert.bio_summary;
-  const visibleSpecialties = expert.specialties.slice(0, 3);
-  const overflow = expert.specialties.length - 3;
-
   return (
     <motion.div
       layout
@@ -133,102 +75,39 @@ function ExpertCard({
         className="group bg-white rounded-3xl border border-plum/8 shadow-sm hover:shadow-xl hover:border-plum/16 transition-all duration-300 flex flex-col overflow-hidden h-full"
       >
         <div className="p-7 flex flex-col gap-4 flex-1">
-          {/* Header */}
-          <div className="flex items-start gap-4">
-            {expert.logo_url ? (
-              <div className="relative w-14 h-14 rounded-xl border border-plum/8 overflow-hidden shrink-0">
-                <Image
-                  src={expert.logo_url}
-                  alt={expert.firm_name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-contain"
-                  unoptimized
-                />
-              </div>
-            ) : (
-              <FirmInitials name={expert.firm_name} />
+          <div>
+            <h3 className="text-base font-bold text-plum leading-snug group-hover:text-magenta transition-colors">
+              {expert.firm_name}
+            </h3>
+            {(expert.office_city || expert.office_province) && (
+              <span className="flex items-center gap-1 text-xs text-plum/45 font-medium mt-1">
+                <MapPin className="w-3 h-3 shrink-0" aria-hidden="true" />
+                {[expert.office_city, expert.office_province].filter(Boolean).join(", ")}
+              </span>
             )}
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <h3 className="text-base font-bold text-plum leading-snug group-hover:text-magenta transition-colors">
-                {expert.firm_name}
-              </h3>
-              <span className="flex items-center gap-1 text-xs text-plum/45 font-medium">
-                <MapPin className="w-3 h-3 shrink-0" />
-                {expert.office_city}, {expert.office_province}
-              </span>
-              <span className="text-xs text-magenta/70 font-medium mt-0.5">
-                {expert.national_partner}
-              </span>
+          </div>
+          <p className="text-sm text-plum/55 leading-6 line-clamp-3">{expert.bio_summary}</p>
+
+          {expert.specialties.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {expert.specialties.slice(0, 3).map((s) => <SpecialtyPill key={s} label={s} />)}
+              {expert.specialties.length > 3 && (
+                <span className="text-xs font-medium text-plum/40 px-2 py-1">
+                  +{expert.specialties.length - 3} {moreLabel}
+                </span>
+              )}
             </div>
-          </div>
-
-          <p className="text-sm text-plum/55 leading-6 line-clamp-3">{bio}</p>
-
-          <div className="flex flex-wrap gap-2">
-            <ServiceBadge label={strategyLabel}       active={expert.tier_2_strategy} />
-            <ServiceBadge label={implementationLabel} active={expert.tier_3_implementation} />
-          </div>
-
-          <div className="flex flex-wrap gap-1.5">
-            {visibleSpecialties.map((s) => <SpecialtyPill key={s} label={s} />)}
-            {overflow > 0 && (
-              <span className="text-xs font-medium text-plum/40 px-2 py-1">
-                +{overflow} {moreLabel}
-              </span>
-            )}
-          </div>
+          )}
         </div>
 
         <div className="px-7 py-4 border-t border-plum/6 bg-plum-50/40 flex items-center justify-between">
           <span className="text-sm font-semibold text-plum group-hover:text-magenta transition-colors">
             {viewProfileLabel}
           </span>
-          <ArrowRight className="w-4 h-4 text-plum/30 group-hover:text-magenta group-hover:translate-x-0.5 transition-all" />
+          <ArrowRight className="w-4 h-4 text-plum/30 group-hover:text-magenta group-hover:translate-x-0.5 transition-all" aria-hidden="true" />
         </div>
       </Link>
     </motion.div>
-  );
-}
-
-function TogglePill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border transition-all duration-200 ${
-        active
-          ? "bg-plum text-white border-plum shadow-md"
-          : "bg-white text-plum/60 border-plum/15 hover:border-plum/30 hover:text-plum"
-      }`}
-    >
-      <span className={`w-2 h-2 rounded-full transition-colors ${active ? "bg-peach-light" : "bg-plum/20"}`} />
-      {label}
-    </button>
-  );
-}
-
-function StyledSelect({
-  value, onChange, placeholder, options,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-  options: { value: string; label: string }[];
-}) {
-  return (
-    <div className="relative">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="appearance-none w-full pl-4 pr-9 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum font-medium hover:border-plum/30 focus:outline-none focus:border-plum/40 transition-colors cursor-pointer"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-plum/40" />
-    </div>
   );
 }
 
@@ -236,33 +115,21 @@ function StyledSelect({
 export default function ExpertsDirectory() {
   const { locale, dict } = useLanguage();
   const t = dict.experts;
-  const provinceNames = dict.provinceNames as Record<string, string>;
 
-  const [search,      setSearch]      = useState("");
-  const [province,    setProvince]    = useState("");
-  const [tier2,       setTier2]       = useState(false);
-  const [tier3,       setTier3]       = useState(false);
-  const [partner,     setPartner]     = useState("");
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
-  const hasFilters = search || province || tier2 || tier3 || partner;
-  const activeFilterCount = [province, partner, tier2, tier3].filter(Boolean).length;
-
-  const resetFilters = () => {
-    setSearch(""); setProvince(""); setTier2(false); setTier3(false); setPartner("");
-  };
+  const hasFilters = !!search;
 
   const filtered = useMemo(() => {
     const term = search.toLowerCase();
-    return experts.filter((e) => {
-      const matchSearch   = !search   || e.firm_name.toLowerCase().includes(term) || e.bio_summary.toLowerCase().includes(term) || e.office_city.toLowerCase().includes(term) || e.specialties.some((s) => s.toLowerCase().includes(term));
-      const matchProvince = !province || e.provinces_covered.includes(province);
-      const matchTier2    = !tier2    || e.tier_2_strategy;
-      const matchTier3    = !tier3    || e.tier_3_implementation;
-      const matchPartner  = !partner  || e.national_partner === partner;
-      return matchSearch && matchProvince && matchTier2 && matchTier3 && matchPartner;
-    });
-  }, [search, province, tier2, tier3, partner]);
+    return experts.filter((e) =>
+      !search ||
+      e.firm_name.toLowerCase().includes(term) ||
+      e.bio_summary.toLowerCase().includes(term) ||
+      e.office_city.toLowerCase().includes(term) ||
+      e.specialties.some((s) => s.toLowerCase().includes(term))
+    );
+  }, [search]);
 
   const firmCount = `${filtered.length} ${filtered.length === 1 ? t.firmFound : t.firmsFound}`;
 
@@ -270,7 +137,7 @@ export default function ExpertsDirectory() {
     <section id="experts" className="py-16 md:py-28 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
 
-        {/* Section heading */}
+        {/* Heading */}
         <div className="text-center mb-10 md:mb-14">
           <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
             {t.eyebrow}
@@ -283,159 +150,55 @@ export default function ExpertsDirectory() {
           </p>
         </div>
 
-        {/* ── Filter bar ── */}
-        <div className="bg-white rounded-3xl border border-plum/10 shadow-sm p-5 mb-10 flex flex-col gap-4">
-
-          {/* Row 1: Search + mobile filter toggle */}
-          <div className="flex gap-3">
+        {/* Search bar */}
+        <div className="bg-white rounded-3xl border border-plum/10 shadow-sm p-5 mb-10">
+          <div className="flex items-center gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-plum/35 pointer-events-none" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-plum/35 pointer-events-none" aria-hidden="true" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum placeholder:text-plum/35 focus:outline-none focus:border-plum/40 transition-colors"
+                aria-label={t.searchPlaceholder}
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum placeholder:text-plum/35 focus:outline-none focus:ring-2 focus:ring-plum/20 focus:border-plum/40 transition-colors"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
+                  aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-plum/30 hover:text-plum/60 transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4" aria-hidden="true" />
                 </button>
               )}
             </div>
-
-            {/* Mobile filter toggle */}
-            <button
-              onClick={() => setFiltersOpen((v) => !v)}
-              className="sm:hidden shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-plum/15 bg-white text-sm text-plum font-medium hover:border-plum/30 transition-colors"
-            >
-              <SlidersHorizontal className="w-4 h-4 text-plum/50" />
-              <span>{t.filters}</span>
-              {activeFilterCount > 0 && (
-                <span className="w-5 h-5 rounded-full bg-plum text-white text-[11px] font-bold flex items-center justify-center">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Mobile filter drawer */}
-          <AnimatePresence initial={false}>
-            {filtersOpen && (
-              <motion.div
-                key="mobile-drawer"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="sm:hidden overflow-hidden"
-              >
-                <div className="flex flex-col gap-3 pt-1">
-                  <StyledSelect
-                    value={province}
-                    onChange={setProvince}
-                    placeholder={t.allProvinces}
-                    options={ALL_PROVINCE_CODES.map((code) => ({
-                      value: code,
-                      label: provinceNames[code] ?? code,
-                    }))}
-                  />
-                  <StyledSelect
-                    value={partner}
-                    onChange={setPartner}
-                    placeholder={t.allPartners}
-                    options={ALL_PARTNERS.map((p) => ({ value: p, label: p }))}
-                  />
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    <TogglePill label={t.ipStrategy}       active={tier2} onClick={() => setTier2((v) => !v)} />
-                    <TogglePill label={t.ipImplementation} active={tier3} onClick={() => setTier3((v) => !v)} />
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Desktop filter row */}
-          <div className="hidden sm:flex gap-3">
-            <div className="w-52">
-              <StyledSelect
-                value={province}
-                onChange={setProvince}
-                placeholder={t.allProvinces}
-                options={ALL_PROVINCE_CODES.map((code) => ({
-                  value: code,
-                  label: provinceNames[code] ?? code,
-                }))}
-              />
-            </div>
-            <div className="w-52">
-              <StyledSelect
-                value={partner}
-                onChange={setPartner}
-                placeholder={t.allPartners}
-                options={ALL_PARTNERS.map((p) => ({ value: p, label: p }))}
-              />
-            </div>
-          </div>
-
-          {/* Desktop service toggles + result count */}
-          <div className="hidden sm:flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap gap-2">
-              <TogglePill label={t.ipStrategy}       active={tier2} onClick={() => setTier2((v) => !v)} />
-              <TogglePill label={t.ipImplementation} active={tier3} onClick={() => setTier3((v) => !v)} />
-            </div>
-            <div className="flex items-center gap-4 ml-auto">
-              <span className="text-xs text-plum/40 font-medium">{firmCount}</span>
-              {hasFilters && (
-                <button
-                  onClick={resetFilters}
-                  className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  {t.resetFilters}
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile result count + reset */}
-          <div className="sm:hidden flex items-center justify-between gap-4">
-            <span className="text-xs text-plum/40 font-medium">{firmCount}</span>
+            <span className="text-xs text-plum/40 font-medium shrink-0">{firmCount}</span>
             {hasFilters && (
               <button
-                onClick={resetFilters}
-                className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors"
+                onClick={() => setSearch("")}
+                className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors shrink-0"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                {t.reset}
+                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+                {t.resetFilters}
               </button>
             )}
           </div>
         </div>
 
-        {/* ── Card grid ── */}
+        {/* Card grid */}
         <AnimatePresence mode="popLayout">
           {filtered.length > 0 ? (
-            <motion.div
-              key="grid"
-              layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            >
+            <motion.div key="grid" layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <AnimatePresence mode="popLayout">
                 {filtered.map((expert, i) => (
                   <ExpertCard
-                    key={expert.id}
+                    key={expert.slug}
                     expert={expert}
                     index={i}
                     viewProfileLabel={t.viewProfile}
                     moreLabel={t.moreSpecialties}
-                    strategyLabel={t.ipStrategy}
-                    implementationLabel={t.ipImplementation}
                     profileHref={`/${locale}/experts/${expert.slug}`}
-                    locale={locale}
                   />
                 ))}
               </AnimatePresence>
@@ -448,21 +211,22 @@ export default function ExpertsDirectory() {
               exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-24 text-center"
             >
-              <div className="w-16 h-16 rounded-2xl bg-plum-50 flex items-center justify-center mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-plum-50 flex items-center justify-center mb-5" aria-hidden="true">
                 <Search className="w-7 h-7 text-plum/30" />
               </div>
               <h3 className="text-xl font-bold text-plum mb-2">{t.noExpertsFound}</h3>
               <p className="text-plum/45 text-sm max-w-xs leading-6 mb-6">{t.noExpertsBody}</p>
               <button
-                onClick={resetFilters}
+                onClick={() => setSearch("")}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark transition-colors shadow-sm"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 {t.resetAllFilters}
               </button>
             </motion.div>
           )}
         </AnimatePresence>
+
       </div>
     </section>
   );

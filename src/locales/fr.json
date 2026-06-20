@@ -5,6 +5,7 @@
     "resources": "Ressources",
     "partners": "Partenaires",
     "events": "Événements",
+    "eventsHref": "https://ised-isde.canada.ca/site/office-propriete-intellectuelle-canada/fr/pi-centrale#section-evenements",
     "getStarted": "Commencer",
     "backToHome": "Retour à l'accueil",
     "backToDirectory": "Retour au répertoire"
@@ -12,6 +13,7 @@
   "hero": {
     "badge": "ElevateIP est soutenu par",
     "badgeLink": "Innovation Canada",
+    "badgeLinkHref": "https://ised-isde.canada.ca/site/innovation-canada/fr",
     "title": "Protéger l'innovation",
     "titleHighlight": "canadienne.",
     "tagline": "Soutenir les entreprises en démarrage à l'échelle nationale.",
@@ -23,8 +25,10 @@
   "valueProps": {
     "eyebrow": "Le programme national",
     "heading": "Où la stratégie PI rencontre la croissance des entreprises",
-    "body": "ElevateIP, avec le soutien de l'{ised}, collabore avec des accélérateurs et des incubateurs d'entreprises (AIE) partout au Canada pour offrir des services de PI professionnels et adaptés à l'étape des entreprises en démarrage qu'ils soutiennent.",
+    "body": "{elevateip}, avec le soutien de l'{ised}, collabore avec des accélérateurs et des incubateurs d'entreprises (AIE) partout au Canada pour offrir des services de PI professionnels et adaptés à l'étape des entreprises en démarrage qu'ils soutiennent.",
     "isedName": "Innovation, Sciences et Développement économique Canada (ISDE)",
+    "elevateipHref": "https://ised-isde.canada.ca/site/isde/fr/programmes-et-initiatives/elevateip",
+    "isedHref": "https://ised-isde.canada.ca/site/isde/fr/",
     "values": [
       {
         "title": "La stratégie PI en premier",
@@ -43,28 +47,34 @@
   "regionalRouter": {
     "eyebrow": "Trouver votre programme",
     "heading": "Votre partenaire régional PI vous attend",
-    "body": "Sélectionnez votre province ou territoire ci-dessous pour être mis en contact avec votre programme régional dédié et vos spécialistes locaux en PI."
+    "body": "Sélectionnez votre province ou territoire ci-dessous pour être mis en contact avec votre programme régional dédié et vos spécialistes locaux en PI.",
+    "helperText": "Veuillez sélectionner la province dans laquelle votre entreprise est enregistrée."
   },
   "resources": {
     "eyebrow": "Ressources partagées",
-    "heading": "Outils et événements disponibles à l'échelle nationale",
-    "body": "Peu importe où vous êtes au Canada, ces ressources sont disponibles pour chaque fondateur dans l'écosystème ElevateIP.",
+    "heading": "Outils et ressources disponibles à l'échelle nationale",
+    "body": "Peu importe où vous êtes au Canada, ces ressources sont librement disponibles pour chaque fondateur dans l'écosystème ElevateIP.",
+    "exploreCta": "Explorer toutes les ressources nationales",
     "items": [
       {
         "category": "Guide",
         "title": "Les fondamentaux de la PI pour les entreprises en démarrage",
-        "desc": "Une introduction aux brevets, marques de commerce, secrets commerciaux et droits d'auteur pour les entreprises en phase initiale."
+        "desc": "Une introduction aux brevets, marques de commerce, secrets commerciaux et droits d'auteur pour les entreprises en phase initiale.",
+        "href": "https://elevateip-learninghub.communitech.ca/",
+        "cta": "Accéder au centre d'apprentissage →"
       },
       {
         "category": "Boîte à outils",
-        "title": "Liste de contrôle pour l'audit de PI",
-        "desc": "Un outil d'autoévaluation pour identifier les lacunes dans votre stratégie actuelle de protection de la PI."
+        "title": "Élaborer une stratégie de PI",
+        "desc": "Utilisez l'Office de la propriété intellectuelle du Canada pour vous aider à démarrer l'élaboration d'une stratégie de PI.",
+        "href": "https://ised-isde.canada.ca/site/office-propriete-intellectuelle-canada/fr/batissez-strategie-pi-realisez-audit-pi-interne",
+        "cta": "Commencer avec l'OPIC →"
       },
       {
         "category": "À venir",
         "title": "Série de webinaires nationaux sur la PI",
         "desc": "Sessions en direct mensuelles avec des professionnels de la PI couvrant la commercialisation, l'octroi de licences et l'application des droits.",
-        "href": "/events",
+        "href": "https://ised-isde.canada.ca/site/office-propriete-intellectuelle-canada/fr/pi-centrale#section-evenements",
         "cta": "Voir les prochains événements →"
       },
       {
@@ -73,6 +83,32 @@
         "desc": "Connectez-vous avec un conseiller en PI de notre réseau national adapté à votre secteur et à votre stade.",
         "href": "/experts",
         "cta": "Parcourir le répertoire →"
+      }
+    ]
+  },
+  "successStories": {
+    "eyebrow": "Témoignages de réussite",
+    "readFullStory": "Lire la suite",
+    "stories": [
+      {
+        "company": "Alchemy",
+        "isQuote": true,
+        "tagline": "Sans ElevateIP, nous aurions peut-être dû choisir entre protéger nos innovations ou investir dans des améliorations de produits. Ce programme nous a permis de faire les deux.",
+        "summary": "Fondée par des diplômés de l'Université de Waterloo, Alchemy a fait évoluer ses technologies avancées de films protecteurs vers le secteur mondial de la défense à enjeux élevés en tirant parti d'une analyse approfondie du paysage de la PI.",
+        "href": "https://www.communitech.ca/insights/elevateip-helps-alchemy-grow-and-protect-canadian-innovation.html",
+        "image": "/logos/success-story1.jpg",
+        "imageAlt": "Fondateur d'Alchemy",
+        "objectPosition": "center top"
+      },
+      {
+        "company": "3D BioFibR",
+        "isQuote": false,
+        "tagline": "Sécuriser l'avenir de la bio-fabrication : comment 3D BioFibR s'est associé à ElevateIP pour bâtir une stratégie internationale de brevets à toute épreuve.",
+        "summary": "Leader en biotechnologie établi à Halifax, 3D BioFibR a tiré parti du programme ElevateIP pour cartographier et sécuriser une stratégie internationale robuste en matière de brevets pour sa technologie propriétaire et automatisée de fabrication de fibres de collagène. Ce soutien essentiel a permis à l'entreprise de mettre en œuvre ses innovations à haute valeur ajoutée en bio-fabrication à l'échelle mondiale en toute confiance, tout en protégeant ses principaux actifs commerciaux.",
+        "href": "#",
+        "image": "/logos/success-3dbiofibr.jpg",
+        "imageAlt": "Procédé de fabrication de fibres biologiques de 3D BioFibR",
+        "objectPosition": "center center"
       }
     ]
   },
@@ -116,24 +152,18 @@
       "alberta": "Alberta",
       "bc": "C.-B. et territoires"
     },
-    "disclaimer": "ElevateIP est un projet national financé par le gouvernement fédéral visant à aider les accélérateurs et incubateurs d'entreprises (AIE) à fournir aux entreprises en démarrage canadiennes les outils dont elles ont besoin pour comprendre, gérer stratégiquement et valoriser leur propriété intellectuelle."
+    "disclaimer": "{elevateip} est un projet national financé par le gouvernement fédéral visant à aider les accélérateurs et incubateurs d'entreprises (AIE) à fournir aux entreprises en démarrage canadiennes les outils dont elles ont besoin pour comprendre, gérer stratégiquement et valoriser leur propriété intellectuelle."
   },
   "experts": {
     "eyebrow": "Répertoire des fournisseurs de services",
     "heading": "Experts nationaux en PI",
     "subheading": "Professionnels de la propriété intellectuelle vérifiés, connectés par le biais du réseau national ElevateIP. Trouvez l'expert adapté à votre stade et à votre région.",
     "searchPlaceholder": "Rechercher par nom de cabinet, spécialité ou ville…",
-    "allProvinces": "Toutes les provinces",
-    "allPartners": "Tous les partenaires",
-    "filters": "Filtres",
-    "ipStrategy": "Stratégie PI",
-    "ipImplementation": "Mise en œuvre de la PI",
     "firmFound": "cabinet trouvé",
     "firmsFound": "cabinets trouvés",
     "moreSpecialties": "de plus",
     "resetFilters": "Réinitialiser les filtres",
     "resetAllFilters": "Réinitialiser tous les filtres",
-    "reset": "Réinitialiser",
     "noExpertsFound": "Aucun expert trouvé",
     "noExpertsBody": "Aucun cabinet ne correspond à vos filtres actuels. Essayez d'ajuster votre recherche ou d'élargir vos critères.",
     "viewProfile": "Voir le profil",
@@ -145,21 +175,19 @@
     }
   },
   "expertProfile": {
-    "vettedBy": "Vérifié par",
-    "ipStrategy": "Stratégie PI",
-    "ipImplementation": "Mise en œuvre de la PI",
     "about": "À propos",
-    "ipStrategyServices": "Services de stratégie PI",
-    "ipImplementationServices": "Services de mise en œuvre de la PI",
     "specialties": "Spécialités",
-    "industriesServed": "Industries desservies",
-    "contactPrompt": "Intéressé à travailler avec ce cabinet? Contactez directement.",
-    "contactFirm": "Contacter le cabinet",
-    "visitWebsite": "Visiter le site Web",
-    "quickFacts": "Faits rapides",
-    "office": "Bureau",
-    "provincesServed": "Provinces desservies",
-    "elevateipPartner": "Partenaire ElevateIP"
+    "contactName": "Contact",
+    "telephone": "Téléphone",
+    "email": "Courriel",
+    "website": "Site web",
+    "province": "Province",
+    "disclaimer": "Cette inscription est fournie à titre informatif seulement et ne constitue pas une approbation de quelque fournisseur de services individuel que ce soit."
+  },
+  "partnerLogoWall": {
+    "eyebrow": "Le réseau",
+    "heading": "Nos partenaires prestataires nationaux",
+    "body": "Soutenir les entreprises en démarrage dans chaque région du Canada."
   },
   "partners": {
     "eyebrow": "Le réseau national",
@@ -183,15 +211,9 @@
   },
   "provinceDropdown": {
     "placeholder": "Sélectionnez votre province ou territoire…",
-    "yourRegionalPartner": "Votre partenaire régional",
-    "continueToSite": "Accéder au site régional",
-    "regions": {
-      "atlantic": { "label": "Canada atlantique",    "tagline": "Soutenir l'innovation dans les provinces atlantiques." },
-      "quebec":   { "label": "Québec",               "tagline": "Accompagner les entreprises en démarrage du Québec dans leur parcours PI." },
-      "ontario":  { "label": "Ontario et Prairies",  "tagline": "Au service de l'Ontario, du Manitoba, d'Ottawa et de la Saskatchewan." },
-      "alberta":  { "label": "Alberta",              "tagline": "Accélérer la stratégie PI pour l'écosystème de démarrage albertain." },
-      "bc":       { "label": "C.-B. et territoires", "tagline": "Au service de la C.-B., du Yukon, du Nunavut et des Territoires du Nord-Ouest." }
-    }
+    "yourProgram": "Votre programme régional",
+    "cta": "Visiter le site du programme",
+    "listboxLabel": "Province ou territoire"
   },
   "eventCalendar": {
     "eyebrow": "Calendrier national des événements",
@@ -222,5 +244,131 @@
     "submitting": "Envoi en cours…",
     "submit": "Soumettre l'événement",
     "disclaimer": "Les événements soumis sont examinés avant d'apparaître dans le calendrier."
+  },
+  "privacy": {
+    "eyebrow": "Légal",
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour : juin 2025",
+    "intro": {
+      "heading": "Introduction",
+      "p1": "La présente Politique de confidentialité s'applique au Portail national ElevateIP (le « Portail »), exploité au nom des Partenaires prestataires ElevateIP qui livrent ElevateIP, une initiative à financement fédéral soutenue par Innovation, Sciences et Développement économique Canada (ISDE). Elle régit la façon dont les renseignements sont recueillis, utilisés et communiqués lorsque vous accédez au Portail ou interagissez avec celui-ci. En utilisant le Portail, vous reconnaissez et acceptez les pratiques décrites aux présentes.",
+      "p2pre": "Les Partenaires ElevateIP s'engagent à traiter tous les renseignements personnels et organisationnels avec soin, discrétion et conformément à la législation canadienne applicable en matière de protection des renseignements personnels, notamment la ",
+      "p2law1": "Loi sur la protection des renseignements personnels",
+      "p2mid": " et la ",
+      "p2law2": "Loi sur la protection des renseignements personnels et les documents électroniques",
+      "p2post": " (LPRPDE)."
+    },
+    "collection": {
+      "heading": "Renseignements recueillis",
+      "voluntaryHeading": "Renseignements fournis volontairement",
+      "voluntaryIntro": "Lorsque vous interagissez avec les fonctionnalités du Portail — comme la sélection de votre province ou territoire, la soumission d'un événement ou la prise de contact via des formulaires — vous pouvez fournir des renseignements tels que :",
+      "voluntaryItems": [
+        "Nom de l'entreprise ou de l'organisation",
+        "Province ou territoire d'immatriculation de l'entreprise",
+        "Adresse courriel de contact",
+        "Détails d'un événement soumis pour examen dans le calendrier"
+      ],
+      "metaHeading": "Métadonnées collectées automatiquement",
+      "metaIntro": "Comme la plupart des propriétés web, le Portail peut collecter automatiquement certaines métadonnées techniques lors de votre visite, notamment :",
+      "metaItems": [
+        "Type et version du navigateur",
+        "Type d'appareil et système d'exploitation",
+        "Pages consultées et temps passé sur le Portail",
+        "URL de référence",
+        "Adresse IP anonymisée",
+        "Un témoin de préférence linguistique (ELEVATEIP_LOCALE) pour mémoriser la langue sélectionnée entre les visites"
+      ],
+      "cookieNote": "Vous pouvez configurer votre navigateur pour refuser les témoins. Cela n'affectera pas l'accès au contenu principal du Portail."
+    },
+    "dataRouting": {
+      "heading": "Acheminement et utilisation des données",
+      "intro": "Les renseignements soumis par l'intermédiaire du Portail sont utilisés exclusivement pour assurer le mandat national des programmes des Partenaires ElevateIP. Plus précisément :",
+      "callout": "Les renseignements soumis concernant votre province d'immatriculation sont utilisés pour acheminer votre demande au partenaire prestataire régional approprié. Des indicateurs agrégés et non identifiables peuvent être partagés avec Innovation, Sciences et Développement économique Canada (ISDE) à des fins d'évaluation du programme.",
+      "closing": "Nous ne vendons, ne louons ni n'échangeons vos renseignements personnels à des tiers. Les renseignements ne sont pas utilisés à des fins de marketing commercial et ne seront pas divulgués au-delà du champ d'application décrit dans la présente Politique sans votre consentement explicite, sauf si la loi l'exige."
+    },
+    "security": {
+      "heading": "Sécurité",
+      "intro": "Les Partenaires ElevateIP prennent la sécurité de vos renseignements au sérieux. Nous mettons en œuvre des mesures de protection techniques et organisationnelles conformes aux normes de l'industrie, notamment :",
+      "items": [
+        "Chiffrement SSL/TLS pour toutes les données transmises entre votre navigateur et le Portail",
+        "Hébergement sur l'infrastructure de niveau entreprise de Vercel, conforme à la norme SOC 2, avec atténuation automatique des attaques DDoS",
+        "Contrôles d'accès basés sur les rôles limitant l'accès aux données au seul personnel autorisé du programme",
+        "Examens de sécurité réguliers et audits des dépendances"
+      ],
+      "closing": "Bien que nous mettions en place des mesures de protection robustes, aucune méthode de transmission sur Internet n'est entièrement sécurisée. Nous ne pouvons garantir une sécurité absolue, mais nous nous engageons à améliorer continuellement nos mesures de protection."
+    },
+    "retention": {
+      "heading": "Conservation des données",
+      "body": "Nous conservons les renseignements personnels uniquement aussi longtemps que nécessaire pour remplir les objectifs pour lesquels ils ont été collectés ou tel que l'exige la loi applicable. Les données analytiques agrégées et anonymisées peuvent être conservées pendant des périodes plus longues pour soutenir l'évaluation continue du programme par l'ISDE."
+    },
+    "changes": {
+      "heading": "Modifications à la présente Politique",
+      "body": "Nous pouvons mettre à jour la présente Politique de confidentialité périodiquement pour tenir compte des changements dans les opérations du programme, la technologie ou la loi applicable. La date de « Dernière mise à jour » en haut de cette page indique la date de la dernière révision de la Politique. L'utilisation continue du Portail après toute mise à jour constitue une acceptation de la Politique révisée."
+    },
+    "contact": {
+      "heading": "Contact",
+      "pre": "Si vous avez des questions ou des préoccupations concernant la présente Politique de confidentialité ou le traitement de vos renseignements, veuillez contacter ",
+      "email": "nshukla@springboardatlantic.ca",
+      "post": "."
+    }
+  },
+  "accessibility": {
+    "eyebrow": "Légal",
+    "title": "Déclaration d'accessibilité",
+    "lastUpdated": "Dernière mise à jour : juin 2025",
+    "commitment": {
+      "heading": "Notre engagement",
+      "p1": "Les Partenaires prestataires ElevateIP s'engagent à offrir un environnement numérique accessible, inclusif et équitable à chaque fondateur, partenaire et partie prenante qui interagit avec le portail national, quelle que soit leur capacité, leur technologie d'assistance ou leur appareil.",
+      "p2": "Nous reconnaissons que l'accessibilité n'est pas une fonctionnalité — c'est une exigence fondamentale d'un programme national ouvert au public. Notre objectif est de veiller à ce que tous les utilisateurs, y compris ceux qui utilisent des lecteurs d'écran, la navigation au clavier ou d'autres technologies d'assistance, puissent accéder à l'ensemble des informations et des outils disponibles sur ce portail."
+    },
+    "conformance": {
+      "heading": "Norme de conformité",
+      "intro": "Le Portail national ElevateIP vise la conformité aux ",
+      "standard": "Règles pour l'accessibilité des contenus Web (WCAG) 2.1, niveau AA",
+      "mid": ", publiées par le World Wide Web Consortium (W3C). Ces règles définissent comment rendre le contenu web plus accessible aux personnes handicapées et constituent le fondement de la législation sur l'accessibilité au Canada et à l'international.",
+      "closing": "Là où la pleine conformité n'a pas encore été atteinte, nous travaillons activement à remédier aux lacunes connues conformément à notre feuille de route sur l'accessibilité."
+    },
+    "features": {
+      "heading": "Fonctionnalités d'accessibilité mises en œuvre",
+      "intro": "Les mesures suivantes ont été mises en œuvre sur l'ensemble du portail pour soutenir la conformité aux WCAG 2.1 niveau AA :",
+      "items": [
+        {
+          "title": "Typographie à contraste élevé",
+          "body": "Tout le texte courant et les éléments interactifs sont affichés sur des arrière-plans avec des rapports de contraste de couleur suffisants. Le texte principal utilise notre palette de prune profonde sur fond blanc, respectant ou dépassant le rapport de contraste de 4,5:1 requis au niveau AA."
+        },
+        {
+          "title": "Structure HTML sémantique",
+          "body": "Le portail est construit à l'aide d'éléments de repère sémantiques — <header>, <main>, <nav>, <section>, <footer> et <aside> — permettant aux lecteurs d'écran de communiquer avec précision la hiérarchie de la page et aux utilisateurs de naviguer directement vers les régions de contenu qui les intéressent."
+        },
+        {
+          "title": "Composants navigables au clavier",
+          "body": "Tous les composants interactifs, notamment le menu déroulant de sélection de province et territoire, les menus de navigation, les champs de recherche et les boutons d'appel à l'action, sont entièrement utilisables au clavier seul. Les états de mise en évidence sont visuellement distincts et conformes au critère WCAG 2.4.7."
+        },
+        {
+          "title": "Texte de lien descriptif et étiquettes ARIA",
+          "body": "Les liens et les boutons avec icône uniquement comportent des noms accessibles descriptifs ou des étiquettes ARIA, garantissant que les utilisateurs navigant via des lecteurs d'écran reçoivent un contexte significatif sans dépendre d'indices visuels."
+        },
+        {
+          "title": "Mise en page adaptative et évolutive",
+          "body": "La mise en page du portail est entièrement adaptative et prend en charge une mise à l'échelle du texte jusqu'à 200 % sans perte de contenu ni de fonctionnalité, conformément au critère WCAG 1.4.4."
+        },
+        {
+          "title": "Déclaration de langue",
+          "body": "L'attribut lang du HTML est défini de manière programmatique pour refléter la langue active (anglais ou français), permettant aux technologies d'assistance d'appliquer les règles de prononciation et linguistiques correctes."
+        }
+      ]
+    },
+    "limitations": {
+      "heading": "Limitations connues",
+      "body": "Bien que nous nous efforcions d'atteindre la pleine conformité, certains contenus tiers intégrés au portail — notamment les liens externes, les médias intégrés et les ressources soumises par les partenaires — peuvent ne pas répondre à tous les critères WCAG 2.1 niveau AA. Nous ne sommes pas responsables de l'accessibilité du contenu hébergé sur des plateformes tierces, mais nous encourageons nos partenaires à adopter des normes équivalentes."
+    },
+    "feedback": {
+      "heading": "Commentaires et signalement d'obstacles",
+      "intro": "Nous accueillons favorablement les commentaires de tous les utilisateurs. Si vous rencontrez un obstacle à l'accessibilité sur ce portail — ou si un contenu ou une fonctionnalité n'est pas accessible pour vous — veuillez nous contacter directement afin que nous puissions traiter le problème rapidement.",
+      "calloutTitle": "Signaler un obstacle à l'accessibilité",
+      "calloutPre": "Envoyez un courriel à ",
+      "email": "nshukla@springboardatlantic.ca",
+      "calloutPost": " en décrivant l'obstacle rencontré, l'URL de la page et la technologie d'assistance ou le navigateur que vous utilisiez. Nous visons à répondre aux demandes d'accessibilité dans un délai de cinq jours ouvrables."
+    }
   }
 }

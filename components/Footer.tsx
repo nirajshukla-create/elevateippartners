@@ -7,6 +7,9 @@ import { useLanguage } from "@/components/LanguageProvider";
 
 const INTERVAL_MS = 6000;
 
+const CIPO_EVENTS_URL =
+  "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-central#events-section";
+
 const variants = {
   enter:  { opacity: 0, y: -12 },
   center: { opacity: 1, y: 0,  transition: { duration: 0.45, ease: "easeOut" as const } },
@@ -50,17 +53,17 @@ export default function Footer() {
   };
 
   const navLinks = [
-    { label: f.links.home,            href: `/${l}` },
-    { label: f.links.regionalPrograms, href: `/${l}#find-program` },
-    { label: f.links.resources,        href: `/${l}#resources` },
-    { label: f.links.partners,         href: `/${l}/partners` },
-    { label: f.links.events,           href: `/${l}/events` },
+    { label: f.links.home,             href: `/${l}`,            external: false },
+    { label: f.links.regionalPrograms, href: `/${l}#find-program`, external: false },
+    { label: f.links.resources,        href: `/${l}/resources`,   external: false },
+    { label: f.links.partners,         href: `/${l}/partners`,    external: false },
+    { label: f.links.events,           href: CIPO_EVENTS_URL,     external: true  },
   ];
 
   const legalLinks = [
-    { label: f.links.privacyPolicy, href: "#" },
-    { label: f.links.accessibility,  href: "#" },
-    { label: f.links.contactUs,      href: "#" },
+    { label: f.links.privacyPolicy, href: `/${l}/privacy` },
+    { label: f.links.accessibility,  href: `/${l}/accessibility` },
+    { label: f.links.contactUs,      href: "mailto:info@elevateip.ca" },
   ];
 
   const regionalLabels = [
@@ -129,8 +132,14 @@ export default function Footer() {
           {/* ── Site ── */}
           <div className="md:col-span-2 flex flex-col">
             <p className={COL_HEADER}>{f.columns.site}</p>
-            {navLinks.map(({ label, href }) => (
-              <a key={label} href={href} className={COL_LINK}>
+            {navLinks.map(({ label, href, external }) => (
+              <a
+                key={label}
+                href={href}
+                className={COL_LINK}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+              >
                 {label}
               </a>
             ))}
@@ -170,15 +179,39 @@ export default function Footer() {
       <div className="bg-white/95 px-6 py-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="text-plum/50 text-xs leading-5 max-w-md text-center sm:text-left">
-            {f.disclaimer}
+            {(() => {
+              const [pre, post = ""] = f.disclaimer.split("{elevateip}");
+              return (
+                <>
+                  {pre}
+                  <a
+                    href="https://ised-isde.canada.ca/site/ised/en/programs-and-initiatives/elevateip"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-plum/80 underline underline-offset-2 decoration-plum/20 hover:text-plum hover:decoration-plum/60 transition-colors duration-150"
+                  >
+                    ElevateIP
+                  </a>
+                  {post}
+                </>
+              );
+            })()}
           </p>
           <div className="shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/ised-logo.png"
-              alt="Innovation, Science and Economic Development Canada / Innovation, Sciences et Développement économique Canada"
-              style={{ height: "72px", width: "auto" }}
-            />
+            <a
+              href="https://ised-isde.canada.ca/site/ised/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Innovation, Science and Economic Development Canada"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/ised-logo.png"
+                alt="Innovation, Science and Economic Development Canada / Innovation, Sciences et Développement économique Canada"
+                style={{ height: "72px", width: "auto" }}
+                className="transition-opacity duration-150 hover:opacity-80"
+              />
+            </a>
           </div>
         </div>
       </div>

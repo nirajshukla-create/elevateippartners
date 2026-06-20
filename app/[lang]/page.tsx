@@ -4,13 +4,9 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Shield,
-  BookOpen,
-  Calendar,
   ArrowRight,
-  Lightbulb,
   TrendingUp,
   Globe,
-  Award,
   ChevronDown,
 } from "lucide-react";
 import ProvinceDropdown from "@/components/ProvinceDropdown";
@@ -18,6 +14,7 @@ import Footer from "@/components/Footer";
 import PartnerLogoWall from "@/components/PartnerLogoWall";
 import NationalGlobe from "@/components/NationalGlobe";
 import LanguageToggle from "@/components/LanguageToggle";
+import SuccessBanner from "@/components/SuccessBanner";
 import { useLanguage } from "@/components/LanguageProvider";
 
 /* ─── Animation helpers ──────────────────────────────── */
@@ -59,7 +56,6 @@ function InView({
 
 /* ─── Icon maps (order matches locale JSON arrays) ───── */
 const VALUE_ICONS = [Shield, TrendingUp, Globe];
-const RESOURCE_ICONS = [BookOpen, Lightbulb, Calendar, Award];
 
 /* ─────────────────────────────────────────────────────── */
 
@@ -84,13 +80,18 @@ export default function Home() {
             <a href={`/${locale}#find-program`} className="hover:text-plum transition-colors">
               {d.nav.findProgram}
             </a>
-            <a href={`/${locale}#resources`} className="hover:text-plum transition-colors">
+            <a href={`/${locale}/resources`} className="hover:text-plum transition-colors">
               {d.nav.resources}
             </a>
             <a href={`/${locale}/partners`} className="hover:text-plum transition-colors">
               {d.nav.partners}
             </a>
-            <a href={`/${locale}/events`} className="hover:text-plum transition-colors">
+            <a
+              href={d.nav.eventsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-plum transition-colors"
+            >
               {d.nav.events}
             </a>
           </nav>
@@ -116,17 +117,14 @@ export default function Home() {
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-plum-pale/60 to-magenta-pale/30 blur-3xl pointer-events-none" />
 
         {/* Globe */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2.0, ease: "easeOut" as const }}
+        <div
           className="absolute z-0 pointer-events-none
             top-16 right-0 w-60 h-60 opacity-50
             sm:w-80 sm:h-80 sm:opacity-60
-            lg:pointer-events-auto lg:h-auto lg:inset-y-0 lg:top-0 lg:right-0 lg:w-[62%] lg:opacity-100"
+            lg:pointer-events-auto lg:h-screen lg:top-0 lg:right-0 lg:w-[62%] lg:opacity-100"
         >
           <NationalGlobe />
-        </motion.div>
+        </div>
 
         {/* Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4">
@@ -141,7 +139,7 @@ export default function Home() {
                 <span className="w-1.5 h-1.5 rounded-full bg-magenta animate-pulse shrink-0" />
                 {d.hero.badge}{" "}
                 <a
-                  href="https://ised-isde.canada.ca/site/innovation-canada/en"
+                  href={d.hero.badgeLinkHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline underline-offset-2 hover:text-magenta transition-colors"
@@ -234,15 +232,20 @@ export default function Home() {
               variants={fadeUp}
               className="mt-4 text-plum/55 max-w-xl mx-auto text-base leading-7"
             >
-              {d.valueProps.body.replace("{ised}", "").trim().split(/\s+/).length > 0 ? (
-                <>
-                  {d.valueProps.body.split("{ised}")[0]}
-                  <span className="font-semibold text-plum">{d.valueProps.isedName}</span>
-                  {d.valueProps.body.split("{ised}")[1]}
-                </>
-              ) : (
-                d.valueProps.body
-              )}
+              {(() => {
+                const extLink = "font-medium text-plum underline underline-offset-2 decoration-plum/20 hover:text-magenta hover:decoration-magenta transition-colors duration-150";
+                const [pre, afterElevate = ""] = d.valueProps.body.split("{elevateip}");
+                const [mid, post = ""] = afterElevate.split("{ised}");
+                return (
+                  <>
+                    {pre}
+                    <a href={d.valueProps.elevateipHref} target="_blank" rel="noopener noreferrer" className={extLink}>ElevateIP</a>
+                    {mid}
+                    <a href={d.valueProps.isedHref} target="_blank" rel="noopener noreferrer" className={extLink}>{d.valueProps.isedName}</a>
+                    {post}
+                  </>
+                );
+              })()}
             </motion.p>
           </InView>
 
@@ -266,6 +269,9 @@ export default function Home() {
           </InView>
         </div>
       </section>
+
+      {/* ── Success Stories ── */}
+      <SuccessBanner />
 
       {/* ── Regional Router ── */}
       <section
@@ -299,9 +305,15 @@ export default function Home() {
             </motion.h2>
             <motion.p
               variants={fadeUp}
-              className="text-plum/55 text-base leading-7 mb-12 max-w-xl mx-auto"
+              className="text-plum/55 text-base leading-7 mb-3 max-w-xl mx-auto"
             >
               {d.regionalRouter.body}
+            </motion.p>
+            <motion.p
+              variants={fadeUp}
+              className="text-sm text-plum/40 mb-10 max-w-xl mx-auto"
+            >
+              {d.regionalRouter.helperText}
             </motion.p>
             <motion.div variants={fadeUp}>
               <ProvinceDropdown />
@@ -315,10 +327,10 @@ export default function Home() {
         <PartnerLogoWall />
       </div>
 
-      {/* ── Resources & Events Hub ── */}
+      {/* ── Resources ── */}
       <section id="resources" className="py-16 md:py-28 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <InView className="text-center mb-12 md:mb-16">
+          <InView className="text-center">
             <motion.p
               variants={fadeUp}
               className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3"
@@ -337,37 +349,15 @@ export default function Home() {
             >
               {d.resources.body}
             </motion.p>
-          </InView>
-
-          <InView className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {d.resources.items.map(({ category, title, desc, href, cta }, i) => {
-              const Icon = RESOURCE_ICONS[i];
-              const resolvedHref = href ? `/${locale}${href}` : undefined;
-              return (
-                <motion.a
-                  key={title}
-                  href={resolvedHref}
-                  variants={fadeUp}
-                  className="group flex gap-5 rounded-3xl border border-plum/8 bg-white p-7 hover:shadow-lg hover:border-plum/16 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-peach-pale to-magenta-pale flex items-center justify-center shrink-0">
-                    <Icon className="w-5 h-5 text-magenta" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-peach">
-                      {category}
-                    </span>
-                    <h3 className="text-base font-bold text-plum leading-snug">{title}</h3>
-                    <p className="text-plum/50 text-sm leading-6">{desc}</p>
-                    {cta && (
-                      <span className="mt-1 text-xs font-semibold text-magenta group-hover:underline">
-                        {cta}
-                      </span>
-                    )}
-                  </div>
-                </motion.a>
-              );
-            })}
+            <motion.div variants={fadeUp} className="mt-10">
+              <a
+                href={`/${locale}/resources`}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-plum text-white font-semibold text-sm hover:bg-plum-dark shadow-lg hover:shadow-xl transition-all duration-200 group"
+              >
+                {d.resources.exploreCta}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            </motion.div>
           </InView>
         </div>
       </section>

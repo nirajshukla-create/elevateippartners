@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const PARTNERS = [
   {
@@ -33,6 +34,7 @@ const PARTNERS = [
     name: "MAIN",
     src: "/logos/main.png",
     href: "https://mainqc.com/",
+    height: 130,
   },
   {
     name: "Springboard Atlantic",
@@ -45,6 +47,8 @@ const PARTNERS = [
 const TRACK = [...PARTNERS, ...PARTNERS];
 
 export default function PartnerLogoWall() {
+  const { dict } = useLanguage();
+  const pw = dict.partnerLogoWall;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -60,13 +64,13 @@ export default function PartnerLogoWall() {
           className="text-center mb-14"
         >
           <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
-            The Network
+            {pw.eyebrow}
           </p>
           <h2 className="text-4xl font-bold text-plum leading-tight mb-3">
-            Our National Delivery Partners
+            {pw.heading}
           </h2>
           <p className="text-plum/50 text-base max-w-md mx-auto leading-7">
-            Supporting startups across every region of Canada.
+            {pw.body}
           </p>
         </motion.div>
       </div>
@@ -79,7 +83,7 @@ export default function PartnerLogoWall() {
 
         {/* Scrolling row */}
         <div className="flex animate-marquee w-max gap-6 px-6">
-          {TRACK.map(({ name, src, href }, i) => (
+          {TRACK.map(({ name, src, href, height }, i) => (
             <a
               key={`${name}-${i}`}
               href={href}
@@ -92,7 +96,7 @@ export default function PartnerLogoWall() {
                 src={src}
                 alt={name}
                 style={{
-                  height: "80px",
+                  height: `${height ?? 80}px`,
                   width: "auto",
                   mixBlendMode: "multiply",
                 }}

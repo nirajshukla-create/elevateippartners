@@ -6,11 +6,13 @@ import { ExternalLink } from "lucide-react";
 
 /* ─── Types ──────────────────────────────────────────────── */
 
-type BadgeType = "Federal" | "Provincial" | "Non-Profit" | "Professional";
+type BadgeType    = "Federal" | "Provincial" | "Non-Profit" | "Professional";
+type BadgeSubtype = "Collaboration" | "Grants" | "Marketplace";
 
 interface Partner {
   name: string;
   type: BadgeType;
+  subtype?: BadgeSubtype;
   description: string;
   href: string;
 }
@@ -30,14 +32,14 @@ const PARTNERS: Partner[] = [
     type: "Non-Profit",
     description:
       "A membership-based non-profit assisting Canadian SMEs in the data-driven clean technology sector to better understand, develop, and leverage IP as a strategic business asset.",
-    href: "https://iacollective.ca",
+    href: "https://www.ipcollective.ca/",
   },
   {
     name: "IP Assist — NRC IRAP",
     type: "Federal",
     description:
       "Provides funding to SMEs to help them understand their IP position and develop comprehensive IP strategies aligned with their commercialization goals.",
-    href: "https://nrc.canada.ca/en/support-technology-innovation/nrc-irap-ip-assist",
+    href: "https://nrc.canada.ca/en/support-technology-innovation/nrc-irap-support-intellectual-property",
   },
   {
     name: "CanExport Innovation",
@@ -51,7 +53,7 @@ const PARTNERS: Partner[] = [
     type: "Provincial",
     description:
       "A provincial agency that provides trusted IP support, resources, and advisory services to help Ontario innovators scale their businesses and compete globally.",
-    href: "https://www.ipon.ca",
+    href: "https://ip-ontario.ca/",
   },
   {
     name: "IPIC — Intellectual Property Institute of Canada",
@@ -60,22 +62,59 @@ const PARTNERS: Partner[] = [
       "The professional association for patent agents, trademark agents, and lawyers specializing in IP law — the authoritative voice on IP practice standards in Canada.",
     href: "https://www.ipic.ca",
   },
+  {
+    name: "IP Village",
+    type: "Federal",
+    subtype: "Collaboration",
+    description:
+      "A joint initiative that helps Canadian businesses learn about intellectual property, connect with legal and business experts, and access specialized IP resources.",
+    href: "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-village-ip-resources-your-business",
+  },
+  {
+    name: "Indigenous IP Program (IIPP)",
+    type: "Federal",
+    subtype: "Grants",
+    description:
+      "Provides grant funding to support Indigenous organizations, businesses, and creators in protecting, managing, and commercializing their traditional knowledge and cultural expressions.",
+    href: "https://ised-isde.canada.ca/site/intellectual-property-strategy/en/indigenous-intellectual-property-program-grant",
+  },
+  {
+    name: "ExploreIP",
+    type: "Federal",
+    subtype: "Marketplace",
+    description:
+      "Canada's Intellectual Property Marketplace, allowing businesses to search, discover, and license valuable patents held by public sector institutions and universities to accelerate innovation.",
+    href: "https://ised-isde.canada.ca/ipm-mcpi/?lang=en",
+  },
 ];
 
-/* ─── Badge ──────────────────────────────────────────────── */
+/* ─── Badges ─────────────────────────────────────────────── */
 
-const BADGE_STYLES: Record<BadgeType, string> = {
+const TYPE_STYLES: Record<BadgeType, string> = {
   Federal:      "bg-plum/8 text-plum",
   Provincial:   "bg-magenta/8 text-magenta",
   "Non-Profit": "bg-peach/15 text-peach",
   Professional: "bg-plum/5 text-plum/60",
 };
 
-function Badge({ type }: { type: BadgeType }) {
+const SUBTYPE_STYLES: Record<BadgeSubtype, string> = {
+  Collaboration: "bg-teal-50 text-teal-700",
+  Grants:        "bg-amber-50 text-amber-700",
+  Marketplace:   "bg-indigo-50 text-indigo-700",
+};
+
+function Badges({ type, subtype }: { type: BadgeType; subtype?: BadgeSubtype }) {
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${BADGE_STYLES[type]}`}>
-      {type}
-    </span>
+    <div className="flex items-center gap-2 flex-wrap">
+      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${TYPE_STYLES[type]}`}>
+        {type}
+      </span>
+      {subtype && (
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${SUBTYPE_STYLES[subtype]}`}>
+          {subtype}
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -98,7 +137,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
       className="group flex flex-col gap-5 rounded-3xl border border-plum/8 bg-white p-8 hover:shadow-xl hover:border-plum/16 hover:-translate-y-1 transition-all duration-300"
     >
       <div className="flex flex-col gap-3 flex-1">
-        <Badge type={partner.type} />
+        <Badges type={partner.type} subtype={partner.subtype} />
         <h2 className="text-base font-bold text-plum leading-snug">
           {partner.name}
         </h2>
@@ -114,7 +153,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
         className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-full border-2 border-plum text-plum text-xs font-semibold hover:bg-plum hover:text-white transition-all duration-200"
       >
         Visit Website
-        <ExternalLink className="w-3.5 h-3.5" />
+        <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
       </a>
     </motion.div>
   );

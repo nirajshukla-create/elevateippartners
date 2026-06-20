@@ -1,156 +1,166 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, MapPin } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
-
-type RegionKey = "atlantic" | "quebec" | "ontario" | "alberta" | "bc";
-
-interface Region {
-  key: RegionKey;
-  partner: string;
-  url: string;
-  provinces: string[]; // English province names used as internal keys
-}
-
-const REGIONS: Region[] = [
-  {
-    key: "atlantic",
-    partner: "Springboard Atlantic – IP Advantage",
-    url: "https://springboardatlantic.ca/ipadvantage/",
-    provinces: ["Nova Scotia", "New Brunswick", "Prince Edward Island", "Newfoundland and Labrador"],
-  },
-  {
-    key: "quebec",
-    partner: "MAIN – Intellectual Property Support",
-    url: "https://mainqc.com/en/intellectual-property-support/",
-    provinces: ["Quebec"],
-  },
-  {
-    key: "ontario",
-    partner: "ElevateIP",
-    url: "https://elevate-ip.ca/",
-    provinces: ["Ontario", "Manitoba", "Ottawa", "Saskatchewan"],
-  },
-  {
-    key: "alberta",
-    partner: "ElevateIP Alberta",
-    url: "https://elevateip-ab.com/",
-    provinces: ["Alberta"],
-  },
-  {
-    key: "bc",
-    partner: "AccelerateIP",
-    url: "https://www.accelerateip.ca/",
-    provinces: ["British Columbia", "Yukon", "Nunavut", "Northwest Territories"],
-  },
-];
-
-// Maps English province names (internal keys in REGIONS) to 2-letter codes for dict.provinceNames lookup.
-const EN_PROVINCE_TO_CODE: Record<string, string> = {
-  "Alberta":                    "AB",
-  "British Columbia":           "BC",
-  "Manitoba":                   "MB",
-  "New Brunswick":              "NB",
-  "Newfoundland and Labrador":  "NL",
-  "Nova Scotia":                "NS",
-  "Northwest Territories":      "NT",
-  "Nunavut":                    "NU",
-  "Ontario":                    "ON",
-  "Ottawa":                     "ON",
-  "Prince Edward Island":       "PE",
-  "Quebec":                     "QC",
-  "Saskatchewan":               "SK",
-  "Yukon":                      "YT",
-};
-
-const ALL_OPTIONS = REGIONS.flatMap((r) =>
-  r.provinces.map((p) => ({ province: p, region: r }))
-).sort((a, b) => a.province.localeCompare(b.province));
+import { PROVINCES, type Province } from "@/src/config/provinces";
 
 export default function ProvinceDropdown() {
   const { dict } = useLanguage();
-  const pd = dict.provinceDropdown;
+  const pd = dict.provinceDropdown as {
+    placeholder: string;
+    yourProgram: string;
+    cta: string;
+    listboxLabel: string;
+  };
   const provinceNames = dict.provinceNames as Record<string, string>;
 
-  const [open, setOpen]       = useState(false);
-  const [selected, setSelected] = useState<(typeof ALL_OPTIONS)[0] | null>(null);
+  const [open, setOpen]         = useState(false);
+  const [selected, setSelected] = useState<Province | null>(null);
+  const [focusedIndex, setFocusedIndex] = useState(0);
 
-  const handleSelect = (option: (typeof ALL_OPTIONS)[0]) => {
-    setSelected(option);
-    setOpen(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const itemRefs  = useRef<(HTMLLIElement | null)[]>([]);
+
+  const displayName = (id: string) => provinceNames[id] ?? id;
+
+  const focusItem = (index: number) => {
+    setFocusedIndex(index);
+    itemRefs.current[index]?.focus();
   };
 
-  const displayName = (englishName: string) =>
-    provinceNames[EN_PROVINCE_TO_CODE[englishName]] ?? englishName;
+  const openList = useCallback((startIndex?: number) => {
+    const idx = startIndex ?? (selected ? Math.max(0, PROVINCES.findIndex((p) => p.id === selected.id)) : 0);
+    setFocusedIndex(idx);
+    setOpen(true);
+    requestAnimationFrame(() => { itemRefs.current[idx]?.focus(); });
+  }, [selected]);
+
+  const closeList = useCallback(() => {
+    setOpen(false);
+    requestAnimationFrame(() => { buttonRef.current?.focus(); });
+  }, []);
+
+  const handleSelect = (p: Province) => {
+    setSelected(p);
+    closeList();
+  };
+
+  const handleButtonKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+      e.preventDefault();
+      openList();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      openList(PROVINCES.length - 1);
+    }
+  };
+
+  const handleListKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case "ArrowDown": {
+        e.preventDefault();
+        focusItem(Math.min(focusedIndex + 1, PROVINCES.length - 1));
+        break;
+      }
+      case "ArrowUp": {
+        e.preventDefault();
+        focusItem(Math.max(focusedIndex - 1, 0));
+        break;
+      }
+      case "Home": {
+        e.preventDefault();
+        focusItem(0);
+        break;
+      }
+      case "End": {
+        e.preventDefault();
+        focusItem(PROVINCES.length - 1);
+        break;
+      }
+      case "Enter":
+      case " ": {
+        e.preventDefault();
+        if (focusedIndex >= 0 && focusedIndex < PROVINCES.length) {
+          handleSelect(PROVINCES[focusedIndex]);
+        }
+        break;
+      }
+      case "Escape": {
+        e.preventDefault();
+        closeList();
+        break;
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto">
-      {/* Dropdown trigger */}
+
+      {/* ── Trigger ── */}
       <div className="relative w-full">
         <button
-          onClick={() => setOpen((v) => !v)}
+          ref={buttonRef}
+          onClick={() => open ? closeList() : openList()}
+          onKeyDown={handleButtonKeyDown}
           aria-haspopup="listbox"
           aria-expanded={open}
-          className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border-2 border-plum/20 bg-white shadow-sm hover:border-plum/40 hover:shadow-md transition-all duration-200 text-left group"
+          className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border-2 border-plum/20 bg-white shadow-sm hover:border-plum/40 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-plum/30 transition-all duration-200 text-left group"
         >
           <span className="flex items-center gap-3">
-            <MapPin className="w-5 h-5 text-magenta shrink-0" />
-            <span
-              className={
-                selected
-                  ? "text-plum font-semibold text-base"
-                  : "text-plum/50 text-base"
-              }
-            >
-              {selected ? displayName(selected.province) : pd.placeholder}
+            <MapPin className="w-5 h-5 text-magenta shrink-0" aria-hidden="true" />
+            <span className={selected ? "text-plum font-semibold text-base" : "text-plum/50 text-base"}>
+              {selected ? displayName(selected.id) : pd.placeholder}
             </span>
           </span>
-          <motion.span
-            animate={{ rotate: open ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
+          <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} aria-hidden="true">
             <ChevronDown className="w-5 h-5 text-plum/40 group-hover:text-plum/70 transition-colors" />
           </motion.span>
         </button>
 
-        {/* Dropdown list */}
+        {/* ── List ── */}
         <AnimatePresence>
           {open && (
             <motion.ul
               role="listbox"
+              aria-label={pd.listboxLabel}
+              onKeyDown={handleListKeyDown}
               initial={{ opacity: 0, y: -8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.18, ease: "easeOut" as const }}
               className="absolute z-50 mt-2 w-full bg-white rounded-2xl shadow-xl border border-plum/10 overflow-hidden max-h-72 overflow-y-auto"
             >
-              {ALL_OPTIONS.map((opt) => (
-                <li
-                  key={opt.province}
-                  role="option"
-                  aria-selected={selected?.province === opt.province}
-                  onClick={() => handleSelect(opt)}
-                  className="flex items-center gap-3 px-5 py-3.5 cursor-pointer text-plum text-sm hover:bg-plum-50 transition-colors border-b border-plum/5 last:border-0"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-magenta/40 shrink-0" />
-                  <span className="font-medium">{displayName(opt.province)}</span>
-                  <span className="ml-auto text-plum/40 text-xs">
-                    {pd.regions[opt.region.key].label}
-                  </span>
-                </li>
-              ))}
+              {PROVINCES.map((p, i) => {
+                const isActive = selected?.id === p.id;
+                return (
+                  <li
+                    key={p.id}
+                    ref={(el) => { itemRefs.current[i] = el; }}
+                    role="option"
+                    aria-selected={isActive}
+                    tabIndex={-1}
+                    onClick={() => handleSelect(p)}
+                    className={`flex items-center gap-3 px-5 py-3.5 cursor-pointer text-sm transition-colors border-b border-plum/5 last:border-0 focus:outline-none focus:bg-plum/6 ${
+                      isActive ? "bg-plum/4 text-plum font-semibold" : "text-plum/70 hover:bg-plum/3 hover:text-plum"
+                    }`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 transition-colors ${isActive ? "bg-magenta" : "bg-plum/20"}`} aria-hidden="true" />
+                    {displayName(p.id)}
+                  </li>
+                );
+              })}
             </motion.ul>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Selected region card */}
+      {/* ── Confirmation card ── */}
       <AnimatePresence mode="wait">
         {selected && (
           <motion.div
-            key={selected.province}
+            key={selected.id}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -159,28 +169,26 @@ export default function ProvinceDropdown() {
           >
             <div>
               <p className="text-xs uppercase tracking-widest text-magenta font-semibold mb-1">
-                {pd.yourRegionalPartner}
+                {pd.yourProgram}
               </p>
               <h3 className="text-xl font-bold text-plum leading-snug">
-                {selected.region.partner}
+                {selected.programName}
               </h3>
-              <p className="text-plum/60 text-sm mt-1">
-                {pd.regions[selected.region.key].tagline}
-              </p>
             </div>
 
             <a
-              href={selected.region.url}
+              href={selected.externalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 self-start px-6 py-3 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center gap-2 self-start px-6 py-3 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-plum/40 transition-all duration-200 group"
             >
-              {pd.continueToSite}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              {pd.cta}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
             </a>
           </motion.div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }

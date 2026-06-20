@@ -5,6 +5,7 @@
     "resources": "Resources",
     "partners": "Partners",
     "events": "Events",
+    "eventsHref": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-central#events-section",
     "getStarted": "Get Started",
     "backToHome": "Back to Home",
     "backToDirectory": "Back to Directory"
@@ -12,6 +13,7 @@
   "hero": {
     "badge": "ElevateIP is Powered by",
     "badgeLink": "Innovation Canada",
+    "badgeLinkHref": "https://ised-isde.canada.ca/site/innovation-canada/en",
     "title": "Protecting Canadian",
     "titleHighlight": "Innovation.",
     "tagline": "Supporting Startups Nationwide.",
@@ -23,8 +25,10 @@
   "valueProps": {
     "eyebrow": "The National Program",
     "heading": "Where IP Strategy Meets Startup Growth",
-    "body": "ElevateIP, with the support of {ised}, works with Business Accelerators and Incubators (BAIs) across Canada to deliver professional, stage-appropriate IP services to the startups they support.",
+    "body": "{elevateip}, with the support of {ised}, works with Business Accelerators and Incubators (BAIs) across Canada to deliver professional, stage-appropriate IP services to the startups they support.",
     "isedName": "Innovation, Science and Economic Development (ISED)",
+    "elevateipHref": "https://ised-isde.canada.ca/site/ised/en/programs-and-initiatives/elevateip",
+    "isedHref": "https://ised-isde.canada.ca/site/ised/en/",
     "values": [
       {
         "title": "IP Strategy First",
@@ -43,28 +47,34 @@
   "regionalRouter": {
     "eyebrow": "Find Your Program",
     "heading": "Your Regional IP Partner Is Waiting",
-    "body": "Select your province or territory below to be connected with your dedicated regional program and local IP specialists."
+    "body": "Select your province or territory below to be connected with your dedicated regional program and local IP specialists.",
+    "helperText": "Please select the province your company is registered in."
   },
   "resources": {
     "eyebrow": "Shared Resources",
-    "heading": "Nationally Available Tools & Events",
-    "body": "No matter where you are in Canada, these resources are available to every founder in the ElevateIP ecosystem.",
+    "heading": "Nationally Available Tools & Resources",
+    "body": "No matter where you are in Canada, these resources are freely available to every founder in the ElevateIP ecosystem.",
+    "exploreCta": "Explore All National Resources",
     "items": [
       {
         "category": "Guide",
         "title": "IP Fundamentals for Startups",
-        "desc": "An introduction to patents, trademarks, trade secrets, and copyright for early-stage companies."
+        "desc": "An introduction to patents, trademarks, trade secrets, and copyright for early-stage companies.",
+        "href": "https://elevateip-learninghub.communitech.ca/",
+        "cta": "Access the learning hub →"
       },
       {
         "category": "Toolkit",
-        "title": "IP Audit Checklist",
-        "desc": "A self-assessment tool to identify gaps in your current IP protection strategy."
+        "title": "Build an IP Strategy",
+        "desc": "Use the Canadian Intellectual Property Office to help you get started to build an IP Strategy.",
+        "href": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/build-ip-strategy-do-internal-ip-audit",
+        "cta": "Get started with CIPO →"
       },
       {
         "category": "Upcoming",
         "title": "National IP Webinar Series",
         "desc": "Monthly live sessions with IP professionals covering commercialization, licensing, and enforcement.",
-        "href": "/events",
+        "href": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-central#events-section",
         "cta": "View upcoming events →"
       },
       {
@@ -73,6 +83,32 @@
         "desc": "Connect with an IP advisor from our national network tailored to your sector and stage.",
         "href": "/experts",
         "cta": "Browse the directory →"
+      }
+    ]
+  },
+  "successStories": {
+    "eyebrow": "Success Stories",
+    "readFullStory": "Read Full Story",
+    "stories": [
+      {
+        "company": "Alchemy",
+        "isQuote": true,
+        "tagline": "Without ElevateIP, we might have had to choose between protecting our innovations or investing in product improvements. This program allowed us to do both.",
+        "summary": "Founded by University of Waterloo graduates, Alchemy scaled their advanced protective film technologies into the high-stakes global defence sector by leveraging a comprehensive IP landscape analysis.",
+        "href": "https://www.communitech.ca/insights/elevateip-helps-alchemy-grow-and-protect-canadian-innovation.html",
+        "image": "/logos/success-story1.jpg",
+        "imageAlt": "Alchemy founder",
+        "objectPosition": "center top"
+      },
+      {
+        "company": "3D BioFibR",
+        "isQuote": false,
+        "tagline": "Securing the future of bio-manufacturing: How 3D BioFibR partnered with ElevateIP to build a bulletproof international patent strategy.",
+        "summary": "Halifax-based biotech leader 3D BioFibR leveraged the ElevateIP program to map and secure a robust international patent strategy for their proprietary, automated collagen-fiber manufacturing technology. This critical support empowered the company to confidently scale their high-value bio-manufacturing innovations globally while protecting their core commercial assets.",
+        "href": "#",
+        "image": "/logos/success-3dbiofibr.jpg",
+        "imageAlt": "3D BioFibR bio-fiber manufacturing process",
+        "objectPosition": "center center"
       }
     ]
   },
@@ -116,24 +152,18 @@
       "alberta": "Alberta",
       "bc": "BC & Territories"
     },
-    "disclaimer": "Elevate IP is a federally funded, national project to help business accelerators and incubators (BAIs) provide the tools Canadian startups need to understand, strategically manage and leverage their intellectual property."
+    "disclaimer": "{elevateip} is a federally funded, national project to help business accelerators and incubators (BAIs) provide the tools Canadian startups need to understand, strategically manage and leverage their intellectual property."
   },
   "experts": {
     "eyebrow": "Service Provider Directory",
     "heading": "National IP Experts",
     "subheading": "Vetted intellectual property professionals connected through the ElevateIP national network. Find the right expert for your stage and region.",
     "searchPlaceholder": "Search by firm name, specialty, or city…",
-    "allProvinces": "All Provinces",
-    "allPartners": "All Partners",
-    "filters": "Filters",
-    "ipStrategy": "IP Strategy",
-    "ipImplementation": "IP Implementation",
     "firmFound": "firm found",
     "firmsFound": "firms found",
     "moreSpecialties": "more",
     "resetFilters": "Reset filters",
     "resetAllFilters": "Reset All Filters",
-    "reset": "Reset",
     "noExpertsFound": "No experts found",
     "noExpertsBody": "No firms match your current filters. Try adjusting your search or broadening your criteria.",
     "viewProfile": "View Profile",
@@ -145,21 +175,19 @@
     }
   },
   "expertProfile": {
-    "vettedBy": "Vetted by",
-    "ipStrategy": "IP Strategy",
-    "ipImplementation": "IP Implementation",
     "about": "About",
-    "ipStrategyServices": "IP Strategy Services",
-    "ipImplementationServices": "IP Implementation Services",
     "specialties": "Specialties",
-    "industriesServed": "Industries Served",
-    "contactPrompt": "Interested in working with this firm? Reach out directly.",
-    "contactFirm": "Contact Firm",
-    "visitWebsite": "Visit Website",
-    "quickFacts": "Quick Facts",
-    "office": "Office",
-    "provincesServed": "Provinces Served",
-    "elevateipPartner": "ElevateIP Partner"
+    "contactName": "Contact",
+    "telephone": "Telephone",
+    "email": "Email",
+    "website": "Website",
+    "province": "Province",
+    "disclaimer": "This listing is provided for informational purposes only and does not constitute an endorsement of any individual service provider."
+  },
+  "partnerLogoWall": {
+    "eyebrow": "The Network",
+    "heading": "Our National Delivery Partners",
+    "body": "Supporting startups across every region of Canada."
   },
   "partners": {
     "eyebrow": "The National Network",
@@ -183,15 +211,9 @@
   },
   "provinceDropdown": {
     "placeholder": "Select your province or territory…",
-    "yourRegionalPartner": "Your Regional Partner",
-    "continueToSite": "Continue to Regional Site",
-    "regions": {
-      "atlantic": { "label": "Atlantic Canada",    "tagline": "Supporting innovation across the Atlantic provinces." },
-      "quebec":   { "label": "Quebec",             "tagline": "Guiding Québec startups through their IP journey." },
-      "ontario":  { "label": "Ontario & Prairies", "tagline": "Serving Ontario, Manitoba, Ottawa, and Saskatchewan." },
-      "alberta":  { "label": "Alberta",            "tagline": "Accelerating IP strategy for Alberta's startup ecosystem." },
-      "bc":       { "label": "BC & Territories",   "tagline": "Serving BC, Yukon, Nunavut, and the Northwest Territories." }
-    }
+    "yourProgram": "Your Regional Program",
+    "cta": "Visit Program Site",
+    "listboxLabel": "Province or territory"
   },
   "eventCalendar": {
     "eyebrow": "National Event Calendar",
@@ -222,5 +244,131 @@
     "submitting": "Submitting…",
     "submit": "Submit Event",
     "disclaimer": "Submitted events are reviewed before appearing on the calendar."
+  },
+  "privacy": {
+    "eyebrow": "Legal",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: June 2025",
+    "intro": {
+      "heading": "Introduction",
+      "p1": "This Privacy Policy applies to the ElevateIP National Portal (the “Portal”), operated on behalf of the ElevateIP Delivery Partners who deliver ElevateIP, a federally funded initiative supported by Innovation, Science and Economic Development Canada (ISED). It governs how information is collected, used, and disclosed when you access or interact with this Portal. By using the Portal, you acknowledge and agree to the practices described herein.",
+      "p2pre": "ElevateIP Partners are committed to handling all personal and organizational information with care, discretion, and in accordance with applicable Canadian privacy legislation, including the ",
+      "p2law1": "Privacy Act",
+      "p2mid": " and the ",
+      "p2law2": "Personal Information Protection and Electronic Documents Act",
+      "p2post": " (PIPEDA)."
+    },
+    "collection": {
+      "heading": "Information We Collect",
+      "voluntaryHeading": "Voluntarily Provided Information",
+      "voluntaryIntro": "When you interact with features of the Portal — such as selecting your province or territory, submitting an event, or reaching out via contact forms — you may provide information including:",
+      "voluntaryItems": [
+        "Company or organization name",
+        "Province or territory of business registration",
+        "Contact email address",
+        "Event details submitted for calendar consideration"
+      ],
+      "metaHeading": "Automatically Collected Metadata",
+      "metaIntro": "Like most web properties, the Portal may automatically collect certain technical metadata when you visit, including:",
+      "metaItems": [
+        "Browser type and version",
+        "Device type and operating system",
+        "Pages visited and time spent on the Portal",
+        "Referring URL",
+        "Anonymized IP address",
+        "A language preference cookie (ELEVATEIP_LOCALE) to remember your selected language between visits"
+      ],
+      "cookieNote": "You may configure your browser to decline cookies. Doing so will not impair access to the Portal’s core content."
+    },
+    "dataRouting": {
+      "heading": "Data Routing & Usage",
+      "intro": "Information submitted through the Portal is used solely to deliver the ElevateIP Partners programs’ national service mandate. Specifically:",
+      "callout": "Information submitted regarding your province of registration is utilized to route your inquiry to the appropriate regional delivery partner. Aggregated, non-identifiable metrics may be shared with Innovation, Science and Economic Development Canada (ISED) for program evaluation purposes.",
+      "closing": "We do not sell, rent, or trade your personal information to third parties. Information is not used for commercial marketing purposes and will not be disclosed beyond the scope described in this Policy without your explicit consent, except as required by law."
+    },
+    "security": {
+      "heading": "Security",
+      "intro": "ElevateIP Partners take the security of your information seriously. We employ industry-standard technical and organizational safeguards, including:",
+      "items": [
+        "SSL/TLS encryption for all data transmitted between your browser and the Portal",
+        "Hosting on Vercel’s enterprise-grade, SOC 2-compliant infrastructure with automatic DDoS mitigation",
+        "Role-based access controls limiting data access to authorized program personnel only",
+        "Regular security reviews and dependency audits"
+      ],
+      "closing": "While we implement robust safeguards, no method of transmission over the internet is entirely secure. We cannot guarantee absolute security but are committed to continuous improvement of our protective measures."
+    },
+    "retention": {
+      "heading": "Data Retention",
+      "body": "We retain personal information only as long as necessary to fulfill the purposes for which it was collected or as required by applicable law. Aggregated, anonymized analytics data may be retained for longer periods to support ongoing program evaluation by ISED."
+    },
+    "changes": {
+      "heading": "Changes to This Policy",
+      "body": "We may update this Privacy Policy periodically to reflect changes in program operations, technology, or applicable law. The “Last updated” date at the top of this page indicates when the Policy was last revised. Continued use of the Portal following any update constitutes acceptance of the revised Policy."
+    },
+    "contact": {
+      "heading": "Contact",
+      "pre": "If you have questions or concerns regarding this Privacy Policy or the handling of your information, please contact ",
+      "email": "nshukla@springboardatlantic.ca",
+      "post": "."
+    }
+  },
+  "accessibility": {
+    "eyebrow": "Legal",
+    "title": "Accessibility Statement",
+    "lastUpdated": "Last updated: June 2025",
+    "commitment": {
+      "heading": "Our Commitment",
+      "p1": "ElevateIP Delivery Partners are committed to providing a digital environment that is accessible, inclusive, and equitable for every founder, partner, and stakeholder who engages with the national portal, regardless of ability, assistive technology, or device.",
+      "p2": "We recognize that accessibility is not a feature — it is a fundamental requirement of a public-facing national program. Our goal is to ensure that all users, including those who rely on screen readers, keyboard navigation, or other assistive technologies, can access the full breadth of information and tools available through this portal."
+    },
+    "conformance": {
+      "heading": "Conformance Standard",
+      "intro": "The ElevateIP National Portal targets conformance with the ",
+      "standard": "Web Content Accessibility Guidelines (WCAG) 2.1, Level AA",
+      "mid": ", published by the World Wide Web Consortium (W3C). These guidelines define how to make web content more accessible to people with disabilities and form the foundation of accessibility legislation across Canada and internationally.",
+      "closing": "Where full conformance has not yet been achieved, we are actively working to remediate known gaps in accordance with our ongoing accessibility roadmap."
+    },
+    "features": {
+      "heading": "Implemented Accessibility Features",
+      "intro": "The following measures have been implemented across the portal to support WCAG 2.1 Level AA conformance:",
+      "items": [
+        {
+          "title": "High-Contrast Typography",
+          "body": "All body text and interactive elements are rendered against backgrounds with sufficient colour contrast ratios. Primary text uses our deep plum palette against a white background, meeting or exceeding the 4.5:1 contrast ratio required at Level AA."
+        },
+        {
+          "title": "Semantic HTML Structure",
+          "body": "The portal is built using semantic landmark elements — <header>, <main>, <nav>, <section>, <footer>, and <aside> — enabling screen readers to accurately communicate the page hierarchy and allow users to navigate directly to content regions of interest."
+        },
+        {
+          "title": "Keyboard-Navigable Components",
+          "body": "All interactive components, including the province and territory selection dropdown, navigation menus, search inputs, and call-to-action buttons, are fully operable using keyboard controls alone. Focus states are visually distinct and compliant with WCAG 2.4.7."
+        },
+        {
+          "title": "Descriptive Link Text & ARIA Labels",
+          "body": "Links and icon-only buttons include descriptive accessible names or ARIA labels, ensuring that users navigating via screen readers receive meaningful context without relying on visual cues."
+        },
+        {
+          "title": "Responsive & Scalable Layout",
+          "body": "The portal layout is fully responsive and supports text scaling up to 200% without loss of content or functionality, in accordance with WCAG 1.4.4."
+        },
+        {
+          "title": "Language Declaration",
+          "body": "The HTML lang attribute is programmatically set to reflect the active language (English or French), enabling assistive technologies to apply the correct pronunciation and linguistic rules."
+        }
+      ]
+    },
+    "limitations": {
+      "heading": "Known Limitations",
+      "body": "While we strive for full conformance, some third-party content integrated into the portal — including external links, embedded media, and partner-submitted resources — may not meet all WCAG 2.1 Level AA criteria. We are not responsible for the accessibility of content hosted on third-party platforms, but we encourage our partners to adopt equivalent standards."
+    },
+    "feedback": {
+      "heading": "Feedback & Reporting Barriers",
+      "intro": "We welcome feedback from all users. If you encounter an accessibility barrier on this portal — or if any content or feature is not accessible to you — please contact us directly so we can address the issue promptly.",
+      "calloutTitle": "Report an accessibility barrier",
+      "calloutPre": "Email ",
+      "email": "nshukla@springboardatlantic.ca",
+      "calloutPost": " with a description of the barrier you encountered, the page URL, and the assistive technology or browser you were using. We aim to respond to accessibility inquiries within five business days."
+    }
   }
 }

@@ -7,19 +7,25 @@ const N_POINTS = 1800;
 const RADIUS   = 1.55;
 const AUTO_VEL = 0.0007;
 
-function makeSprite(): THREE.CanvasTexture {
-  const sz  = 64;
-  const c   = document.createElement("canvas");
-  c.width   = c.height = sz;
-  const ctx = c.getContext("2d")!;
-  const g   = ctx.createRadialGradient(sz / 2, sz / 2, 0, sz / 2, sz / 2, sz / 2);
-  g.addColorStop(0.00, "rgba(255,255,255,1.00)");
-  g.addColorStop(0.35, "rgba(255,255,255,0.85)");
-  g.addColorStop(0.70, "rgba(255,255,255,0.12)");
-  g.addColorStop(1.00, "rgba(255,255,255,0.00)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, sz, sz);
-  return new THREE.CanvasTexture(c);
+function makeSprite(): THREE.DataTexture {
+  const sz   = 64;
+  const data = new Uint8Array(sz * sz * 4);
+  const cx   = sz / 2 - 0.5;
+  const cy   = sz / 2 - 0.5;
+  for (let y = 0; y < sz; y++) {
+    for (let x = 0; x < sz; x++) {
+      const dx   = x - cx;
+      const dy   = y - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy) / (sz / 2);
+      const a    = dist < 1 ? Math.max(0, 1 - dist * dist) : 0;
+      const i    = (y * sz + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = 255;
+      data[i + 3] = Math.round(a * 255);
+    }
+  }
+  const tex = new THREE.DataTexture(data, sz, sz, THREE.RGBAFormat);
+  tex.needsUpdate = true;
+  return tex;
 }
 
 function fibonacciSphere(n: number, r: number): Float32Array {
@@ -43,17 +49,21 @@ export default function GlobeClient() {
     const el = mountRef.current;
     if (!el) return;
 
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch {
+      return; // WebGL not supported — fail silently
+    }
+
     const W = el.clientWidth  || 400;
     const H = el.clientHeight || 400;
 
-    const mobile = window.innerWidth < 1024; // matches lg breakpoint
+    const mobile = window.innerWidth < 1024;
     const tiny   = window.innerWidth < 400;
     const dpr    = Math.min(window.devicePixelRatio, tiny ? 1 : mobile ? 1.5 : 2);
+    const camZ   = mobile ? 5.2 : 3.2;
 
-    // Zoom out on mobile so the full sphere is visible inside the small container.
-    const camZ = mobile ? 5.2 : 3.2;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(dpr);
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0);
@@ -71,7 +81,7 @@ export default function GlobeClient() {
 
     const matDot = new THREE.PointsMaterial({
       color: new THREE.Color("#C0287A"), size: 0.026, sizeAttenuation: true,
-      map: sprite, alphaTest: 0.22, transparent: true, opacity: 0.38, depthWrite: false,
+      map: sprite, alphaTest: 0.05, transparent: true, opacity: 0.38, depthWrite: false,
     });
     const matHalo = new THREE.PointsMaterial({
       color: new THREE.Color("#F08060"), size: 0.058, sizeAttenuation: true,
@@ -93,7 +103,8 @@ export default function GlobeClient() {
     let alive = true;
     let animId = 0;
 
-    // Drag rotation — only reachable on desktop (mobile wrapper is pointer-events-none).
+    const clock = new THREE.Clock();
+
     const onPointerDown = (e: PointerEvent) => {
       lastX = e.clientX; lastY = e.clientY;
       isDragging = false; dirLocked = false;
@@ -118,7 +129,6 @@ export default function GlobeClient() {
     el.addEventListener("pointerup",     onPointerUp);
     el.addEventListener("pointercancel", onPointerUp);
 
-    const clock = new THREE.Clock();
     const tick = () => {
       if (!alive) return;
       animId = requestAnimationFrame(tick);

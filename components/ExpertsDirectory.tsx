@@ -152,7 +152,7 @@ export default function ExpertsDirectory() {
 
         {/* Search bar */}
         <div className="bg-white rounded-3xl border border-plum/10 shadow-sm p-5 mb-10">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-plum/35 pointer-events-none" aria-hidden="true" />
               <input
@@ -173,16 +173,18 @@ export default function ExpertsDirectory() {
                 </button>
               )}
             </div>
-            <span className="text-xs text-plum/40 font-medium shrink-0">{firmCount}</span>
-            {hasFilters && (
-              <button
-                onClick={() => setSearch("")}
-                className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors shrink-0"
-              >
-                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
-                {t.resetFilters}
-              </button>
-            )}
+            <div className="flex items-center justify-between sm:justify-end gap-4 sm:shrink-0">
+              <span className="text-xs text-plum/40 font-medium shrink-0">{firmCount}</span>
+              {hasFilters && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="inline-flex items-center gap-1.5 text-xs text-plum/50 hover:text-plum font-medium transition-colors shrink-0"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+                  {t.resetFilters}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

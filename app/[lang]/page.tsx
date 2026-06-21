@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Shield,
   ArrowRight,
   TrendingUp,
   Globe,
   ChevronDown,
+  Menu,
+  X,
 } from "lucide-react";
 import ProvinceDropdown from "@/components/ProvinceDropdown";
 import Footer from "@/components/Footer";
@@ -62,6 +64,15 @@ const VALUE_ICONS = [Shield, TrendingUp, Globe];
 export default function Home() {
   const { locale, dict } = useLanguage();
   const d = dict;
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navItems = [
+    { label: d.nav.about, href: `/${locale}#about`, external: false },
+    { label: d.nav.findProgram, href: `/${locale}#find-program`, external: false },
+    { label: d.nav.resources, href: `/${locale}/resources`, external: false },
+    { label: d.nav.partners, href: `/${locale}/partners`, external: false },
+    { label: d.nav.events, href: d.nav.eventsHref, external: true },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans text-plum">
@@ -104,7 +115,55 @@ export default function Home() {
               {d.nav.getStarted} <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
+
+          {/* Mobile controls */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageToggle />
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className="w-9 h-9 flex items-center justify-center rounded-full text-plum/70 hover:text-plum hover:bg-plum/6 transition-colors"
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile menu panel */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="md:hidden overflow-hidden border-t border-plum/8"
+            >
+              <nav className="max-w-7xl mx-auto flex flex-col py-3 text-base text-plum/70 font-medium">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className="px-2 py-3 hover:text-plum transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <a
+                  href={`/${locale}#find-program`}
+                  onClick={() => setMenuOpen(false)}
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-full bg-plum text-white text-sm font-semibold hover:bg-plum-dark transition-colors shadow-sm"
+                >
+                  {d.nav.getStarted} <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* ── Hero ── */}

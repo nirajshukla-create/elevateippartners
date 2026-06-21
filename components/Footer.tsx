@@ -63,7 +63,6 @@ export default function Footer() {
   const legalLinks = [
     { label: f.links.privacyPolicy, href: `/${l}/privacy` },
     { label: f.links.accessibility,  href: `/${l}/accessibility` },
-    { label: f.links.contactUs,      href: "mailto:info@elevateip.ca" },
   ];
 
   const regionalLabels = [
@@ -83,10 +82,10 @@ export default function Footer() {
 
       {/* ── Top section ──────────────────────────────────── */}
       <div className="px-6 py-12 border-b border-white/8">
-        <div className="max-w-6xl mx-auto grid grid-cols-3 md:grid-cols-12 gap-y-10 gap-x-4 md:gap-6 items-start">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 md:grid-cols-12 gap-y-10 gap-x-4 md:gap-6 items-start">
 
           {/* ── IP Facts ── */}
-          <div className="col-span-3 md:col-span-6 flex flex-col gap-4 md:pr-10 md:border-r md:border-white/8">
+          <div className="sm:col-span-3 md:col-span-6 flex flex-col gap-4 md:pr-10 md:border-r md:border-white/8">
             <p className={COL_HEADER}>{f.ipFacts.heading}</p>
 
             <div className="relative pl-4 border-l-2 border-peach/35 min-h-[6rem] md:min-h-[5.5rem] overflow-hidden">

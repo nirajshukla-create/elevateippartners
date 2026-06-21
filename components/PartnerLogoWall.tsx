@@ -66,7 +66,7 @@ export default function PartnerLogoWall() {
           <p className="text-xs font-semibold uppercase tracking-widest text-magenta mb-3">
             {pw.eyebrow}
           </p>
-          <h2 className="text-4xl font-bold text-plum leading-tight mb-3">
+          <h2 className="text-3xl sm:text-4xl font-bold text-plum leading-tight mb-3">
             {pw.heading}
           </h2>
           <p className="text-plum/50 text-base max-w-md mx-auto leading-7">

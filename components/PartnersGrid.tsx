@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ExternalLink } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
+import type { Dictionary } from "@/lib/i18n";
 
 /* ─── Types ──────────────────────────────────────────────── */
 
@@ -10,83 +12,13 @@ type BadgeType    = "Federal" | "Provincial" | "Non-Profit" | "Professional";
 type BadgeSubtype = "Collaboration" | "Grants" | "Marketplace";
 
 interface Partner {
+  id: string;
   name: string;
   type: BadgeType;
   subtype?: BadgeSubtype;
   description: string;
   href: string;
 }
-
-/* ─── Data ───────────────────────────────────────────────── */
-
-const PARTNERS: Partner[] = [
-  {
-    name: "CIPO — Canadian Intellectual Property Office",
-    type: "Federal",
-    description:
-      "The official federal body responsible for the administration and processing of the vast majority of IP in Canada, including patents, trademarks, copyrights, and industrial designs.",
-    href: "https://www.ic.gc.ca/eic/site/cipointernet-internetopic.nsf/eng/home",
-  },
-  {
-    name: "Innovation Asset Collective (IAC)",
-    type: "Non-Profit",
-    description:
-      "A membership-based non-profit assisting Canadian SMEs in the data-driven clean technology sector to better understand, develop, and leverage IP as a strategic business asset.",
-    href: "https://www.ipcollective.ca/",
-  },
-  {
-    name: "IP Assist — NRC IRAP",
-    type: "Federal",
-    description:
-      "Provides funding to SMEs to help them understand their IP position and develop comprehensive IP strategies aligned with their commercialization goals.",
-    href: "https://nrc.canada.ca/en/support-technology-innovation/nrc-irap-support-intellectual-property",
-  },
-  {
-    name: "CanExport Innovation",
-    type: "Federal",
-    description:
-      "Provides funding to help Canadian SMEs protect their IP in international markets, supporting patent filings, trademark registrations, and related legal costs abroad.",
-    href: "https://www.tradecommissioner.gc.ca/funding-financement/canexport/innovation/index.aspx",
-  },
-  {
-    name: "IPON — Intellectual Property Ontario",
-    type: "Provincial",
-    description:
-      "A provincial agency that provides trusted IP support, resources, and advisory services to help Ontario innovators scale their businesses and compete globally.",
-    href: "https://ip-ontario.ca/",
-  },
-  {
-    name: "IPIC — Intellectual Property Institute of Canada",
-    type: "Professional",
-    description:
-      "The professional association for patent agents, trademark agents, and lawyers specializing in IP law — the authoritative voice on IP practice standards in Canada.",
-    href: "https://www.ipic.ca",
-  },
-  {
-    name: "IP Village",
-    type: "Federal",
-    subtype: "Collaboration",
-    description:
-      "A joint initiative that helps Canadian businesses learn about intellectual property, connect with legal and business experts, and access specialized IP resources.",
-    href: "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-village-ip-resources-your-business",
-  },
-  {
-    name: "Indigenous IP Program (IIPP)",
-    type: "Federal",
-    subtype: "Grants",
-    description:
-      "Provides grant funding to support Indigenous organizations, businesses, and creators in protecting, managing, and commercializing their traditional knowledge and cultural expressions.",
-    href: "https://ised-isde.canada.ca/site/intellectual-property-strategy/en/indigenous-intellectual-property-program-grant",
-  },
-  {
-    name: "ExploreIP",
-    type: "Federal",
-    subtype: "Marketplace",
-    description:
-      "Canada's Intellectual Property Marketplace, allowing businesses to search, discover, and license valuable patents held by public sector institutions and universities to accelerate innovation.",
-    href: "https://ised-isde.canada.ca/ipm-mcpi/?lang=en",
-  },
-];
 
 /* ─── Badges ─────────────────────────────────────────────── */
 
@@ -103,15 +35,23 @@ const SUBTYPE_STYLES: Record<BadgeSubtype, string> = {
   Marketplace:   "bg-indigo-50 text-indigo-700",
 };
 
-function Badges({ type, subtype }: { type: BadgeType; subtype?: BadgeSubtype }) {
+function Badges({
+  type,
+  subtype,
+  dict,
+}: {
+  type: BadgeType;
+  subtype?: BadgeSubtype;
+  dict: Dictionary;
+}) {
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${TYPE_STYLES[type]}`}>
-        {type}
+        {dict.partners.badgeTypes[type]}
       </span>
       {subtype && (
         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${SUBTYPE_STYLES[subtype]}`}>
-          {subtype}
+          {dict.partners.badgeSubtypes[subtype]}
         </span>
       )}
     </div>
@@ -129,7 +69,15 @@ const cardVariants = {
   }),
 };
 
-function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
+function PartnerCard({
+  partner,
+  index,
+  dict,
+}: {
+  partner: Partner;
+  index: number;
+  dict: Dictionary;
+}) {
   return (
     <motion.div
       custom={index}
@@ -137,7 +85,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
       className="group flex flex-col gap-5 rounded-3xl border border-plum/8 bg-white p-8 hover:shadow-xl hover:border-plum/16 hover:-translate-y-1 transition-all duration-300"
     >
       <div className="flex flex-col gap-3 flex-1">
-        <Badges type={partner.type} subtype={partner.subtype} />
+        <Badges type={partner.type} subtype={partner.subtype} dict={dict} />
         <h2 className="text-base font-bold text-plum leading-snug">
           {partner.name}
         </h2>
@@ -152,7 +100,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-full border-2 border-plum text-plum text-xs font-semibold hover:bg-plum hover:text-white transition-all duration-200"
       >
-        Visit Website
+        {dict.partners.visitWebsite}
         <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
       </a>
     </motion.div>
@@ -162,8 +110,10 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
 /* ─── Grid ───────────────────────────────────────────────── */
 
 export default function PartnersGrid() {
+  const { dict } = useLanguage();
   const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const partners = dict.partners.list as Partner[];
 
   return (
     <motion.div
@@ -172,8 +122,8 @@ export default function PartnersGrid() {
       animate={inView ? "visible" : "hidden"}
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
     >
-      {PARTNERS.map((partner, i) => (
-        <PartnerCard key={partner.name} partner={partner} index={i} />
+      {partners.map((partner, i) => (
+        <PartnerCard key={partner.id} partner={partner} index={i} dict={dict} />
       ))}
     </motion.div>
   );

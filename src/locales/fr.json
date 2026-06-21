@@ -192,7 +192,87 @@
   "partners": {
     "eyebrow": "Le réseau national",
     "heading": "Partenaires de l'écosystème",
-    "body": "Connecter les entreprises en démarrage canadiennes avec le réseau national d'organisations de soutien à la propriété intellectuelle."
+    "body": "Connecter les entreprises en démarrage canadiennes avec le réseau national d'organisations de soutien à la propriété intellectuelle.",
+    "visitWebsite": "Visiter le site",
+    "badgeTypes": {
+      "Federal": "Fédéral",
+      "Provincial": "Provincial",
+      "Non-Profit": "Organisme à but non lucratif",
+      "Professional": "Professionnel"
+    },
+    "badgeSubtypes": {
+      "Collaboration": "Collaboration",
+      "Grants": "Subventions",
+      "Marketplace": "Marché"
+    },
+    "list": [
+      {
+        "id": "cipo",
+        "name": "OPIC — Office de la propriété intellectuelle du Canada",
+        "type": "Federal",
+        "description": "L'organisme fédéral officiel responsable de l'administration et du traitement de la grande majorité de la propriété intellectuelle au Canada, y compris les brevets, les marques de commerce, le droit d'auteur et les dessins industriels.",
+        "href": "https://ised-isde.canada.ca/site/office-propriete-intellectuelle-canada/fr"
+      },
+      {
+        "id": "iac",
+        "name": "Innovation Asset Collective (IAC)",
+        "type": "Non-Profit",
+        "description": "Un organisme à but non lucratif fondé sur l'adhésion qui aide les PME canadiennes du secteur des technologies propres axées sur les données à mieux comprendre, développer et tirer parti de la PI en tant qu'actif stratégique.",
+        "href": "https://www.ipcollective.ca/fr/home-francais"
+      },
+      {
+        "id": "irap",
+        "name": "Soutien à la PI — PARI CNRC",
+        "type": "Federal",
+        "description": "Offre du financement aux PME pour les aider à comprendre leur position en matière de PI et à élaborer des stratégies de PI complètes alignées sur leurs objectifs de commercialisation.",
+        "href": "https://nrc.canada.ca/fr/soutien-linnovation-technologique/soutien-pari-cnrc-propriete-intellectuelle"
+      },
+      {
+        "id": "canexport",
+        "name": "CanExport innovation",
+        "type": "Federal",
+        "description": "Offre du financement pour aider les PME canadiennes à protéger leur PI sur les marchés internationaux, en appuyant les dépôts de brevets, l'enregistrement de marques de commerce et les frais juridiques connexes à l'étranger.",
+        "href": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/innovation/index.aspx?lang=fra"
+      },
+      {
+        "id": "ipon",
+        "name": "PIO — Propriété intellectuelle Ontario",
+        "type": "Provincial",
+        "description": "Un organisme provincial qui offre un soutien, des ressources et des services-conseils fiables en matière de PI pour aider les innovateurs ontariens à développer leur entreprise et à être compétitifs à l'échelle mondiale.",
+        "href": "https://ip-ontario.ca/francais"
+      },
+      {
+        "id": "ipic",
+        "name": "IPIC — Institut de la propriété intellectuelle du Canada",
+        "type": "Professional",
+        "description": "L'association professionnelle des agents de brevets, des agents de marques de commerce et des avocats spécialisés en droit de la PI — la voix faisant autorité sur les normes de pratique en PI au Canada.",
+        "href": "https://ipic.ca/fr"
+      },
+      {
+        "id": "ipvillage",
+        "name": "Village PI",
+        "type": "Federal",
+        "subtype": "Collaboration",
+        "description": "Une initiative conjointe qui aide les entreprises canadiennes à se renseigner sur la propriété intellectuelle, à entrer en contact avec des experts juridiques et commerciaux, et à accéder à des ressources spécialisées en PI.",
+        "href": "https://ised-isde.canada.ca/site/office-propriete-intellectuelle-canada/fr/village-pi-ressources-pi-pour-votre-entreprise"
+      },
+      {
+        "id": "iipp",
+        "name": "PPIA — Programme de propriété intellectuelle autochtone",
+        "type": "Federal",
+        "subtype": "Grants",
+        "description": "Offre un financement sous forme de subventions pour appuyer les organisations, entreprises et créateurs autochtones dans la protection, la gestion et la commercialisation de leurs savoirs traditionnels et de leurs expressions culturelles.",
+        "href": "https://ised-isde.canada.ca/site/strategie-propriete-intellectuelle/fr/subvention-programme-propriete-intellectuelle-autochtone"
+      },
+      {
+        "id": "exploreip",
+        "name": "ExploreIP",
+        "type": "Federal",
+        "subtype": "Marketplace",
+        "description": "Le marché canadien de la propriété intellectuelle, qui permet aux entreprises de rechercher, de découvrir et d'obtenir une licence pour des brevets précieux détenus par des institutions du secteur public et des universités afin d'accélérer l'innovation.",
+        "href": "https://ised-isde.canada.ca/ipm-mcpi/?lang=fr"
+      }
+    ]
   },
   "provinceNames": {
     "AB": "Alberta",

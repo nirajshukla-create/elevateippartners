@@ -17,7 +17,7 @@ export default function LanguageToggle() {
 
   return (
     <div
-      className="hidden md:flex items-center border border-plum/15 rounded-full overflow-hidden"
+      className="flex items-center border border-plum/15 rounded-full overflow-hidden shrink-0"
       role="group"
       aria-label="Language selector"
     >

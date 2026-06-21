@@ -192,7 +192,87 @@
   "partners": {
     "eyebrow": "The National Network",
     "heading": "Ecosystem Partners",
-    "body": "Connecting Canadian startups with the national network of intellectual property support organizations."
+    "body": "Connecting Canadian startups with the national network of intellectual property support organizations.",
+    "visitWebsite": "Visit Website",
+    "badgeTypes": {
+      "Federal": "Federal",
+      "Provincial": "Provincial",
+      "Non-Profit": "Non-Profit",
+      "Professional": "Professional"
+    },
+    "badgeSubtypes": {
+      "Collaboration": "Collaboration",
+      "Grants": "Grants",
+      "Marketplace": "Marketplace"
+    },
+    "list": [
+      {
+        "id": "cipo",
+        "name": "CIPO — Canadian Intellectual Property Office",
+        "type": "Federal",
+        "description": "The official federal body responsible for the administration and processing of the vast majority of IP in Canada, including patents, trademarks, copyrights, and industrial designs.",
+        "href": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en"
+      },
+      {
+        "id": "iac",
+        "name": "Innovation Asset Collective (IAC)",
+        "type": "Non-Profit",
+        "description": "A membership-based non-profit assisting Canadian SMEs in the data-driven clean technology sector to better understand, develop, and leverage IP as a strategic business asset.",
+        "href": "https://www.ipcollective.ca/"
+      },
+      {
+        "id": "irap",
+        "name": "IP Assist — NRC IRAP",
+        "type": "Federal",
+        "description": "Provides funding to SMEs to help them understand their IP position and develop comprehensive IP strategies aligned with their commercialization goals.",
+        "href": "https://nrc.canada.ca/en/support-technology-innovation/nrc-irap-support-intellectual-property"
+      },
+      {
+        "id": "canexport",
+        "name": "CanExport Innovation",
+        "type": "Federal",
+        "description": "Provides funding to help Canadian SMEs protect their IP in international markets, supporting patent filings, trademark registrations, and related legal costs abroad.",
+        "href": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/innovation/index.aspx"
+      },
+      {
+        "id": "ipon",
+        "name": "IPON — Intellectual Property Ontario",
+        "type": "Provincial",
+        "description": "A provincial agency that provides trusted IP support, resources, and advisory services to help Ontario innovators scale their businesses and compete globally.",
+        "href": "https://ip-ontario.ca/"
+      },
+      {
+        "id": "ipic",
+        "name": "IPIC — Intellectual Property Institute of Canada",
+        "type": "Professional",
+        "description": "The professional association for patent agents, trademark agents, and lawyers specializing in IP law — the authoritative voice on IP practice standards in Canada.",
+        "href": "https://www.ipic.ca"
+      },
+      {
+        "id": "ipvillage",
+        "name": "IP Village",
+        "type": "Federal",
+        "subtype": "Collaboration",
+        "description": "A joint initiative that helps Canadian businesses learn about intellectual property, connect with legal and business experts, and access specialized IP resources.",
+        "href": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/ip-village-ip-resources-your-business"
+      },
+      {
+        "id": "iipp",
+        "name": "Indigenous IP Program (IIPP)",
+        "type": "Federal",
+        "subtype": "Grants",
+        "description": "Provides grant funding to support Indigenous organizations, businesses, and creators in protecting, managing, and commercializing their traditional knowledge and cultural expressions.",
+        "href": "https://ised-isde.canada.ca/site/intellectual-property-strategy/en/indigenous-intellectual-property-program-grant"
+      },
+      {
+        "id": "exploreip",
+        "name": "ExploreIP",
+        "type": "Federal",
+        "subtype": "Marketplace",
+        "description": "Canada's Intellectual Property Marketplace, allowing businesses to search, discover, and license valuable patents held by public sector institutions and universities to accelerate innovation.",
+        "href": "https://ised-isde.canada.ca/ipm-mcpi/?lang=en"
+      }
+    ]
   },
   "provinceNames": {
     "AB": "Alberta",

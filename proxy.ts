@@ -32,7 +32,13 @@ export function proxy(request: NextRequest) {
 
   const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname}`;
-  return NextResponse.redirect(url);
+  const response = NextResponse.redirect(url);
+  response.cookies.set(LOCALE_COOKIE, locale, {
+    path: "/",
+    maxAge: 31536000,
+    sameSite: "lax",
+  });
+  return response;
 }
 
 export const config = {

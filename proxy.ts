@@ -5,6 +5,13 @@ const LOCALES = ["en", "fr"] as const;
 const DEFAULT_LOCALE = "en";
 const LOCALE_COOKIE = "ELEVATEIP_LOCALE";
 
+const DOMAIN_LOCALES: Record<string, (typeof LOCALES)[number]> = {
+  "eleverlapicanada.ca": "fr",
+  "www.eleverlapicanada.ca": "fr",
+  "elevateipcanada.ca": "en",
+  "www.elevateipcanada.ca": "en",
+};
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -14,11 +21,14 @@ export function proxy(request: NextRequest) {
   );
   if (pathnameHasLocale) return;
 
+  const host = request.headers.get("host")?.toLowerCase().split(":")[0] ?? "";
+  const domainLocale = DOMAIN_LOCALES[host] ?? DEFAULT_LOCALE;
+
   const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value;
   const locale =
     cookieLocale && (LOCALES as readonly string[]).includes(cookieLocale)
       ? cookieLocale
-      : DEFAULT_LOCALE;
+      : domainLocale;
 
   const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname}`;

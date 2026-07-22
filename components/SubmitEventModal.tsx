@@ -51,9 +51,11 @@ export default function SubmitEventModal({ open, onClose }: Props) {
     if (open) {
       setTimeout(() => firstInputRef.current?.focus(), 100);
     } else {
-      setForm({});
-      setStatus("idle");
-      setErrMsg("");
+      setTimeout(() => {
+        setForm({});
+        setStatus("idle");
+        setErrMsg("");
+      }, 0);
     }
   }, [open]);
 

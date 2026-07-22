@@ -11,6 +11,7 @@ export default function LanguageToggle() {
 
   function switchLocale(next: Locale) {
     if (next === locale) return;
+    // eslint-disable-next-line react-hooks/immutability -- cookie write belongs in this click handler, not an effect
     document.cookie = `ELEVATEIP_LOCALE=${next};path=/;max-age=31536000;SameSite=Lax`;
     router.push(pathname.replace(/^\/(en|fr)/, `/${next}`));
   }

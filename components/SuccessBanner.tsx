@@ -122,7 +122,6 @@ export default function SuccessBanner() {
               style={{ paddingBottom: "75%" }}
             >
               <AnimatePresence mode="wait">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <motion.img
                   key={active}
                   src={story.image}

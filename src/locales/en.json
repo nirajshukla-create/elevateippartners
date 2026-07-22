@@ -57,13 +57,6 @@
     "exploreCta": "Explore All National Resources",
     "items": [
       {
-        "category": "Guide",
-        "title": "IP Fundamentals for Startups",
-        "desc": "An introduction to patents, trademarks, trade secrets, and copyright for early-stage companies.",
-        "href": "https://elevateip-learninghub.communitech.ca/",
-        "cta": "Access the learning hub →"
-      },
-      {
         "category": "Toolkit",
         "title": "Build an IP Strategy",
         "desc": "Use the Canadian Intellectual Property Office to help you get started to build an IP Strategy.",

@@ -57,13 +57,6 @@
     "exploreCta": "Explorer toutes les ressources nationales",
     "items": [
       {
-        "category": "Guide",
-        "title": "Les fondamentaux de la PI pour les entreprises en démarrage",
-        "desc": "Une introduction aux brevets, marques de commerce, secrets commerciaux et droits d'auteur pour les entreprises en phase initiale.",
-        "href": "https://elevateip-learninghub.communitech.ca/",
-        "cta": "Accéder au centre d'apprentissage →"
-      },
-      {
         "category": "Boîte à outils",
         "title": "Élaborer une stratégie de PI",
         "desc": "Utilisez l'Office de la propriété intellectuelle du Canada pour vous aider à démarrer l'élaboration d'une stratégie de PI.",
